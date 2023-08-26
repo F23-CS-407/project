@@ -5,10 +5,10 @@
 docker compose build
 ```
 ```
-docker compose up
+docker compose up [-d]
 ```
 
-If running the services in the background, they can be taken down with
+If running the services are running in the background, they can be taken down with
 ```
 docker compose down
 ```
