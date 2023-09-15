@@ -2,7 +2,20 @@ version: "3"
 
 services:
   backend:
-    container_name: "hubit_backend"
+    container_name: hubit_backend
     build: backend/
     ports:
-    - "3000:3000"
+    - 3000:3000
+
+  database:
+    container_name: hubit_mongo
+    image: mongo
+    ports:
+    - 27017:27017
+    - 28017:28017
+    volumes:
+    - ./database/data:/data
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+
