@@ -26,9 +26,5 @@ docker compose down database
 ## Make sure it works
 In MongoDB Compass, 
 ```
-localhost:3000/test
-```
-should display
-```
-test
+mongodb://{USERNAME}:{PASSWORD}@localhost:27017
 ```
