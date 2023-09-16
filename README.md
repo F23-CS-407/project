@@ -1,4 +1,4 @@
-# project
+# Project
 
 ## Starting the Services
 ```
