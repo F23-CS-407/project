@@ -3,11 +3,11 @@
 ## Configuration
 In the .env file, include
 ```
-MONGO_USER={USERNAME}
-MONGO_PASSWORD={PASSWORD}
+MONGO_STAGE={stage}
+MONGO_URL={database docker service name}
 ```
 
-The database can start with data stored in the data directory, the mongo username and mongo password must match. Changes made are saved in the data directory.
+The database can start with data stored in the data directory. Changes made are saved in the data directory.
 
 ## Running the database
 ```
@@ -26,5 +26,5 @@ docker compose down database
 ## Make sure it works
 In MongoDB Compass, 
 ```
-mongodb://{USERNAME}:{PASSWORD}@localhost:27017
+mongodb://localhost:27017
 ```

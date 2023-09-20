@@ -1,10 +1,12 @@
-FROM node:18
-
-COPY ./ /usr/backend
+FROM node:20
 
 WORKDIR /usr/backend
 
+COPY package*.json ./
+
 RUN npm install
+
+COPY . .
 
 EXPOSE 3000
 
