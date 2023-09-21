@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-login',

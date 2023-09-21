@@ -1,26 +1,36 @@
-<p style="color:red; top: margin 10px;">Don't worry, I'll add more color and functionality to this</p>
-<div style="width:80%;height:80%">
-    <div class="center-box">
-        <form class="input-form">
-            <h1 style="text-align:center">Create an Account</h1>
-        
-            <mat-form-field class="input-full-width">
-            <mat-label>Username:</mat-label>
-            <input matInput>
-            </mat-form-field>
+<div>
+    <div style="width:100%;height:78%">
+        <div class="center-box">
+            <form class="input-form">
+                <h1 style="text-align:center; margin-top:+10px">Create an Account</h1>
+            
+                <mat-form-field class="input-full-width">
+                    <mat-label>Username:</mat-label>
+                    <input #u_field matInput>
+                    <mat-hint *ngIf="username_taken" style="color:red">Username has been taken</mat-hint>
+                    <!-- It appears that <mat-error> doesn't work for some reason-->
+                </mat-form-field>
 
-            <mat-form-field class="input-full-width">
-                <mat-label>Password:</mat-label>
-                <input matInput type="password">
-            </mat-form-field>
+                <mat-form-field class="input-full-width">
+                    <mat-label>Password:</mat-label>
+                    <input #p_field matInput type="password">
+                    <mat-hint *ngIf="!password_contains_special" style="color:red">Must contain special character</mat-hint>
+                    <mat-hint *ngIf="!password_contains_uppercase" style="color:red">Must contain uppercase letter</mat-hint>
+                    <mat-hint *ngIf="!password_contains_lowercase" style="color:red">Must contain lowercase letter</mat-hint>
+                    <mat-hint *ngIf="!password_contains_number" style="color:red">Must contain number</mat-hint>
+                </mat-form-field>
 
-            <mat-form-field class="input-full-width">
-                <mat-label>Re-Type Password:</mat-label>
-                <input matInput type="password">
-            </mat-form-field>
-            <br>
-            <button mat-raised-button color="primary">Create</button>
+                <mat-form-field class="input-full-width">
+                    <mat-label>Re-Type Password:</mat-label>
+                    <input #pc_field matInput type="password">
+                    <mat-hint *ngIf="!passwords_match" style="color:red">Passwords match</mat-hint>
+                </mat-form-field>
 
-        </form>
+                <br>
+                <div class="create_button">
+                    <button type='button' mat-raised-button disabled={{this.create_account_button_enabled}} (click)="create_account(u_field.value, p_field.value, pc_field.value)">Create</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
