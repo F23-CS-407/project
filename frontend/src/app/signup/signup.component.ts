@@ -5,6 +5,7 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
+//import sha256 from 'crypto-js/sha256';
 
 @Component({
   selector: 'app-signup',
@@ -15,32 +16,75 @@ export class SignupComponent {
   constructor() {
 
   }
+  // This is here in case dynamic input checking is used
+  create_account_button_disabled = false;
 
-  // Error message variables
-  username_taken: boolean = true;
-  password_contains_special: boolean = false;
-  password_contains_uppercase: boolean = true;
-  password_contains_lowercase: boolean = true;
-  password_contains_number: boolean = true;
-  passwords_match: boolean = true;
+  // Error message variables - fix this to be one text
+  username_error_shown: boolean = false;
+  password_error_shown: boolean = false;
+  passwordc_error_shown: boolean = true;
 
+  username_error_text: string = "";
+  password_error_text: string = "";
+  passwordc_error_text: string = "";
 
-  public create_account(username : string, password : string, passwordc : string) {
-    console.log('Button clicked, ' + username + ', ' + password + ', ' + passwordc + '.');
-    
-    // Add logic for checking
-
-  }
-
-  create_account_button_enabled = false;
-  
   // Input Validation for password and confirm password input fields
-  static specialCharPattern = "^.*[!@#$%^&*()_+-=[]{};':\"\\|,.<>/?].*$";
+  static pattern = /[!@#$%^&*()-_=+{};:'"/]/;
   static uppercaseLetterPattern = "^.*[A-Z].*$";
   static lowercaseLetterPattern = "^.*[a-z].*$";
   static numberPattern = "^.*[0-9].*$";
-  passwordFormControl = new FormControl('',[Validators.required, 
-                                            Validators.minLength(8), 
-                                            Validators.pattern(SignupComponent.specialCharPattern)]);
+
+  /* This is just for us to bypass while testing */
+  password_checking:boolean = true;
+
+  public create_account(username : string, password : string, passwordc : string) {
+    // Set variables back to default
+    this.username_error_shown = false;
+    this.password_error_shown = false;
+    this.passwordc_error_shown = false;
+
+    if (this.password_checking) {
+    // Logic for checking password
+    if (password === null || password == "") {
+      this.password_error_shown = true;
+      this.password_error_text = "A password is required";
+      return;
+    } else if (new FormControl(password, Validators.minLength(8)).errors !== null) {
+      this.password_error_shown = true;
+      this.password_error_text = "Must be 8 or more characters";
+      return;
+    } else if (!SignupComponent.pattern.test(password)) {
+      this.password_error_shown = true;
+      this.password_error_text = "Must contain special character";
+      return;
+    } else if (new FormControl(password, Validators.pattern(SignupComponent.uppercaseLetterPattern)).errors !== null) {
+      this.password_error_shown = true;
+      this.password_error_text = "Must contain uppercase letter";
+      return;
+    } else if (new FormControl(password, Validators.pattern(SignupComponent.lowercaseLetterPattern)).errors !== null) {
+      this.password_error_shown = true;
+      this.password_error_text = "Must contain lowercase letter";
+      return;
+    } else if (new FormControl(password, Validators.pattern(SignupComponent.numberPattern)).errors !== null) {
+      this.password_error_shown = true;
+      this.password_error_text = "Must contain a number";
+      return;
+    } else if (!(password === passwordc)) {
+      this.passwordc_error_shown = true;
+      this.passwordc_error_text = "Passwords must match";
+      return;
+    }
+    } // End of password checking
+
+    // Check if username exists
+    // call_backend(username);
+
+    // Password requirements match, check if username exists
+    console.log("All fields are valid");
+
+    // Call backend for new account
+    // password_hash: string = sha256.hash(password);
+    // call_backend(username, *password hash*);
+  }
   
 }
