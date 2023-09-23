@@ -1,3 +1,4 @@
+import { sha256 } from 'js-sha256';
 
 /* 
 Takes a username, a password, and a callback function
@@ -8,4 +9,8 @@ if password matches: return cb(null, user object)
 */
 export function verify(username, password, cb) {
     
+}
+
+export function hash(content) {
+    return sha256(content);
 }
