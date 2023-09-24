@@ -27,3 +27,15 @@ export async function verify(username, password, cb) {
 export function hash(content) {
     return sha256(content);
 }
+
+export function serializeUser(user, cb) {
+    process.nextTick(function() {
+        return cb(null, user);
+    });
+}
+
+export function deserializeUser(user, cb) {
+    process.nextTick(function() {
+        return cb(null, user);
+    });
+}

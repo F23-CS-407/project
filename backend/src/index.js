@@ -6,9 +6,7 @@ import LocalStrategy from 'passport-local';
 import mongoose from 'mongoose';
 import MongoStore from 'connect-mongo';
 
-
-import { verify, hash } from './authentication/utils.js';
-import { User } from './authentication/schemas.js';
+import { verify, serializeUser, deserializeUser } from './authentication/utils.js';
 import { createUser, login, logout, auth_test } from "./authentication/endpoints.js";
 
 const MONGO_STAGE = process.env.MONGO_STAGE
@@ -36,19 +34,8 @@ app.use(session({
 
 // set up passport
 passport.use(new LocalStrategy(verify));
-
-passport.serializeUser(function(user, cb) {
-    process.nextTick(function() {
-        return cb(null, user);
-    });
-});
-    
-passport.deserializeUser(function(user, cb) {
-    process.nextTick(function() {
-        return cb(null, user);
-    });
-});
-
+passport.serializeUser(serializeUser);
+passport.deserializeUser(deserializeUser);
 app.use(passport.initialize());
 app.use(passport.session());
 
