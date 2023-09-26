@@ -17,9 +17,36 @@ docker compose down backend
 ## Make sure it works
 In your browser, 
 ```
-localhost:3000/test
+localhost:3000/test_auth
 ```
-should display
+
+## Endpoints
+### POST /login
+Body
 ```
-test
+{
+    "username": string,
+    "password": string
+}
 ```
+
+Returns
+Error message or User object
+
+### POST /logout
+If logged in destroys session
+
+### POST /create_user
+Body
+```
+{
+    "username": string,
+    "password": string
+}
+```
+
+Returns
+Error message or User object
+
+### GET /test_auth
+Returns a message to test your auth status

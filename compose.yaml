@@ -6,6 +6,11 @@ services:
     build: backend/
     ports:
     - 3000:3000
+    environment:
+      - MONGO_STAGE=${MONGO_STAGE}
+      - MONGO_URL=${MONGO_URL}
+    depends_on:
+      - database
 
   database:
     container_name: hubit_mongo
@@ -13,8 +18,6 @@ services:
     ports:
     - 27017:27017
     volumes:
-    - ./database/data:/data
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    - ./database/data:/data/db
+
 
