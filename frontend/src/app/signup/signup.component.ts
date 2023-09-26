@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 //import sha256 from 'crypto-js/sha256';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -13,7 +14,13 @@ import {
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
-  constructor() {
+
+  // Inputs from parent
+
+  // Outputs to parent
+  //@Output() username_for_parent = new EventEmitter <string>();
+
+  constructor(private router: Router) {
 
   }
   // This is here in case dynamic input checking is used
@@ -35,7 +42,7 @@ export class SignupComponent {
   static numberPattern = "^.*[0-9].*$";
 
   /* This is just for us to bypass while testing */
-  password_checking:boolean = true;
+  password_checking:boolean = false;
 
   public create_account(username : string, password : string, passwordc : string) {
     // Set variables back to default
@@ -82,9 +89,14 @@ export class SignupComponent {
     // Password requirements match, check if username exists
     console.log("All fields are valid");
 
+
     // Call backend for new account
     // password_hash: string = sha256.hash(password);
     // call_backend(username, *password hash*);
+
+    // Redirect to main page
+    sessionStorage.setItem("username", username);
+    this.router.navigate(['/']);
   }
   
 }
