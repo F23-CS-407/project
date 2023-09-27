@@ -18,7 +18,7 @@ docker compose build database
 docker compose up [-d] database
 ```
 
-If running the services are running in the background, they can be taken down with
+If running the service in the background, it can be taken down with
 ```
 docker compose down database
 ```
