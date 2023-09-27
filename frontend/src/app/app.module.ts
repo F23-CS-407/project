@@ -9,18 +9,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';         // Here is the component being imported
 import { SignupComponent } from './signup/signup.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    LoginComponent,                                               // Here is the componenet being delcared
     HomeComponent,
-    SignupComponent,                                                // Here is the componenet being delcared
+    SignupComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,8 @@ import { SignupComponent } from './signup/signup.component';
     RouterModule.forRoot([
       {path: '', component: HomeComponent },
       {path: 'login', component: LoginComponent},                  // This is a new path. Can be found at localhost:port/login
-      {path: 'signup', component: SignupComponent}
+      {path: 'signup', component: SignupComponent},
+      {path: 'profile', component: ProfileComponent}
     ]),
     BrowserAnimationsModule,
     MatInputModule,
