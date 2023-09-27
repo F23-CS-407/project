@@ -9,7 +9,7 @@ docker compose build backend
 docker compose up [-d] backend
 ```
 
-If running the services are running in the background, they can be taken down with
+If running the service in the background, it can be taken down with
 ```
 docker compose down backend
 ```
