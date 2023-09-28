@@ -1,5 +1,4 @@
 import passport from 'passport';
-import session from 'express-session';
 
 import { hash } from './utils.js';
 import { User } from './schemas.js';
@@ -32,9 +31,21 @@ export const createUser = async (req, res, next) => {
 
 export function login(req, res, next) {
     // Authenticate user, on success send user object
+    const username = req.body.username
+    const password = req.body.password
+
+    if (!username || !password) {
+        res.status(400).send("Missing username or password")
+        return
+    }
+
     passport.authenticate('local', function (err, user) {
         req.logIn(user, function() {
-            res.status(err ? 500 : 200).send(err ? err : user);
+            if (err) {
+                res.status(400).send(err)
+            } else {
+                res.status(user ? 200 : 401).send(user ? user : "Login failed");
+            }
         });
     })(req, res, next)
 }
@@ -53,8 +64,8 @@ export function logout(req, res, next) {
 
 export function auth_test(req, res, next) {
     if (req.isAuthenticated()) {
-        res.send(`Authenticated, Hello ${req.user.username}!`)
+        res.status(200).send(req.user.username)
     } else {
-        res.send("Not authenticated")
+        res.status(401).send("Not authenticated")
     }
 }

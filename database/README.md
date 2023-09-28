@@ -1,10 +1,9 @@
 # Database
 
 ## Configuration
-In the .env file, include
+In the .env file for local development, include
 ```
-MONGO_STAGE={stage}
-MONGO_URL={database docker service name}
+MONGO_URL=mongodb://database:27017/local
 ```
 
 The database can start with data stored in the data directory. Changes made are saved in the data directory.

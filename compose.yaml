@@ -13,7 +13,6 @@ services:
     ports:
     - 3000:3000
     environment:
-      - MONGO_STAGE=${MONGO_STAGE}
       - MONGO_URL=${MONGO_URL}
     depends_on:
       - database
@@ -25,5 +24,10 @@ services:
     - 27017:27017
     volumes:
     - ./database/data:/data/db
+
+  backend_tests:
+    container_name: hubit_backend_test
+    build: backend/
+    command: npm run test
 
 

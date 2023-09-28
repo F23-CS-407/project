@@ -1,4 +1,6 @@
-FROM node:20
+FROM node:16
+
+RUN apt-get install libcurl4
 
 WORKDIR /usr/backend
 

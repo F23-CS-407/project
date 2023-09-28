@@ -14,6 +14,20 @@ If running the service in the background, it can be taken down with
 docker compose down backend
 ```
 
+## Running tests
+```
+docker compose build backend_tests
+```
+
+```
+docker compose up [-d] backend_tests
+```
+
+If the service is running in the background, it can be taken down with
+```
+docker compose down backend
+```
+
 ## Make sure it works
 In your browser, 
 ```
@@ -33,7 +47,7 @@ Body
 Returns
 Error message or User object
 
-### POST /logout
+### DELETE /logout
 If logged in destroys session
 
 ### POST /create_user
