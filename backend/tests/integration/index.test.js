@@ -30,6 +30,6 @@ describe("Integration Testing Environment", () => {
 
     it("should send requests and get responses", async () => {
         const response = await request(await createApp()).get("/auth_test")
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(401);
     })
 })

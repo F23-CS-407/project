@@ -40,7 +40,7 @@ export default async function createApp() {
 
     // auth endpoints
     app.post('/login', login);
-    app.post('/logout', logout);
+    app.delete('/logout', logout);
     app.post('/create_user', createUser)
     app.get('/auth_test', auth_test)
 

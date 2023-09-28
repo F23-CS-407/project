@@ -33,7 +33,7 @@ Body
 Returns
 Error message or User object
 
-### POST /logout
+### DELETE /logout
 If logged in destroys session
 
 ### POST /create_user
