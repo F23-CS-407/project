@@ -14,6 +14,20 @@ If running the services are running in the background, they can be taken down wi
 docker compose down backend
 ```
 
+## Running tests
+```
+docker compose build backend_tests
+```
+
+```
+docker compose up [-d] backend_tests
+```
+
+If the service is running in the background, it can be taken down with
+```
+docker compose down backend
+```
+
 ## Make sure it works
 In your browser, 
 ```
