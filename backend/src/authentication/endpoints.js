@@ -1,5 +1,4 @@
 import passport from 'passport';
-import session from 'express-session';
 
 import { hash } from './utils.js';
 import { User } from './schemas.js';
