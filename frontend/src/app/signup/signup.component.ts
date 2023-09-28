@@ -1,11 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 //import { FormControl, Validators } from '@angular/forms';
 //import {ErrorStateMatcher} from '@angular/material/core';
-import {
-  FormControl,
-  Validators,
-} from '@angular/forms';
-//import sha256 from 'crypto-js/sha256';
+import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,13 +11,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
+  // https://medium.com/@stephenfluin/adding-a-node-typescript-backend-to-your-angular-app-29b0e9925ff
+  message = this.http.get<any[]>('http://localhost:3000');
 
-  // Inputs from parent
-
-  // Outputs to parent
-  //@Output() username_for_parent = new EventEmitter <string>();
-
-  constructor(private router: Router) {
+  constructor(private router: Router, private http: HttpClient) {
 
   }
   // This is here in case dynamic input checking is used
@@ -42,7 +36,7 @@ export class SignupComponent {
   static numberPattern = "^.*[0-9].*$";
 
   /* This is just for us to bypass while testing */
-  password_checking:boolean = false;
+  password_checking:boolean = true;
 
   public create_account(username : string, password : string, passwordc : string) {
     // Set variables back to default
