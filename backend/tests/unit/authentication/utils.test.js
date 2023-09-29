@@ -30,17 +30,19 @@ describe("Verify", () => {
     it("should fail when password is incorrect", async () => {
         const username = "username"
         const password = "password"
+        const salt = "salt"
         const not_password = "boohoo"
 
-        await (new User({username, password_hash: hash(password)})).save()
+        await (new User({username, password_hash: hash(password + salt), salt})).save()
         expect(await verify(username, not_password, verifyCb)).toBe(false)
     })
 
     it("should return user object when username and password match", async () => {
         const username = "username"
         const password = "password"
+        const salt = "salt"
 
-        const user_object = new User({username, password_hash: hash(password)})
+        const user_object = new User({username, password_hash: hash(password + salt), salt})
         await user_object.save()
 
         const result = await verify(username, password, verifyCb)
