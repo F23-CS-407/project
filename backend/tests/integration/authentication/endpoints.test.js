@@ -33,6 +33,26 @@ describe('POST /create_user', () => {
     expect(response.statusCode).toBe(409);
   });
 
+  it('should have different hashes for the same password', async () => {
+    const username1 = 'username';
+    const username2 = 'username2';
+    const password = 'password';
+
+    let response = await request(await createApp())
+      .post('/create_user')
+      .send({ username: username1, password });
+    const hash1 = response.body.password_hash;
+    expect(response.statusCode).toBe(200);
+
+    response = await request(await createApp())
+      .post('/create_user')
+      .send({ username: username2, password });
+    const hash2 = response.body.password_hash;
+    expect(response.statusCode).toBe(200);
+
+    expect(hash1).not.toEqual(hash2);
+  });
+
   it('should give user object on sucess', async () => {
     const username = 'username';
     const password = 'password';

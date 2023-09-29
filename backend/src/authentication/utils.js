@@ -1,5 +1,6 @@
 import { sha256 } from 'js-sha256';
 import { User } from './schemas.js';
+import crypto from 'crypto';
 
 /* 
 Takes a username, a password, and a callback function
@@ -17,7 +18,7 @@ export async function verify(username, password, cb) {
   const user = users[0];
 
   // if password matches, give user, otherwise fail
-  if (user.password_hash == hash(password)) {
+  if (user.password_hash == hash(password + user.salt)) {
     return cb(null, user);
   } else {
     return cb(null, false);
@@ -26,6 +27,10 @@ export async function verify(username, password, cb) {
 
 export function hash(content) {
   return sha256(content);
+}
+
+export function salt_gen() {
+  return crypto.randomBytes(16).toString('hex');
 }
 
 export function serializeUser(user, cb) {

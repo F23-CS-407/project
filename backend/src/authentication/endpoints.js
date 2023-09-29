@@ -1,6 +1,6 @@
 import passport from 'passport';
 
-import { hash } from './utils.js';
+import { hash, salt_gen } from './utils.js';
 import { User } from './schemas.js';
 
 // Create user, body must include username and password fields
@@ -22,7 +22,12 @@ export const createUser = async (req, res, next) => {
   }
 
   // Create user
-  const new_user = new User({ username: requested_username, password_hash: hash(requested_password) });
+  const salt = salt_gen();
+  const new_user = new User({
+    username: requested_username,
+    password_hash: hash(requested_password + salt),
+    salt,
+  });
   await new_user.save();
 
   // Login
