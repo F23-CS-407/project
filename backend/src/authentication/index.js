@@ -5,7 +5,7 @@ import MongoStore from 'connect-mongo';
 import mongoose from 'mongoose';
 
 import { verify, serializeUser, deserializeUser } from './utils.js';
-import { createUser, login, logout, auth_test } from "./endpoints.js";
+import { createUser, login, logout } from "./endpoints.js";
 
 export default function use_authentication(app) {
     // set up sessions and add them to the app
@@ -27,7 +27,6 @@ export default function use_authentication(app) {
     app.post('/login', login);
     app.delete('/logout', logout);
     app.post('/create_user', createUser)
-    app.get('/auth_test', auth_test)
 
     return app
 }

@@ -62,5 +62,6 @@ Body
 Returns
 Error message or User object
 
+## Debug Endpoints (only exposed when testing)
 ### GET /test_auth
 Returns a message to test your auth status

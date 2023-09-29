@@ -1,27 +1,11 @@
-import { mongoose } from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-
 import { verify, hash } from '../../../src/authentication/utils';
 import { User } from '../../../src/authentication/schemas';
 
+import useMongoTestWrapper from '../../../src/debug/jest-mongo';
+
 describe("Verify", () => {
+    useMongoTestWrapper()
     const verifyCb = (err, user) => { return user }
-    let con;
-    let mongoServer;
-  
-    beforeEach(async () => {
-      mongoServer = await MongoMemoryServer.create();
-      con = await mongoose.connect(mongoServer.getUri(), {});
-    });
-  
-    afterEach(async () => {
-      if (con) {
-        await con.disconnect();
-      }
-      if (mongoServer) {
-        await mongoServer.stop();
-      }
-    }); 
 
     it("should fail when user not found", async () => {
         expect(await verify("not_user", "not_password", verifyCb)).toBe(false)

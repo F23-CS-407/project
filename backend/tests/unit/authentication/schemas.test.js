@@ -1,25 +1,9 @@
-import { mongoose } from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-
 import { User } from '../../../src/authentication/schemas.js';
 
+import useMongoTestWrapper from '../../../src/debug/jest-mongo.js';
+
 describe("Authentication Schemas", () => {
-    let con;
-    let mongoServer;
-  
-    beforeEach(async () => {
-      mongoServer = await MongoMemoryServer.create();
-      con = await mongoose.connect(mongoServer.getUri(), {});
-    });
-  
-    afterEach(async () => {
-      if (con) {
-        await con.disconnect();
-      }
-      if (mongoServer) {
-        await mongoServer.stop();
-      }
-    });  
+    useMongoTestWrapper()
 
     it("should create users", () => {
         const username = "test_username"
