@@ -74,6 +74,19 @@ Body
 Returns
 Error message or User object
 
+### DELETE /delete_user
+
+Body
+
+```
+{
+    "password": string
+}
+```
+
+Returns
+Error message or "Logged out"
+
 ## Debug Endpoints (only exposed when testing)
 
 ### GET /test_auth
