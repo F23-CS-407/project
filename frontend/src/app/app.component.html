@@ -1,11 +1,12 @@
-<mat-toolbar>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+<!-- I'll figure out how to move this to the bottom later -->
+<mat-toolbar class="toolbar">
+    <button mat-icon-button class="icon_button" aria-label="toolbar menu icon">
         <mat-icon>menu</mat-icon>
       </button>
-    Toolbar if you want to use it
+    <div class="text">
+      Toolbar if you want to use it
+    </div>
 </mat-toolbar>
-<p>This is found on all pages, above all context</p>
 
+<!-- Page Content -->
 <router-outlet></router-outlet>
-
-<p>This is found on all pages, below all context</p>

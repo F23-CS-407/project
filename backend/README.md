@@ -1,6 +1,7 @@
 # Backend
 
 ## Running the backend
+
 ```
 docker compose build backend
 ```
@@ -9,20 +10,42 @@ docker compose build backend
 docker compose up [-d] backend
 ```
 
-If running the services are running in the background, they can be taken down with
+If running the service in the background, it can be taken down with
+
 ```
 docker compose down backend
 ```
 
+## Running tests
+
+```
+docker compose build backend_tests
+```
+
+```
+docker compose up [-d] backend_tests
+```
+
+If the service is running in the background, it can be taken down with
+
+```
+docker compose down backend_tests
+```
+
 ## Make sure it works
-In your browser, 
+
+In your browser,
+
 ```
 localhost:3000/test_auth
 ```
 
 ## Endpoints
+
 ### POST /login
+
 Body
+
 ```
 {
     "username": string,
@@ -33,11 +56,14 @@ Body
 Returns
 Error message or User object
 
-### POST /logout
+### DELETE /logout
+
 If logged in destroys session
 
 ### POST /create_user
+
 Body
+
 ```
 {
     "username": string,
@@ -48,5 +74,8 @@ Body
 Returns
 Error message or User object
 
+## Debug Endpoints (only exposed when testing)
+
 ### GET /test_auth
+
 Returns a message to test your auth status

@@ -1,13 +1,18 @@
 version: "3"
 
 services:
+  frontend:
+    container_name: hubit_frontend
+    build: frontend/
+    ports:
+      - 4200:4200
+
   backend:
     container_name: hubit_backend
     build: backend/
     ports:
     - 3000:3000
     environment:
-      - MONGO_STAGE=${MONGO_STAGE}
       - MONGO_URL=${MONGO_URL}
     depends_on:
       - database
@@ -19,5 +24,10 @@ services:
     - 27017:27017
     volumes:
     - ./database/data:/data/db
+
+  backend_tests:
+    container_name: hubit_backend_test
+    build: backend/
+    command: npm run test
 
 

@@ -1,0 +1,13 @@
+.toolbar {
+    background-color: rgb(33,33,33);
+}
+
+.toolbar .icon_button {
+    background-color: white;
+    margin-right: 10px;
+}
+
+.toolbar .text {
+    color: white;
+    font-family: cursive;
+}
