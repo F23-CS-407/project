@@ -29,7 +29,7 @@ docker compose up [-d] backend_tests
 If the service is running in the background, it can be taken down with
 
 ```
-docker compose down backend
+docker compose down backend_tests
 ```
 
 ## Make sure it works
