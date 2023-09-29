@@ -1,24 +1,26 @@
-<h3>Login</h3>
-<p>Login to your account below</p>
-<p style="color:red; top: margin 10px;"></p>
-<div style="width:80%;height:80%">
-    <div class="center-box">
-        <form class="input-form">
-            <h1 style="text-align:left">Returning User - Sign In</h1>
-        
-            <mat-form-field class="input-full-width">
-            <mat-label>Username:</mat-label>
-            <input matInput>
-            </mat-form-field>
+<div>
+    <div style="width:100%;height:78%">
+        <div class="center-box">
+            <form class="input-form">
+                <h1 style="text-align:center; margin-top:+10px">Login to your Account</h1>
+            
+                <mat-form-field class="input-full-width">
+                    <mat-label>Username:</mat-label>
+                    <input #u_field matInput>
+                    <mat-hint *ngIf="username_error_shown" style="color:red">{{ username_error_text }}</mat-hint>
+                    <!-- It appears that <mat-error> doesn't work for some reason-->
+                </mat-form-field>
 
-            <mat-form-field class="input-full-width">
-                <mat-label>Password:</mat-label>
-                <input matInput type="password">
-            </mat-form-field>
-
-            <br>
-            <button mat-raised-button color="primary">Sign In</button>
-
-        </form>
+                <mat-form-field class="input-full-width">
+                    <mat-label>Password:</mat-label>
+                    <input #p_field matInput type="password">
+                    <mat-hint *ngIf="password_error_shown" style="color:red">{{ password_error_text }}</mat-hint>
+                </mat-form-field>
+                <br>
+                <div class="create_button">
+                    <button type='button' mat-raised-button disabled={{this.login_button_disabled}}>Sign In</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
