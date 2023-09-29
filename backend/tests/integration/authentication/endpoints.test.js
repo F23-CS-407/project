@@ -25,8 +25,9 @@ describe('POST /create_user', () => {
   it('should 409 when user exists', async () => {
     const username = 'username';
     const password = 'password';
+    const salt = 'salt';
 
-    await new User({ username, password_hash: hash(password) }).save();
+    await new User({ username, password_hash: hash(password + salt), salt }).save();
     const response = await request(await createTestApp())
       .post('/create_user')
       .send({ username, password });
@@ -37,16 +38,13 @@ describe('POST /create_user', () => {
     const username1 = 'username';
     const username2 = 'username2';
     const password = 'password';
+    const app = await createTestApp();
 
-    let response = await request(await createApp())
-      .post('/create_user')
-      .send({ username: username1, password });
+    let response = await request(app).post('/create_user').send({ username: username1, password });
     const hash1 = response.body.password_hash;
     expect(response.statusCode).toBe(200);
 
-    response = await request(await createApp())
-      .post('/create_user')
-      .send({ username: username2, password });
+    response = await request(app).post('/create_user').send({ username: username2, password });
     const hash2 = response.body.password_hash;
     expect(response.statusCode).toBe(200);
 
@@ -109,9 +107,10 @@ describe('POST /login', () => {
   it('should 401 when password does not match', async () => {
     const username = 'username';
     const password = 'password';
+    const salt = 'salt';
     const not_password = 'boohoo';
 
-    await new User({ username, password_hash: hash(password) }).save();
+    await new User({ username, password_hash: hash(password + salt), salt }).save();
     const response = await request(await createTestApp())
       .post('/login')
       .send({ username, password: not_password });
@@ -121,8 +120,9 @@ describe('POST /login', () => {
   it('should give user object on username and password match', async () => {
     const username = 'username';
     const password = 'password';
+    const salt = 'salt';
 
-    await new User({ username, password_hash: hash(password) }).save();
+    await new User({ username, password_hash: hash(password + salt), salt }).save();
     const response = await request(await createTestApp())
       .post('/login')
       .send({ username, password });
@@ -133,12 +133,13 @@ describe('POST /login', () => {
   it('should be authenticated on success', async () => {
     const username = 'username';
     const password = 'password';
+    const salt = 'salt';
     const app = await createTestApp();
 
     let response = await request(app).get('/auth_test');
     expect(response.statusCode).toBe(401);
 
-    await new User({ username, password_hash: hash(password) }).save();
+    await new User({ username, password_hash: hash(password + salt), salt }).save();
     response = await request(app).post('/login').send({ username, password });
     expect(response.statusCode).toBe(200);
     const cookie = response.headers['set-cookie'];
@@ -154,23 +155,20 @@ describe('DELETE /logout', () => {
   useMongoTestWrapper();
 
   it('should 401 when not authenticated', async () => {
-    const username = 'username';
-    const password = 'password';
-    const app = await createTestApp();
-
-    let response = await request(app).delete('/logout');
+    let response = await request(await createTestApp()).delete('/logout');
     expect(response.statusCode).toBe(401);
   });
 
   it('should logout when authenticated', async () => {
     const username = 'username';
     const password = 'password';
+    const salt = 'salt';
     const app = await createTestApp();
 
     let response = await request(app).get('/auth_test');
     expect(response.statusCode).toBe(401);
 
-    await new User({ username, password_hash: hash(password) }).save();
+    await new User({ username, password_hash: hash(password + salt), salt }).save();
     response = await request(app).post('/login').send({ username, password });
     expect(response.statusCode).toBe(200);
     const cookie = response.headers['set-cookie'];

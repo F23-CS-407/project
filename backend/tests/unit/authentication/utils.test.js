@@ -6,6 +6,10 @@ import useMongoTestWrapper from '../../../src/debug/jest-mongo';
 describe('Verify', () => {
   useMongoTestWrapper();
 
+  const verifyCb = (err, user) => {
+    return user;
+  };
+
   it('should fail when user not found', async () => {
     expect(await verify('not_user', 'not_password', verifyCb)).toBe(false);
   });
