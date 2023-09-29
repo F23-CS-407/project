@@ -4,8 +4,21 @@ id={{id}}
         <mat-icon class="person_icon">account_circle</mat-icon>
     </div>
     <div class="col">
-        <h1 class="bold_name">{{username}}</h1>
-        <p>{{description}}</p>
+        <h1 class="username" *ngIf="!currently_editting">
+            {{username}}
+        </h1>
+        <p class="bio" *ngIf="!currently_editting">{{bio}}</p>
+
+        <form *ngIf="currently_editting">
+            <input #new_username class="username_edit no-outline" value="{{username}}" placeholder="Add your name here">
+            <br>
+            <textarea #new_bio class="bio_edit" rows=10 value="{{bio}}" placeholder="Add something interesting about yourself"></textarea>
+        
+            <div>
+                <button mat-raised-button class="cancel_button" (click)="edit_action()">Cancel</button>
+                <button mat-raised-button class="confirm_button" (click)="change_bio(new_username.value, new_bio.value)">Confirm</button>
+            </div>
+        </form>
     </div>
 
     <div class="col">
@@ -25,17 +38,38 @@ id={{id}}
         <p class="profile_number_text">Communities</p>
     </div>
 
-    <div class="col">
-        <button mat-raised-button class="edit_button">Edit Profile</button>
+    <!-- If viewing own profile -->
+    <div class="col" *ngIf="viewing_own_profile">
+        <button mat-raised-button class="edit_button" (click)="edit_action()" disabled="{{currently_editting}}">Edit Profile</button>
     </div>
-    <div class="col">
-        <button mat-raised-button class="share_button"><mat-icon class="center_icon">share</mat-icon></button>  
+    <div class="col" *ngIf="viewing_own_profile">
+        <button mat-raised-button class="share_button" (click)="share_action()"><mat-icon class="share_icon">share</mat-icon></button>
     </div>
-    <div class="col">
-        <button mat-raised-button class="settings_button"><mat-icon style="vertical-align:middle">settings</mat-icon></button>
+    <div class="col" *ngIf="viewing_own_profile">
+        <button mat-raised-button class="settings_button" (click)="settings_action()"><mat-icon class="settings_icon">settings</mat-icon></button>
     </div>
 </div>
-<div style="position:absolute;margin-top:5vh;left:50vw;color:white">I'm working on these buttons ^^^</div>
 <div class="post_list">
-    <!-- Use material cards -->
+    <!-- Use material cards: https://material.angular.io/components/card/overview -->
+    <li *ngFor="let post of posts; index as i">
+        <mat-card class="post_card">
+            <mat-card-header>
+                <mat-card-title>
+                    {{username}}
+                </mat-card-title>
+                <mat-card-subtitle>
+                    community here?
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p>
+                    Post {{i}}. {{post.content}}
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button>LIKE</button>
+                <button mat-button>SHARE</button>
+            </mat-card-actions>
+        </mat-card>
+    </li>
 </div>

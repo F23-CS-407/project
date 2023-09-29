@@ -20,9 +20,6 @@ export class HomeComponent {
     console.log(sessionStorage.getItem("username"));
     if (sessionStorage.getItem("username")) {
       this.username = sessionStorage.getItem("username")?.toString();
-    } else {
-      // Open popup (dialog)
-
     }
 
   }

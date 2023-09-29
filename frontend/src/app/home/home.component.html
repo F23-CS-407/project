@@ -2,17 +2,18 @@
 <ng-template #good>
     <!-- This content appears when logged in -->
     <p style="color:white">You are now logged in as user "{{username}}".</p>
+    <a href="/profile?id=25"><button mat-raised-button>profile</button></a>
 </ng-template>
 <ng-template #missing>
     <!-- This content appears when not logged in -->
     <div class="middle_box">
-            <!-- More icons can be found here: https://fonts.google.com/icons -->
-            <mat-icon class="error_icon">error</mat-icon>
-            <p class="oops"><strong>Oops</strong></p>
-            <br>
-            <h1>It appears you are not logged in. In order to use <br>
-                this application, you will need to create an account</h1>
-            <h1> You can <a href="/signup">Create an Account</a> here.</h1>
-            <h4> Already have an account? <a href="/login">Log In</a> here</h4>
+        <!-- More icons can be found here: https://fonts.google.com/icons -->
+        <mat-icon class="error_icon">error</mat-icon>
+        <p class="oops"><strong>Oops</strong></p>
+        <br>
+        <h1>It appears you are not logged in. In order to use <br>
+            this application, you will need to create an account</h1>
+        <h1> You can <a href="/signup">Create an Account</a> here.</h1>
+        <h3> Already have an account? <a href="/login">Log In</a> here</h3>
     </div>
 </ng-template>
