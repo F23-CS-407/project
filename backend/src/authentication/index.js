@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 import { verify, serializeUser, deserializeUser } from './utils.js';
 import { createUser, login, logout } from './endpoints.js';
 
-export default function use_authentication(app) {
+export default function useAuthentication(app) {
   // set up sessions and add them to the app
   app.use(
     session({
