@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
-  // https://medium.com/@stephenfluin/adding-a-node-typescript-backend-to-your-angular-app-29b0e9925ff
+  // https://jasonwatmore.com/post/2019/11/21/angular-http-post-request-examples
   private backend_addr : string = "http://localhost:3000";
 
   constructor(private router: Router, private http: HttpClient) {
@@ -82,17 +82,25 @@ export class SignupComponent {
 
     // Create user
     const body = { "username" : username, "password" : password};
-    this.http.post<any>(this.backend_addr + "/create_user", body).subscribe(
-      {next: data => {          // On success
-        console.log("Success: " + data.toString());
+    this.http.post<any>(this.backend_addr + "/create_user", body).subscribe({
+      next: create_response => {          // On success
 
-        // Redirect to main page
-        sessionStorage.setItem("username", username);
-        sessionStorage.setItem("id", data._id);
-        this.router.navigate(['/']);
+        // Log the user in
+        this.http.post<any>(this.backend_addr + "/login", body).subscribe(
+          {next: login_response => {
+            console.log("login successful");
+            // Redirect to main page
+            sessionStorage.setItem("username", username);
+            sessionStorage.setItem("id", create_response._id);
+            sessionStorage.setItem("logged_in", "true");
+            this.router.navigate(['/']);
+          }, 
+          error: error => {
+            console.log("Created account, but couldn't log in. This should never happen.");
+          }});
       }, 
       error: error => {         // On fail
-        console.log("Error: " + error.toString());
+        console.log("Create Account Error: " + error.toString());
       }});
   }
 }

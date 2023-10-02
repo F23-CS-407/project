@@ -1,4 +1,4 @@
-<div *ngIf="username; then good else missing">this never shows</div>
+<div *ngIf="logged_in; then good else missing">this never shows</div>
 <ng-template #good>
     <!-- This content appears when logged in -->
     <p style="color:white">You are now logged in as user "{{username}}".</p>

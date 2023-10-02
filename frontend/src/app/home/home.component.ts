@@ -11,15 +11,18 @@ import { MatButtonModule } from '@angular/material/button';
 export class HomeComponent {
 
   username?: string = undefined;
+  logged_in: boolean = false;
 
   constructor(private router: Router) {
-    this.getUsername();
+    this.getData();
   }
 
-  getUsername() {
-    console.log(sessionStorage.getItem("username"));
+  getData() {
     if (sessionStorage.getItem("username")) {
       this.username = sessionStorage.getItem("username")?.toString();
+    }
+    if (sessionStorage.getItem("logged_in") == "true") {
+      this.logged_in = true;
     }
 
   }
