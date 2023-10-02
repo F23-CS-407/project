@@ -1,5 +1,18 @@
 /* https://css-tricks.com/snippets/css/complete-guide-grid/ */
 
+.side_panel {
+  width: 200px;
+    height: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0; /* Make it appear on the side */
+    transition: left 0.3s;
+}
+
+
 .profile_grid {
     display: grid;
     /*grid-template-columns: [col1-start] 40% [col1-end col2-start] 60% [col2-end];*/
