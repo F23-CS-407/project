@@ -32,14 +32,6 @@ If the service is running in the background, it can be taken down with
 docker compose down backend_tests
 ```
 
-## Make sure it works
-
-In your browser,
-
-```
-localhost:3000/test_auth
-```
-
 ## Endpoints
 
 ### POST /login
@@ -85,7 +77,7 @@ Body
 ```
 
 Returns
-Error message or "Logged out"
+Error message or "Deleted account"
 
 ## Debug Endpoints (only exposed when testing)
 

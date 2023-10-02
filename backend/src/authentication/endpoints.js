@@ -70,9 +70,12 @@ export function logout(req, res, next) {
 }
 
 export async function deleteUser(req, res, next) {
+  // must be authenticated
   if (req.isAuthenticated()) {
     const username = req.user.username;
     const password = req.body.password;
+
+    // password must be sent
     if (!password) {
       res.status(400).send('Missing password');
       return;
@@ -80,9 +83,18 @@ export async function deleteUser(req, res, next) {
     const returnResultCb = (err, res) => {
       return res;
     };
+
+    // password must be correct
     if (await verify(username, password, returnResultCb)) {
+      // delete user and all user related content
       await deleteAllUserData(username, returnResultCb);
-      logout(req, res, next);
+      // logout
+      req.logout(function (err) {
+        if (err) {
+          return next(err);
+        }
+        res.send('Deleted account');
+      });
       return;
     }
     res.status(401).send('Password mismatch');
