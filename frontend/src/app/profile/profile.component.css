@@ -12,6 +12,12 @@
     transition: left 0.3s;
 }
 
+/* For the Search button */
+.searchButton {
+  margin-top: 20px; /* Adjust the margin as needed */
+  background-color: #007bff; /* Customize the button color */
+  color: #fff;
+}
 
 .profile_grid {
     display: grid;

@@ -1,10 +1,17 @@
 id={{id}}
+
 <!-- Side Panel feature -->
 <div class="side_panel">
-    <button id="viewFollowedContent">View Followed Content</button>
-    <button id="viewCommunityPosts">View Community Posts</button>
-    <button id="createNewPost">Create New Post</button>
+    <button mat-raised-button class="viewFollowedContent" disabled="{{currently_editting}}">View Followed Content</button>
+    <button mat-raised-button class="viewCommunityPosts" disabled="{{currently_editting}}">View Community Posts</button>
+    <button mat-raised-button class="createNewPost" disabled="{{currently_editting}}">Create New Post</button>
 </div>
+
+<!-- Search button feature -->
+<div class="search_button">
+    <button mat-raised-button class="searchButton" (click)="search_action()" disabled="{{currently_editting}}">Search</button>
+</div> 
+
 <div class="profile_grid">
     <div class="col">
         <mat-icon class="person_icon">account_circle</mat-icon>

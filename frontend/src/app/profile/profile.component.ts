@@ -80,4 +80,14 @@ export class ProfileComponent {
   settings_action() {
     // Idk what to put here?
   }
+
+  search_action() {
+    const search_area = prompt("Search here...")
+    if (search_area) {
+      this.performSearch(search_area); /* A function to handle the search logic and display results */
+    }
+  }
+  performSearch(search_area: string) {
+    
+  }
 }
