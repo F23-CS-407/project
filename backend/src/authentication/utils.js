@@ -25,11 +25,26 @@ export async function verify(username, password, cb) {
   }
 }
 
+// delete all user data, posts, comments, etc. cb
+export async function deleteAllUserData(username, cb) {
+  // if username not found, error
+  const users = await User.find({ username: username });
+  if (users.length != 1) {
+    return cb('user not found', false);
+  }
+  const user = users[0];
+
+  // delete user object
+  await user.delete();
+
+  return cb(null, true);
+}
+
 export function hash(content) {
   return sha256(content);
 }
 
-export function salt_gen() {
+export function saltGen() {
   return crypto.randomBytes(16).toString('hex');
 }
 
