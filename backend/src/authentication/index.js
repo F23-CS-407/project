@@ -1,4 +1,5 @@
 import session from 'express-session';
+import cors from 'cors';
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import MongoStore from 'connect-mongo';
@@ -15,8 +16,12 @@ export default function useAuthentication(app) {
       resave: false,
       saveUninitialized: true,
       store: new MongoStore({ mongoUrl: mongoose.connection.client.s.url }),
-    }),
-  );
+    }));
+  app.use(
+    cors({
+      origin: '*',
+      methods: ['POST', 'DELETE'],
+    }));
 
   // set up passport
   passport.use(new LocalStrategy(verify));

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent {
   // https://medium.com/@stephenfluin/adding-a-node-typescript-backend-to-your-angular-app-29b0e9925ff
-  message = this.http.get<any[]>('http://localhost:3000');
+  private backend_addr : string = "http://localhost:3000";
 
   constructor(private router: Router, private http: HttpClient) {
 
@@ -77,20 +77,22 @@ export class SignupComponent {
     }
     } // End of password checking
 
-    // Check if username exists
-    // call_backend(username);
-
-    // Password requirements match, check if username exists
+    // Password requirements match, delete this
     console.log("All fields are valid");
 
+    // Create user
+    const body = { "username" : username, "password" : password};
+    this.http.post<any>(this.backend_addr + "/create_user", body).subscribe(
+      {next: data => {          // On success
+        console.log("Success: " + data.toString());
 
-    // Call backend for new account
-    // password_hash: string = sha256.hash(password);
-    // call_backend(username, *password hash*);
-
-    // Redirect to main page
-    sessionStorage.setItem("username", username);
-    this.router.navigate(['/']);
+        // Redirect to main page
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("id", data._id);
+        this.router.navigate(['/']);
+      }, 
+      error: error => {         // On fail
+        console.log("Error: " + error.toString());
+      }});
   }
-  
 }
