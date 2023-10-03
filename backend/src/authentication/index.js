@@ -20,7 +20,7 @@ export default function useAuthentication(app) {
   app.use(
     cors({
       origin: '*',
-      methods: ['POST', 'DELETE'],
+      methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
     }));
 
   // set up passport
