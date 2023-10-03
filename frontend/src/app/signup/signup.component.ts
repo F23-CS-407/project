@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 //import {ErrorStateMatcher} from '@angular/material/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-// form validation tips from https://coryrylan.com/blog/build-accessible-forms-with-angular 
+// form validation tips from https://coryrylan.com/blog/build-accessible-forms-with-angular       
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
