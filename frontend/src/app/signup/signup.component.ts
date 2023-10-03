@@ -82,18 +82,18 @@ export class SignupComponent {
 
     // Create user
     const body = { "username" : username, "password" : password};
-    this.http.post<any>(this.backend_addr + "/create_user", body).subscribe({
+    const options = { withCredentials : true, observe: 'response' as 'response'};
+    this.http.post<any>(this.backend_addr + "/create_user", body, options).subscribe({
       next: create_response => {          // On success
+        console.log(create_response);
 
         // Log the user in
-        this.http.post<any>(this.backend_addr + "/login", body).subscribe(
+        this.http.post<any>(this.backend_addr + "/login", body, options).subscribe(
           {next: login_response => {
             console.log("login successful");
+            console.log(login_response);
             // Redirect to main page
-            sessionStorage.setItem("username", username);
-            sessionStorage.setItem("id", create_response._id);
-            sessionStorage.setItem("logged_in", "true");
-            this.router.navigate(['/']);
+            //this.router.navigate(['/']);
           }, 
           error: error => {
             console.log("Created account, but couldn't log in. This should never happen.");

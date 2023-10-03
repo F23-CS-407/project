@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -9,21 +10,27 @@ import { MatButtonModule } from '@angular/material/button';
 })
 
 export class HomeComponent {
+  private backend_addr : string = "http://localhost:3000";
 
+  id: string = "";
   username?: string = undefined;
   logged_in: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private http: HttpClient) {
     this.getData();
   }
 
   getData() {
-    if (sessionStorage.getItem("username")) {
-      this.username = sessionStorage.getItem("username")?.toString();
-    }
-    if (sessionStorage.getItem("logged_in") == "true") {
-      this.logged_in = true;
-    }
+    const options = { withCredentials : true};
+    this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
+      next: login_response => {          // On success
+        this.logged_in = true;
+        console.log(login_response.username);
+      }, 
+      error: error => {         // On fail
+        console.log("No session: ");
+        console.log(error);
+      }});
 
   }
 
