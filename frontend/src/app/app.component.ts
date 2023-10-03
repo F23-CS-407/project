@@ -6,11 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  showToolbarButtons = false;
   title = 'frontend';
   currently_editting: boolean = false;
   searchCriteria: string = ''; // Search in sidebar
-  sidePanelVisible : boolean = false;
+  sidePanelVisible: boolean = false; // Initialize as hidden
+  
     performSearch() { 
       if (this.searchCriteria.trim() != '') {
         console.log('Perform search with criteria: ', this.searchCriteria);
@@ -21,12 +21,10 @@ export class AppComponent {
       }
       
     } 
-
-   
-  toggleToolbarButtons() {
-    // Toggle the value of showToolbarButtons when the toolbar is clicked
-    this.showToolbarButtons = !this.showToolbarButtons;
-  }
+  
+    toggleSidePanel() {
+      this.sidePanelVisible = !this.sidePanelVisible;
+    }
 
 
 }
