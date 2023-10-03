@@ -15,6 +15,7 @@ import { Community } from "../../models/Community";
 export class ProfileComponent {
   // This guts: /profile?id=1234
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
+  
 
   current_user?: User = new User("-1");
   viewing_own_profile: boolean = true;
@@ -28,6 +29,7 @@ export class ProfileComponent {
   num_following: number = 158;
   num_communities: number = 6;
   posts: Array<Post> = [];
+  searchCriteria: string = ''; // Search in sidebar
 
   constructor(private router: Router, private clipboard: Clipboard) {
     // This is test data          
@@ -81,13 +83,21 @@ export class ProfileComponent {
     // Idk what to put here?
   }
 
-  search_action() {
-    const search_area = prompt("Search here...")
-    if (search_area) {
-      this.performSearch(search_area); /* A function to handle the search logic and display results */
+  
+  performSearch() { 
+    if (this.searchCriteria.trim() != '') {
+      console.log('Perform search with criteria: ', this.searchCriteria);
+      // TODO: Make HTTP request to backend
+
+    } else {
+      console.log('Invalid search criteria:', this.searchCriteria);
     }
-  }
-  performSearch(search_area: string) {
     
+  } 
+
+  signOut() {
+    sessionStorage.removeItem('token');
+    this.router.navigate(['/signup']);
+
   }
 }

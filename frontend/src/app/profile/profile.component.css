@@ -2,21 +2,49 @@
 
 .side_panel {
   width: 200px;
-    height: 100%;
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    position: fixed;
-    top: 0;
-    left: 0; /* Make it appear on the side */
-    transition: left 0.3s;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  right: 0; /* Make it appear on the side */
+  transition: right 0.3s;
 }
 
-/* For the Search button */
-.searchButton {
-  margin-top: 20px; /* Adjust the margin as needed */
-  background-color: #007bff; /* Customize the button color */
-  color: #fff;
+.side_panel button {
+  margin-bottom: 10px; /* Add space below each button */
+  width: 100%; /* Make buttons full width of the sidebar */
+}
+
+.side_panel .searchButton {
+  margin-top: 10px; /* Add space above the search button */
+  width: 100%; /* Make the button full width of the sidebar */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #fff; /* Background color for the button */
+  color: #000; /* Text color */
+  border: none;
+  padding: 10px; /* Adjust the padding as needed */
+  cursor: pointer;
+  transition: background-color 0.3s; /* Add a hover effect */
+}
+
+.side_panel .searchButton:hover {
+  background-color: #0056b3; /* Change background color on hover */
+}
+
+/* Style the search icon */
+.side_panel .searchIcon::before {
+  content: "\1F50D"; /* Unicode character for a magnifying glass icon */
+  font-size: 20px; /* Adjust the icon size */
+  margin-right: 10px; /* Add space between the icon and text */
+}
+
+/* Adjust the icon color on hover if needed */
+.side_panel .searchButton:hover .searchIcon::before {
+  color: #ff9900; /* Change icon color on hover */
 }
 
 .profile_grid {
