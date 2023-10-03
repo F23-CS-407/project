@@ -83,21 +83,9 @@ export class ProfileComponent {
     // Idk what to put here?
   }
 
-  
-  performSearch() { 
-    if (this.searchCriteria.trim() != '') {
-      console.log('Perform search with criteria: ', this.searchCriteria);
-      // TODO: Make HTTP request to backend
-
-    } else {
-      console.log('Invalid search criteria:', this.searchCriteria);
-    }
-    
-  } 
-
   signOut() {
     sessionStorage.removeItem('token');
     this.router.navigate(['/signup']);
 
-  }
+  } 
 }

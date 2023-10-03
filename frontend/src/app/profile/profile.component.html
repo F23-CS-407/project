@@ -3,20 +3,6 @@ id={{id}}
 <!-- Signout button -->
 <button mat-raised-button class="sign-out-button" (click)="signOut()">Sign Out</button>
 
-<!-- Side Panel feature -->
-<div class="side_panel">
-    <button mat-raised-button class="viewFollowedContent" disabled="{{currently_editting}}">View Followed Content</button>
-    <button mat-raised-button class="viewCommunityPosts" disabled="{{currently_editting}}">View Community Posts</button>
-    <button mat-raised-button class="createNewPost" disabled="{{currently_editting}}">Create New Post</button>
-
-   <!-- Search button with icon -->
-   <input placeholder="Search..." class="search-input">
-    <button mat-icon-button (click)="performSearch()" class="search-button">
-        <mat-icon>search</mat-icon>
-    </button>
-</div>
-
-
 
 <div class="profile_grid">
     <div class="col">

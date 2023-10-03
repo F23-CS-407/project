@@ -1,13 +1,27 @@
 .toolbar {
-    background-color: rgb(33,33,33);
-}
-
-.toolbar .icon_button {
+    background-color: rgb(33, 33, 33);
+    display: flex;
+    justify-content: flex-start; /* Add this line */
+    align-items: center; /* Optional: Center other toolbar content vertically */
+  }
+  
+  .toolbar .icon_button {
     background-color: white;
     margin-right: 10px;
-}
-
-.toolbar .text {
+  }
+  
+  .toolbar .text {
     color: white;
     font-family: cursive;
-}
+  }
+  
+  /* New CSS for the search container */
+  .search-container {
+    display: flex;
+    align-items: center;
+  }
+
+  sign-out-button {
+    margin-left: 10px; /* Optional: Add some spacing between the search button and sign out button */
+  }
+  
