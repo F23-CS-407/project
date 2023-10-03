@@ -1,15 +1,47 @@
 <div>
     <div style="width:100%;height:78%">
         <div class="center-box">
-            <form class="input-form">
+            <form class="input-form"ngNativeValidate >
                 <h1 style="text-align:center; margin-top:+10px">Create an Account</h1>
-            
-                <mat-form-field class="input-full-width">
-                    <mat-label>Username:</mat-label>
+                <fieldset formGroupName="password">
+                    <legend>Account Information</legend>
+                    <label for="password" id="password-label">Password (required)</label>
+                    <input
+                      [attr.aria-invalid]="passwordc_error_shown"
+                      formControlName="password"
+                      id="password"
+                      type="password"
+                      required
+                    />
+                    <div
+                      *ngIf="password_error_shown"
+                      role="alert"
+                      aria-describedby="password-label"
+                      tabindex="0"
+                      class="error"
+                    >
+                      Password must be at least 6 characters.
+                    </div>
+                  
+                    <label for="confirm" id="confirm-label">Confirm Password (required)</label>
+                    <input formControlName="confirm" id="confirm" type="password" required />
+                  
+                    <div
+                      *ngIf="passwordc_error_shown"
+                      role="alert"
+                      aria-describedby="confirm-label"
+                      tabindex="0"
+                      class="error"
+                    >
+                      Passwords must match.
+                    </div>
+                  </fieldset>
+                <mat-form-field class="input-full-width" required>
+                    <mat-label>Username (required):</mat-label>
                     <input #u_field matInput>
                     <mat-hint *ngIf="username_error_shown" style="color:red">{{ username_error_text }}</mat-hint>
                     <!-- It appears that <mat-error> doesn't work for some reason-->
-                </mat-form-field>
+           </mat-form-field>
 
             <mat-form-field class="input-full-width">
                     <mat-label>Password: </mat-label>
