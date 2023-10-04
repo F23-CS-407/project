@@ -1,13 +1,70 @@
+/* Style for the toolbar */
 .toolbar {
-    background-color: rgb(33,33,33);
-}
-
-.toolbar .icon_button {
+    background-color: rgb(33, 33, 33);
+    display: flex;
+    justify-content: space-between; /* Align the content at both ends */
+    align-items: center; /* Center vertically */
+  }
+  
+  /* Style for the menu icon button */
+  .icon_button {
     background-color: white;
     margin-right: 10px;
-}
-
-.toolbar .text {
-    color: white;
-    font-family: cursive;
-}
+  }
+  
+  /* Style for the side panel */
+  .side_panel {
+    width: 0; /* Start with zero width (hidden) */
+    height: 100%;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    right: 0; /* Place it on the right side */
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px; /* Add padding to prevent content from overlapping with the toolbar */
+  }
+  
+  /* Style for the buttons inside the side panel */
+  .side_panel button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    text-align: left;
+    background-color: #444; /* Button background color */
+    color: #fff; /* Button text color */
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .side_panel button:hover {
+    background-color: #555; /* Hover background color */
+  }
+  
+  /* Show the side panel when it has the 'show' class */
+  .side_panel.show {
+    width: 250px; /* Adjust the width as needed */
+  }
+  
+  /* Style for the search input and button in the toolbar */
+  .search-container {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+  }
+  
+  .search-input {
+    flex: 1; /* Take up remaining space */
+    margin-right: 10px; /* Add spacing between input and button */
+  }
+  
+  .search-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
