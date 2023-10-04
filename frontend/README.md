@@ -24,16 +24,18 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 ## Running with Docker
 ```
-docker compose build frontend
-```
-
-```
-docker compose up [-d] frontend
+docker compose up --build [-d] frontend
 ```
 
 If running the service in the background, it can be taken down with
 ```
 docker compose down frontend
+```
+
+## Proxy
+When running with the backend, the proxy should be used. When running through the proxy, the frontend can be found at
+```
+localhost:8080
 ```
 
 ## Further help

@@ -1,9 +1,7 @@
 # Proxy
-
-## Configuration
+The proxy is used when running the backend and frontend together. Running the proxy will also run the backend and frontend.
 
 ## Running the proxy
-
 ```
 docker compose up --build [-d] proxy
 ```
