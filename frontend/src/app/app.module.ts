@@ -47,3 +47,4 @@ import { ProfileComponent } from './profile/profile.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

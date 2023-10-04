@@ -1,12 +1,40 @@
-<!-- I'll figure out how to move this to the bottom later -->
-<mat-toolbar class="toolbar">
-    <button mat-icon-button class="icon_button" aria-label="toolbar menu icon">
-        <mat-icon>menu</mat-icon>
-      </button>
-    <div class="text">
-      Toolbar if you want to use it
-    </div>
+<mat-toolbar class="toolbar" (click)="toggleSidePanel()">
+  <button mat-icon-button class="icon_button" aria-label="toolbar menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <!-- Search input and button container -->
+<div class="search-container">
+  <mat-form-field class="search-field">
+    <input matInput placeholder="Search..." class="search-input">
+  </mat-form-field>
+  <button mat-icon-button (click)="performSearch()" class="search-button">
+    <mat-icon>search</mat-icon>
+  </button>
+</div>
+  <div class="text">
+    <!-- Toolbar if you want to use it -->
+  </div>
 </mat-toolbar>
 
-<!-- Page Content -->
-<router-outlet></router-outlet>
+<div class="container">
+  <div class="content">
+    <router-outlet></router-outlet> <!-- Your main content -->
+  </div>
+</div>
+
+
+
+<!-- Side Panel feature -->
+<div class="side_panel" [class.show]="sidePanelVisible">
+  <!-- Side Panel Content Here -->
+  <!-- Move your buttons here -->
+  <button mat-raised-button class="viewFollowedContent">View Followed Content</button>
+  <button mat-raised-button class="viewCommunityPosts">View Community Posts</button>
+  <button mat-raised-button class="createNewPost">Create New Post</button>
+</div>
+
+<div class="container">
+  <div class="content">
+    <router-outlet></router-outlet> <!-- Your main content -->
+  </div>
+</div>
