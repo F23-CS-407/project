@@ -16,16 +16,9 @@ export default function useAuthentication(app) {
       resave: false,
       saveUninitialized: true,
       store: new MongoStore({ mongoUrl: mongoose.connection.client.s.url }),
-      cookie: { httpOnly: true, sameSite: 'none', secure: false },
-    }));
-  app.use(
-    cors({
-      //origin: '*',
-      origin: ['http://localhost:4200', 'http://localhost:4200/signup'],
-      methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
-      preflightContinue: true,
-      credentials: true,
-    }));
+      cookie: { httpOnly: false, secure: false },
+    }),
+  );
 
   // set up passport
   passport.use(new LocalStrategy(verify));

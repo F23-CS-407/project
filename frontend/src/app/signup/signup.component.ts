@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent {
   // https://jasonwatmore.com/post/2019/11/21/angular-http-post-request-examples
-  private backend_addr : string = "http://localhost:3000";
+  private backend_addr : string = "http://localhost:8080/api";
 
   constructor(private router: Router, private http: HttpClient) {
 
@@ -82,7 +82,7 @@ export class SignupComponent {
 
     // Create user
     const body = { "username" : username, "password" : password};
-    const options = { withCredentials : true, observe: 'response' as 'response'};
+    const options = { withCredentials : true };
     this.http.post<any>(this.backend_addr + "/create_user", body, options).subscribe({
       next: create_response => {          // On success
         console.log(create_response);
@@ -93,7 +93,7 @@ export class SignupComponent {
             console.log("login successful");
             console.log(login_response);
             // Redirect to main page
-            //this.router.navigate(['/']);
+            this.router.navigate(['/']);
           }, 
           error: error => {
             console.log("Created account, but couldn't log in. This should never happen.");

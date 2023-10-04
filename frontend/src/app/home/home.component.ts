@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class HomeComponent {
-  private backend_addr : string = "http://localhost:3000";
+  private backend_addr : string = "http://localhost:8080/api";
 
   id: string = "";
   username?: string = undefined;
