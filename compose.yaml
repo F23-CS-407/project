@@ -25,6 +25,15 @@ services:
     volumes:
     - ./database/data:/data/db
 
+  proxy:
+    container_name: hubit_apache
+    build: proxy/
+    ports:
+     - 8080:80
+    depends_on:
+      - frontend
+      - backend
+
   backend_tests:
     container_name: hubit_backend_test
     build: backend/

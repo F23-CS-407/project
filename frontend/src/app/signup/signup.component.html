@@ -11,11 +11,11 @@
                     <!-- It appears that <mat-error> doesn't work for some reason-->
                 </mat-form-field>
 
-            <mat-form-field class="input-full-width">
+                <mat-form-field class="input-full-width">
                     <mat-label>Password: </mat-label>
                     <input #p_field matInput type="password"aria-describedby="hint">
 
-                    <p id="hint">Your password must be at least 10 characters in length. It must contain a mixture of upper and lower case letters, numbers and punctuation marks.</p> 
+                    <p id="hint">Password requirements, 8 character minimum length, must contain at least 1 of each lowercase and uppercase letter, number, and special character.</p> 
                     <mat-hint *ngIf="password_error_shown" style="color:red">{{ password_error_text }}</mat-hint>
                     
                 </mat-form-field>

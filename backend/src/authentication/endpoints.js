@@ -102,3 +102,13 @@ export async function deleteUser(req, res, next) {
   }
   res.status(401).send('Not logged in');
 }
+
+export async function get_user(req, res, next) {
+  if (req.isAuthenticated()) {
+    res.send(req.user);
+  } else {
+    res.status(401).send('Not logged in');
+  }
+
+  return next();
+}

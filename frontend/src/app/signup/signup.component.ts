@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
-  // https://medium.com/@stephenfluin/adding-a-node-typescript-backend-to-your-angular-app-29b0e9925ff
-  message = this.http.get<any[]>('http://localhost:3000');
+  // https://jasonwatmore.com/post/2019/11/21/angular-http-post-request-examples
+  private backend_addr : string = "http://localhost:8080/api";
 
   constructor(private router: Router, private http: HttpClient) {
 
@@ -77,20 +77,30 @@ export class SignupComponent {
     }
     } // End of password checking
 
-    // Check if username exists
-    // call_backend(username);
-
-    // Password requirements match, check if username exists
+    // Password requirements match, delete this
     console.log("All fields are valid");
 
+    // Create user
+    const body = { "username" : username, "password" : password};
+    const options = { withCredentials : true };
+    this.http.post<any>(this.backend_addr + "/create_user", body, options).subscribe({
+      next: create_response => {          // On success
+        console.log(create_response);
 
-    // Call backend for new account
-    // password_hash: string = sha256.hash(password);
-    // call_backend(username, *password hash*);
-
-    // Redirect to main page
-    sessionStorage.setItem("username", username);
-    this.router.navigate(['/']);
+        // Log the user in
+        this.http.post<any>(this.backend_addr + "/login", body, options).subscribe(
+          {next: login_response => {
+            console.log("login successful");
+            console.log(login_response);
+            // Redirect to main page
+            this.router.navigate(['/']);
+          }, 
+          error: error => {
+            console.log("Created account, but couldn't log in. This should never happen.");
+          }});
+      }, 
+      error: error => {         // On fail
+        console.log("Create Account Error: " + error.toString());
+      }});
   }
-  
 }

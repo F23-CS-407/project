@@ -1,11 +1,12 @@
-import session from 'express-session';
+import session, { Cookie } from 'express-session';
+import cors from 'cors';
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import MongoStore from 'connect-mongo';
 import mongoose from 'mongoose';
 
 import { verify, serializeUser, deserializeUser } from './utils.js';
-import { createUser, deleteUser, login, logout } from './endpoints.js';
+import { createUser, deleteUser, login, logout, get_user } from './endpoints.js';
 
 export default function useAuthentication(app) {
   // set up sessions and add them to the app
@@ -15,6 +16,7 @@ export default function useAuthentication(app) {
       resave: false,
       saveUninitialized: true,
       store: new MongoStore({ mongoUrl: mongoose.connection.client.s.url }),
+      cookie: { httpOnly: false, secure: false },
     }),
   );
 
@@ -30,6 +32,9 @@ export default function useAuthentication(app) {
   app.delete('/logout', logout);
   app.post('/create_user', createUser);
   app.delete('/delete_user', deleteUser);
+
+  // Get user data when logged in
+  app.get('/user_info', get_user);
 
   return app;
 }
