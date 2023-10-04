@@ -12,11 +12,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';         // Here is the component being imported
 import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PostComponent } from './post/post.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,7 @@ import { ProfileComponent } from './profile/profile.component';
     HomeComponent,
     SignupComponent,
     ProfileComponent,
+    PostComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,16 +38,20 @@ import { ProfileComponent } from './profile/profile.component';
       {path: '', component: HomeComponent },
       {path: 'login', component: LoginComponent},                  // This is a new path. Can be found at localhost:port/login
       {path: 'signup', component: SignupComponent},
-      {path: 'profile', component: ProfileComponent}
+      {path: 'profile', component: ProfileComponent},
+      {path: 'post', component: PostComponent}
     ]),
     BrowserAnimationsModule,
     MatInputModule,
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatChipsModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

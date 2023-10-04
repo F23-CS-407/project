@@ -166,3 +166,9 @@
   width: 50vw;
   align-self: center;
 }
+
+.sign-out-button {
+  position: absolute;
+  top: 10px; /* Adjust the top position as needed */
+  right: 70px; /* Adjust the right position as needed */
+}
