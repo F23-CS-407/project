@@ -15,6 +15,7 @@ import { Community } from "../../models/Community";
 export class ProfileComponent {
   // This guts: /profile?id=1234
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
+  
 
   current_user?: User = new User("-1");
   viewing_own_profile: boolean = true;
@@ -28,6 +29,7 @@ export class ProfileComponent {
   num_following: number = 158;
   num_communities: number = 6;
   posts: Array<Post> = [];
+  searchCriteria: string = ''; // Search in sidebar
 
   constructor(private router: Router, private clipboard: Clipboard) {
     // This is test data          
@@ -80,4 +82,10 @@ export class ProfileComponent {
   settings_action() {
     // Idk what to put here?
   }
+
+  signOut() {
+    sessionStorage.removeItem('token');
+    this.router.navigate(['/signup']);
+
+  } 
 }
