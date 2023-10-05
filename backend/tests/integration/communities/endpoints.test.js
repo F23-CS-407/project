@@ -11,7 +11,7 @@ describe('GET /search_users', () => {
       const app = await createTestApp();
 
       const username = 'username';
-      let response = await request(app).get('/search_users').send({username});
+      let response = await request(app).get(`/search_users?username=${username}`);
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveLength(0);
     });
@@ -114,7 +114,7 @@ describe('GET /search_users', () => {
       const app = await createTestApp();
 
       const name = 'name';
-      let response = await request(app).get('/search_communities').send({name});
+      let response = await request(app).get(`/search_communities?name=${name}`);
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveLength(0);
     });
@@ -164,5 +164,31 @@ describe('GET /search_users', () => {
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveLength(2);
     })
+  });
+
+  describe('GET /find_user', () => {
+    useMongoTestWrapper();
+
+    it('should find no user', async () => {
+      const app = await createTestApp();
+
+      let response = await request(app).get(`/find_user?username=username`);
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toBe(null);
+    });
+
+    it('should find a user', async () => {
+      const app = await createTestApp();
+
+      const username = 'username';
+      const password = 'password';
+
+      let response = await request(app).post('/create_user').send({username, password});
+      expect(response.statusCode).toBe(200);
+      
+      response = await request(app).get(`/find_user?username=${username}`);
+      expect(response.statusCode).toBe(200);
+      expect(response.body.username).toBe(username);
+    });
   });
 
