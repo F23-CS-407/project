@@ -1,5 +1,6 @@
 import { Community } from "./schemas.js";
 import { User } from "../authentication/schemas.js";
+import { Post } from "./posts/schemas.js";
 
 // Community. Requires a name and description (for now)
 export async function createCommunity(req, res) {
@@ -79,4 +80,47 @@ export async function query_users(req, res){
       res.status(200).json(user);
     });
 
+  }
+
+  //Needs to know what user is making the post and what community it is being made in.
+  export async function postInCommunity(req, res){
+    const post = req.post;
+    const post_comm = req.community;
+    const post_user = req.user;
+
+    post.created_date = new Date(Date.UTC());
+
+    if(!post){
+      res.status(400).send('No post data');
+      return;
+    }
+
+    if(!post.content){
+      res.status(400).send('There is no content in the post');
+      return;
+    }
+
+    if(!post_comm){
+      res.status(400).send('A post must exist in a community');
+      return;
+    }
+
+    if(!post_user){
+      res.status(400).send('A user must make a post');
+      return;
+    }
+
+    const new_post = new Post({
+      content: req.post.content,
+      created_by: post_user,
+      tags: req.post.tags,
+      liked_by: [],
+      comments: [],
+    });
+
+    await new_post.save();
+    
+    post_comm.posts.push(new_post);
+    await post_comm.save();
+    res.status(200).json(new_post);
   }

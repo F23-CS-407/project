@@ -7,5 +7,9 @@ export default function useCommunities(app){
     app.get('/search_users', query_users);
     app.get('/find_user', search_single_user);
 
+    //post endpoints
+
+    //comment endpoints
+
     return app;
 }

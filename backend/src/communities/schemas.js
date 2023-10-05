@@ -14,6 +14,12 @@ const communitySchema = new Schema({
         ref: 'User'
     }
   ],
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post'
+    }
+  ]
 
   /*To add rest later, particularly posts this sprint*/
 });
