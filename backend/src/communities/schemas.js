@@ -2,7 +2,11 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const communitySchema = new Schema({
-  name: String,
+  name: {
+    type: String,
+    unique: true,
+    required: true
+  },
   description: String,
   mods: [
     {
