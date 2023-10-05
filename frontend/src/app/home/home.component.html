@@ -1,7 +1,7 @@
 <div *ngIf="logged_in; then good else missing">this never shows</div>
 <ng-template #good>
     <!-- This content appears when logged in -->
-    <p style="color:white">You are now logged in as user "{{username}}".</p>
+    <p style="color:white">You are now logged in as user "{{self_username}}".</p>
     <a href="/profile?id=25"><button mat-raised-button>profile</button></a>
 </ng-template>
 <ng-template #missing>
