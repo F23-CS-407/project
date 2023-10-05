@@ -62,7 +62,7 @@ describe('GET /search_users', () => {
         const user = response.body;
 
         const comm_desc = 'a test community';
-        response = await request(app).post('/create_community').send({ description: comm_desc, mods: [User] });
+        response = await request(app).post('/create_community').send({ description: comm_desc, mods: [user._id] });
         expect(response.statusCode).toBe(400);
     });
   
@@ -76,7 +76,7 @@ describe('GET /search_users', () => {
         const user = response.body;
 
         const comm_name = 'test community';
-        response = await request(app).post('/create_community').send({ name: comm_name, mods: [User] });
+        response = await request(app).post('/create_community').send({ name: comm_name, mods: [user._id] });
         expect(response.statusCode).toBe(400);
     });
 
@@ -100,10 +100,19 @@ describe('GET /search_users', () => {
 
       const comm_name = 'test community';
       const comm_desc = 'a test community';
-      response = await request(app).post('/create_community').send({ name: comm_name, description: comm_desc, mods: [User] });
+      response = await request(app).post('/create_community').send({ name: comm_name, description: comm_desc, mods: [user._id] });
       expect(response.statusCode).toBe(200);
       expect(response.body.name).toBe(comm_name);
     })
+
+    it('should fail as the user ID is made up', async () => {
+      const app = await createTestApp();
+      const comm_name = 'test community';
+      const comm_desc = 'a test community';
+      const comm_mods = ['12345'];
+      let response = await request(app).post('/create_community').send({ name: comm_name, description: comm_desc, mods: comm_mods });
+      expect(response.statusCode).toBe(400);
+    }); 
   
   });
 
@@ -132,7 +141,7 @@ describe('GET /search_users', () => {
       const name = 'test community';
       const description = 'description';
   
-      response = await request(app).post('/create_community').send({ name, description, mods: [User]});
+      response = await request(app).post('/create_community').send({ name, description, mods: [user._id]});
       expect(response.statusCode).toBe(200);
   
       response = await request(app).get(`/search_communities?name=${name}`);
@@ -154,16 +163,17 @@ describe('GET /search_users', () => {
         const name2 = 'test';
         const description = 'description';
 
-        response = await request(app).post('/create_community').send({ name, description, mods: [User]});
+        response = await request(app).post('/create_community').send({ name, description, mods: [user._id]});
         expect(response.statusCode).toBe(200);
 
-        response = await request(app).post('/create_community').send({ name: name2, description, mods: [response.body]});
+        response = await request(app).post('/create_community').send({ name: name2, description, mods: [user._id]});
         expect(response.statusCode).toBe(200);
 
         response = await request(app).get(`/search_communities?name=${name2}`);
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveLength(2);
-    })
+    });
+    
   });
 
   describe('GET /find_user', () => {

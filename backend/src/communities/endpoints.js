@@ -1,10 +1,13 @@
+import mongoose from 'mongoose';
 import { Community } from "./schemas.js";
 import { User } from "../authentication/schemas.js";
 
-// Community. Requires a name and description (for now)
+// Community, requires community name, description, and at least one valid mod
+// The mod array  must comprise of correct Object IDs for User objects.
 export async function createCommunity(req, res) {
     const req_name = req.body.name
     const req_desc = req.body.description
+    const req_mods = req.body.mods;
   
     // Must have username and password
     if(!req_name){
@@ -21,6 +24,14 @@ export async function createCommunity(req, res) {
       res.status(400).send('At least one mod is required');
       return;
     }
+
+    // Validate ObjectId values in the mods array
+    const isValidMods = req_mods.every((modId) => mongoose.Types.ObjectId.isValid(modId));
+
+    if (!isValidMods) {
+        res.status(400).send('Invalid ObjectId in mods array');
+        return;
+    }
   
     //Determine if community name already exists
     const comm = await Community.findOne({ name: req_name });
@@ -30,13 +41,18 @@ export async function createCommunity(req, res) {
     }
   
     // Create community
-    const new_comm = new Community({
-      name: req_name,
-      description: req_desc,
-      mods: [req.mods],
-    });
-    await new_comm.save();
-    res.status(200).json(new_comm);
+    try{
+      const new_comm = new Community({
+        name: req_name,
+        description: req_desc,
+        mods: req_mods
+      });
+      await new_comm.save();
+      res.status(200).json(new_comm);
+    }
+    catch(err){
+
+    }
 }
 
    //Finds a community matching the queried name. May want to use a select statement in the future to change which data gets sent back.
