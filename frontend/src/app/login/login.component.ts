@@ -11,8 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  // https://medium.com/@stephenfluin/adding-a-node-typescript-backend-to-your-angular-app-29b0e9925ff
-  message = this.http.get<any[]>('http://localhost:3000');
+  private backend_addr : string = "http://localhost:8080/api";
 
   constructor(private router: Router, private http: HttpClient) {
 
@@ -23,54 +22,28 @@ export class LoginComponent {
   // Error message variables - fix this to be one text
   username_error_shown: boolean = false;
   password_error_shown: boolean = false;
-  passwordc_error_shown: boolean = true;
 
   username_error_text: string = "";
   password_error_text: string = "";
-  passwordc_error_text: string = "";
 
-  /* Input Validation for password and confirm password input fields
-  static pattern = /[!@#$%^&*()-_=+{};:'"/]/;
-  static uppercaseLetterPattern = "^.*[A-Z].*$";
-  static lowercaseLetterPattern = "^.*[a-z].*$";
-  static numberPattern = "^.*[0-9].*$"; */
-
-  /* This is just for us to bypass while testing */
-  password_checking:boolean = true;
-
-  public login_account(username : string, password : string, passwordc : string) {
+  public login_account(username : string, password : string) {
     // Set variables back to default
     this.username_error_shown = false;
     this.password_error_shown = false;
-    this.passwordc_error_shown = false;
 
-    if (this.password_checking) {
-    // Logic for checking password
-    if (password === null || password == "") {
-      this.password_error_shown = true;
-      this.password_error_text = "A password is required";
-      return;
-    } else if (!(password === passwordc)) {
-      this.passwordc_error_shown = true;
-      this.passwordc_error_text = "Passwords must match";
-      return;
-    }
-    } // End of password checking
-
-    // Check if username exists
-    // call_backend(username);
-
-    // Password requirements match, check if username exists
-    console.log("All fields are valid");
-
-
-    // Call backend for new account
-    // password_hash: string = sha256.hash(password);
-    // call_backend(username, *password hash*);
-
-    // Redirect to main page
-    sessionStorage.setItem("username", username);
-    this.router.navigate(['/']);
+    // Log the user in
+    const body = { "username" : username, "password" : password};
+    const options = { withCredentials : true };
+    this.http.post<any>(this.backend_addr + "/login", body, options).subscribe(
+      {next: login_response => {
+        console.log(login_response);
+        // Redirect to main page
+        this.router.navigate(['/']);
+      }, 
+      error: error => {
+        console.log(error);
+      }
+    });
   }
   
 }

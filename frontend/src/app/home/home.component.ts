@@ -12,8 +12,8 @@ import { HttpClient } from '@angular/common/http';
 export class HomeComponent {
   private backend_addr : string = "http://localhost:8080/api";
 
-  id: string = "";
-  username?: string = undefined;
+  self_id: string = "";
+  self_username?: string = undefined;
   logged_in: boolean = false;
 
   constructor(private router: Router, private http: HttpClient) {
@@ -23,9 +23,11 @@ export class HomeComponent {
   getData() {
     const options = { withCredentials : true};
     this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
-      next: login_response => {          // On success
+      next: info_response => {          // On success
         this.logged_in = true;
-        console.log(login_response.username);
+        this.self_id = info_response["_id"];
+        this.self_username = info_response.username;
+        console.log(info_response);
       }, 
       error: error => {         // On fail
         console.log("No session: ");
