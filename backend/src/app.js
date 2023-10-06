@@ -3,6 +3,7 @@ import body_parser from 'body-parser';
 
 import useAuthentication from './authentication/index.js';
 import useCommunities from './communities/index.js';
+import useUser from './user/index.js';
 
 export default async function createApp(options) {
   // set up express and define app
@@ -15,6 +16,9 @@ export default async function createApp(options) {
 
   //use communities
   app = useCommunities(app);
+
+  // use users
+  app = useUser(app);
 
   return app;
 }

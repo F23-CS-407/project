@@ -91,7 +91,7 @@ export async function get_posts_by_community(req, res) {
     });
 }
 
-export async function get_posts_by_user_id(req, res){
+export async function get_posts_by_user_id(req, res) {
   const user_id = req.query.user_id;
 
   if (!user_id) {
@@ -104,9 +104,9 @@ export async function get_posts_by_user_id(req, res){
     return;
   }
 
-  Post.find({created_by: user_id}, (err, posts) => {
-    if(err){
-      res.status(500).send({error: 'Internal Server Error'});
+  Post.find({ created_by: user_id }, (err, posts) => {
+    if (err) {
+      res.status(500).send({ error: 'Internal Server Error' });
       return;
     }
 
