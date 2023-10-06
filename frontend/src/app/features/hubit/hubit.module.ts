@@ -10,6 +10,9 @@ import { PostComponent } from './post/post.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SharedModule } from 'src/app/components/shared.module';
 
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   declarations: [
     HubitComponent,  // Declare HubitComponent
@@ -22,6 +25,9 @@ import { SharedModule } from 'src/app/components/shared.module';
     CommonModule,
     HubitRoutingModule,
     SharedModule,
+    MatIconModule,
+    MatCardModule,
+    MatDialogModule,
     RouterModule  // Add RouterModule to imports
   ],
   exports: [
