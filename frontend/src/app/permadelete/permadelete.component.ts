@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./permadelete.component.css']
 })
 export class PermadeleteComponent {
+  deleteAccount_button_disabled: boolean = false;
 
   private backend_addr : string = "http://localhost:8080/api";// Deletes the account after the corresponding delete button is confirmed.
   constructor(private router: Router, private http: HttpClient) {
@@ -14,13 +15,20 @@ export class PermadeleteComponent {
   }
   deleteAccount(password: string) {
     const body = {"password" : password};
-    const options = { withCredentials : true };
-    this.http.post<any>(this.backend_addr + "/delete_user", body, options).subscribe({
+    const options = { withCredentials : true, body: body };
+    this.http.delete<any>(this.backend_addr + "/delete_user", options).subscribe({
       next: delete_response => {          // On success
         console.log(delete_response);
+        
+        // Redirect to main page
+        this.router.navigate(['/']);
       },
       error: error_response => {
-        console.log("couldn't delete user");
+        if (error_response.error.text == "Deleted account") {   // Success
+          // Redirect to main page
+          this.router.navigate(['/']);
+        }
+        console.log(error_response);
       }
     });
   }
