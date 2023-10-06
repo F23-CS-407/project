@@ -5,7 +5,7 @@
   <!-- Search input and button container -->
 <div class="search-container">
   <mat-form-field class="search-field">
-    <input matInput placeholder="Search..." class="search-input">
+    <input matInput placeholder="Search..." class="search-input" [(ngModel)]="searchCriteria">
   </mat-form-field>
   <button mat-icon-button (click)="performSearch()" class="search-button" aria-label = "Search">
     <mat-icon>search</mat-icon>
