@@ -29,10 +29,10 @@ export class ProfileComponent {
   id: string = "-1";
   username?: string = "N/A";
   bio: string = "N/A";
-  num_posts: number = 25;
-  num_followers: number = 156;
-  num_following: number = 158;
-  num_communities: number = 6;
+  num_posts: number = 0;
+  num_followers: number = 0;
+  num_following: number = 0;
+  num_communities: number = 0;
   posts: Array<Post> = [];
 
   currently_editting: boolean = false;
@@ -56,12 +56,34 @@ export class ProfileComponent {
       }
 
       // Query backend for data on id
-
+      const options = { withCredentials : true};
+      this.http.get<any>(this.backend_addr + "/find_user_by_id?user_id="+this.id, options).subscribe({
+        next: get_user_response => {          // On success
+          this.username = get_user_response.username;
+          console.log(get_user_response);
+        }, 
+        error: error => {         // On fail
+          console.log(error);
+        }});
+  
+        this.http.get<any>(this.backend_addr + "/user/posts?user_id="+this.id, options).subscribe({
+          next: get_user_posts_response => {          // On success
+            //this.posts = get_user_posts_response;
+            let i:number = 0;
+            for (i = 0; i < get_user_posts_response.length; i++) {
+              let newPost: Post = new Post(new Alias(new User(this.username as string), new Community()));
+              newPost.content = get_user_posts_response[i].content;
+              this.posts.push(newPost);
+            }
+            console.log(get_user_posts_response);
+          }, 
+          error: error => {         // On fail
+            console.log(error);
+          }});
     } else {
       // This is a test
       this.viewing_own_profile = true;
 
-      
       this.username = "John Smith";
       this.bio = `John has been an avid surfer for half of his life. He has climbed
                           8 mountains including Mount Everest standing at a whopping 29,032
@@ -74,6 +96,8 @@ export class ProfileComponent {
       this.posts.push(new Post(new Alias(new User(this.self_id), new Community())));
       this.posts.push(new Post(new Alias(new User(this.self_id), new Community())));
     }
+
+    this.num_posts = this.posts.length;
   }
 
   getData() {
@@ -82,7 +106,6 @@ export class ProfileComponent {
       next: info_response => {          // On success
         this.logged_in = true;
         this.self_id = info_response._id;
-        this.username = info_response.username;
         console.log(info_response);
       }, 
       error: error => {         // On fail
