@@ -1,46 +1,18 @@
-<div class="middle_box">
-    <form class="post_form">
-        <mat-form-field class="input-80-width">
-            <h1>Description:</h1>
-            <textarea #post_desc class="post-text"></textarea>
-        </mat-form-field>
+<div *ngIf="community_id">
+<button mat-raised-button (click)="show_posts()">Update</button>
+<p>Community {{community_id}} posts:</p>
+{{community_posts}}
+</div>
 
-        <mat-form-field class="input-80-width">
-            <h1>Tags:</h1>
-            <mat-chip-listbox>
-                <!-- This changes the color, but it doesn't look very good.
-                    style="background-color:{{chip.color}};"   -->
-                <mat-chip-option *ngFor="let chip of chip_options" color="accent" >
-                    {{chip.text}}
-                </mat-chip-option>
-            </mat-chip-listbox>
-        </mat-form-field>
-
-        <mat-form-field class="input-80-width">
-            <h1>Community:</h1>
-            <mat-accordion>
-                <mat-expansion-panel hideToggle>
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      Community Name
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <p>Community Description</p>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </mat-form-field>
-
-        <mat-form-field class="input-80-width">
-            <h1>Add Photo/Video:</h1>
-            <div class="image-preview-box">
-                <div class="image-preview-box-text">
-                    This feature is currently not supported
-                </div>
-            </div>
-        </mat-form-field>
-    </form>
-    <div class="post-button-area">
-        <button mat-raised-button class="post-button">Post</button>
+<div class="post-box" *ngIf="!community_id">
+    <div class="post-field">
+        <h1 class="username"><a href="/profile" style="text-decoration:none">{{post_username}}</a></h1>
     </div>
-    <div class="spacer"></div>
+    <div class="post-field">
+        <p>Community</p>
+    </div>
+    <div class="post-field"><p class="post-content">{{post_content}}</p></div>
+    <div class="like-container post-field">
+        <button mat-icon-button style="width:auto" (click)="like_button_click()">{{like_count}} <mat-icon class="like-button-icon">thumb_up</mat-icon></button>
+    </div>
 </div>

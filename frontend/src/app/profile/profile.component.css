@@ -174,5 +174,11 @@
 .sign-out-button {
   position: absolute;
   top: 10px; /* Adjust the top position as needed */
-  right: 70px; /* Adjust the right position as needed */
+  right: 30px; /* Adjust the right position as needed */
+}
+
+.delete-button {
+  position: absolute;
+  top: 10px; /* Adjust the top position as needed */
+  right: 160px; /* Adjust the right position as needed */
 }
