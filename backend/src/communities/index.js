@@ -4,6 +4,7 @@ import {
   query_users,
   search_single_user,
   search_single_user_by_id,
+  search_community_by_post_id,
 } from './endpoints.js';
 import { get_comments_by_post, new_comment } from './posts/comments/endpoints.js';
 import {
@@ -23,6 +24,7 @@ export default function useCommunities(app) {
   app.get('/search_users', query_users);
   app.get('/find_user', search_single_user);
   app.get('/find_user_by_id', search_single_user_by_id);
+  app.get('/search_community_by_post_id', search_community_by_post_id);
 
   //post endpoints
   app.post('/create_post', post_in_community);
