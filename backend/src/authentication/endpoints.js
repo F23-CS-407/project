@@ -10,14 +10,14 @@ export const createUser = async (req, res, next) => {
 
   // Must have username and password
   if (!requested_username || !requested_password) {
-    res.status(400).send('Username or password missing');
+    res.status(400).send({ error: 'Username or password missing' });
     return;
   }
 
   // Check if already exists
   const users = await User.find({ username: requested_username });
   if (users.length > 0) {
-    res.status(409).send('Username taken');
+    res.status(409).send({ error: 'Username taken' });
     return;
   }
 
@@ -40,7 +40,7 @@ export function login(req, res, next) {
   const password = req.body.password;
 
   if (!username || !password) {
-    res.status(400).send('Missing username or password');
+    res.status(400).send({ error: 'Missing username or password' });
     return;
   }
 
@@ -49,7 +49,7 @@ export function login(req, res, next) {
       if (err) {
         res.status(400).send(err);
       } else {
-        res.status(user ? 200 : 401).send(user ? user : 'Login failed');
+        res.status(user ? 200 : 401).send(user ? user : { error: 'Login failed' });
       }
     });
   })(req, res, next);
@@ -62,11 +62,11 @@ export function logout(req, res, next) {
       if (err) {
         return next(err);
       }
-      res.send('Logged out successfully');
+      res.send({ confirmation: 'Logged out successfully' });
     });
     return;
   }
-  res.status(401).send('Not logged in');
+  res.status(401).send({ error: 'Not logged in' });
 }
 
 export async function deleteUser(req, res, next) {
@@ -77,7 +77,7 @@ export async function deleteUser(req, res, next) {
 
     // password must be sent
     if (!password) {
-      res.status(400).send('Missing password');
+      res.status(400).send({ error: 'Missing password' });
       return;
     }
     const returnResultCb = (err, res) => {
@@ -93,21 +93,21 @@ export async function deleteUser(req, res, next) {
         if (err) {
           return next(err);
         }
-        res.send('Deleted account');
+        res.send({ confirmation: 'Deleted account' });
       });
       return;
     }
-    res.status(401).send('Password mismatch');
+    res.status(401).send({ error: 'Password mismatch' });
     return;
   }
-  res.status(401).send('Not logged in');
+  res.status(401).send({ error: 'Not logged in' });
 }
 
 export async function get_user(req, res, next) {
   if (req.isAuthenticated()) {
     res.send(req.user);
   } else {
-    res.status(401).send('Not logged in');
+    res.status(401).send({ error: 'Not logged in' });
   }
 
   return next();
