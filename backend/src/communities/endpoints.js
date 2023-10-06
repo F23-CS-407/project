@@ -104,3 +104,18 @@ export async function search_single_user_by_id(req, res) {
   const thisUser = await User.findById(req.query.user_id);
   res.status(200).json(thisUser);
 }
+
+export async function search_community_by_post_id(req, res){
+  if(!req.query.post_id){
+    res.status(400).send({ error: 'post_id missing'})
+    return;
+  }
+
+  if(!mongoose.Types.ObjectId.isValid(req.query.post_id)){
+    res.status(404).send({error: 'Invalid post id' });
+    return;
+  }
+
+  const thisComm = await Community.findOne({ posts: {$elemMatch: {$eq: req.query.post_id } } });
+  res.status(200).json(thisComm);
+}
