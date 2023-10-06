@@ -91,6 +91,29 @@ export async function get_posts_by_community(req, res) {
     });
 }
 
+export async function get_posts_by_user_id(req, res){
+  const user_id = req.query.user_id;
+
+  if (!user_id) {
+    res.status(400).send({ error: 'A user is required' });
+    return;
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(user_id)) {
+    res.status(400).send({ error: 'Invalid Community ID' });
+    return;
+  }
+
+  Post.find({created_by: user_id}, (err, posts) => {
+    if(err){
+      res.status(500).send({error: 'Internal Server Error'});
+      return;
+    }
+
+    res.status(200).json(posts);
+  });
+}
+
 //Likes a post given a user ID and post ID. Only if the like doesn't already exist.
 export async function like_post(req, res) {
   const post_id = req.body.post;

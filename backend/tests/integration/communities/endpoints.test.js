@@ -213,3 +213,53 @@ describe('GET /find_user', () => {
     expect(response.body.username).toBe(username);
   });
 });
+
+describe('GET /find_user_by_id', () => {
+  useMongoTestWrapper();
+
+  it('should require user_id', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get(`/find_user_by_id`);
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should find no user', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get(`/find_user_by_id?user_id=fake`);
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('should find a user', async () => {
+    const app = await createTestApp();
+
+    const username = 'username';
+    const password = 'password';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+
+    response = await request(app).get(`/find_user_by_id?user_id=${response.body._id}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.username).toBe(username);
+  });
+
+  it('should not find a user that has been deleted', async () => {
+    const app = await createTestApp();
+
+    const username = 'username';
+    const password = 'password';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    let user_id = response.body._id;
+    const cookie = response.headers['set-cookie'];
+
+    response = await request(app).delete('/delete_user').set('Cookie', cookie).send({ password });
+    expect(response.statusCode).toBe(200);
+
+    response = await request(app).get(`/find_user_by_id?user_id=${response.body._id}`);
+    expect(response.statusCode).toBe(404);
+  });
+});

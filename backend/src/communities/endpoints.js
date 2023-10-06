@@ -89,3 +89,18 @@ export async function search_single_user(req, res) {
     res.status(200).json(user);
   });
 }
+
+export async function search_single_user_by_id(req, res) {
+  if (!req.query.user_id) {
+    res.status(400).send({ error: 'user_id missing' });
+    return;
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(req.query.user_id)) {
+    res.status(404).send({ error: 'Invalid user id' });
+    return;
+  }
+
+  const thisUser = await User.findById(req.query.user_id);
+  res.status(200).json(thisUser);
+}
