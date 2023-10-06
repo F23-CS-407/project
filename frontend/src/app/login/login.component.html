@@ -18,7 +18,8 @@
                 </mat-form-field>
                 <br>
                 <div class="create_button">
-                    <button type='button' mat-raised-button disabled={{this.login_button_disabled}}>Sign In</button>
+                    <button type='button' mat-raised-button disabled={{this.login_button_disabled}} 
+                    (click)="login_account(u_field.value, p_field.value)">Sign In</button>
                 </div>
             </form>
         </div>

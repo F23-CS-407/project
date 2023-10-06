@@ -23,11 +23,11 @@ export class HomeComponent {
   getData() {
     const options = { withCredentials : true};
     this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
-      next: login_response => {          // On success
+      next: info_response => {          // On success
         this.logged_in = true;
-        this.self_id = login_response._id;
-        this.self_username = login_response.username;
-        console.log(login_response.username);
+        this.self_id = info_response["_id"];
+        this.self_username = info_response.username;
+        console.log(info_response);
       }, 
       error: error => {         // On fail
         console.log("No session: ");

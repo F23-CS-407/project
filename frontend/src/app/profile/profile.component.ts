@@ -21,7 +21,7 @@ export class ProfileComponent {
   
   // Logged in user info
   logged_in: boolean = false;
-  self_id: string = "";
+  self_id: string = "not logged in";
   viewing_own_profile: boolean = false;
 
   // Viewed Profile info/stats
@@ -38,18 +38,20 @@ export class ProfileComponent {
   currently_editting: boolean = false;
 
   constructor(private router: Router, private clipboard: Clipboard, private http: HttpClient) {
-    // This is test data          
-    this.posts.push(new Post(new Alias(new User("-1"), new Community())));
-    this.posts.push(new Post(new Alias(new User("-1"), new Community())));
-    this.posts.push(new Post(new Alias(new User("-1"), new Community())));
+    this.async_constructor();
+  }
 
+  async async_constructor() {
     // Get data from cookie
     this.getData();
+    
+    // Resolving pre-definition error, ask Alex about it if curious
+    await new Promise(f => setTimeout(f, 1000));
 
     if (this.urlParams.get('id')) {
       this.id = this.urlParams.get('id') as string;
 
-      if (this.id == this.self_id) {
+      if (this.id === this.self_id) {
         this.viewing_own_profile = true;
       }
 
@@ -66,23 +68,27 @@ export class ProfileComponent {
                           feet. He also enjoys olympic rowing and running, completing his
                           fastest marathon in 3 hours.
                           `;
+
+      // This is test data          
+      this.posts.push(new Post(new Alias(new User(this.self_id), new Community())));
+      this.posts.push(new Post(new Alias(new User(this.self_id), new Community())));
+      this.posts.push(new Post(new Alias(new User(this.self_id), new Community())));
     }
   }
 
   getData() {
     const options = { withCredentials : true};
     this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
-      next: login_response => {          // On success
+      next: info_response => {          // On success
         this.logged_in = true;
-        this.self_id = login_response._id;
-        this.username = login_response.username;
-        console.log(login_response.username);
+        this.self_id = info_response._id;
+        this.username = info_response.username;
+        console.log(info_response);
       }, 
       error: error => {         // On fail
         console.log("No session: ");
         console.log(error);
       }});
-
   }
 
   change_edit() {
@@ -106,20 +112,33 @@ export class ProfileComponent {
     this.clipboard.copy(domain_name + this.router.url);
   }
   settings_action() {
-    // Id what to put here?
+    // Idk what to put here?
   }
-deleteAction() {
-  this.router.navigate(['/permadelete']);
 
-}
+  deleteAction() {
+    this.router.navigate(['/permadelete']);
+  }
 
   create_community_action() {
     
   }
 
   signOut() {
-    sessionStorage.removeItem('token');
-    this.router.navigate(['/signup']);
-
+    const options = { withCredentials : true };
+    this.http.delete<any>(this.backend_addr + "/logout", options).subscribe({
+      next: delete_response => {          // On success
+        console.log(delete_response);
+        
+        // Redirect to signup page
+        this.router.navigate(['/signup']);
+      },
+      error: error_response => {
+        if (error_response.error.text == "Logged out successfully") {   // Success
+          // Redirect to signup page
+          this.router.navigate(['/signup']);
+        }
+        console.log(error_response);
+      }
+    });
   } 
 }
