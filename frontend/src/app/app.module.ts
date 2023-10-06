@@ -20,6 +20,7 @@ import { LoginComponent } from './login/login.component';         // Here is the
 import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PostComponent } from './post/post.component';
+import { PermadeleteComponent } from './permadelete/permadelete.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { PostComponent } from './post/post.component';
     SignupComponent,
     ProfileComponent,
     PostComponent,
+    PermadeleteComponent,
   ],
   imports: [
     BrowserModule,

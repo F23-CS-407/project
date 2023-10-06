@@ -20,7 +20,7 @@ export class ProfileComponent {
   current_user?: User = new User("-1");
   viewing_own_profile: boolean = true;
   currently_editting: boolean = false;
-
+currently_deleting: boolean = false
   id: string = "-1";
   username?: string = "N/A";
   bio: string = "N/A";
@@ -80,8 +80,12 @@ export class ProfileComponent {
     this.clipboard.copy(domain_name + this.router.url);
   }
   settings_action() {
-    // Idk what to put here?
+    // Id what to put here?
   }
+deleteAction() {
+  this.router.navigate(['/permadelete']);
+
+}
 
   create_community_action() {
     
