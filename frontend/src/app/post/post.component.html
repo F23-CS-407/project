@@ -1,3 +1,18 @@
+<div *ngIf="community_id">
 <button mat-raised-button (click)="show_posts()">Update</button>
 <p>Community {{community_id}} posts:</p>
 {{community_posts}}
+</div>
+
+<div class="post-box" *ngIf="!community_id">
+    <div class="post-field">
+        <h1 class="username"><a href="/profile" style="text-decoration:none">{{post_username}}</a></h1>
+    </div>
+    <div class="post-field">
+        <p>Community</p>
+    </div>
+    <div class="post-field"><p class="post-content">{{post_content}}</p></div>
+    <div class="like-container post-field">
+        <button mat-icon-button style="width:auto" (click)="like_button_click()">{{like_count}} <mat-icon class="like-button-icon">thumb_up</mat-icon></button>
+    </div>
+</div>

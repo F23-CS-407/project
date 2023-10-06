@@ -1,0 +1,38 @@
+.post-box {
+    width: 80vw;
+    margin-left: 3vw;
+    height: auto;
+    min-height: 40vh;
+    margin-top: 5vh;
+    border-radius: 10px;
+    background-color: aliceblue;
+    position: relative;
+}
+
+.post-field {
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.post-box .post-field .username {
+    font-size: 28px;
+    font-weight: bold;
+    color: black;
+    
+}
+
+.post-box .post-field .post-content {
+    line-height: 24px;
+    height: 75%;
+    overflow-y: auto;
+}
+
+.post-box .like-container {
+    position: absolute;
+    bottom: 0;
+}
+
+.post-box .like-container .like-button-icon {
+    margin-left: -2px;
+}
