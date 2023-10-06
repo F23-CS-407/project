@@ -25,7 +25,7 @@ export class ProfileComponent {
   viewing_own_profile: boolean = false;
 
   // Viewed Profile info/stats
-
+  currently_deleting: boolean = false;    // I'm not sure who added this or what it does
   id: string = "-1";
   username?: string = "N/A";
   bio: string = "N/A";
@@ -106,8 +106,12 @@ export class ProfileComponent {
     this.clipboard.copy(domain_name + this.router.url);
   }
   settings_action() {
-    // Idk what to put here?
+    // Id what to put here?
   }
+deleteAction() {
+  this.router.navigate(['/permadelete']);
+
+}
 
   create_community_action() {
     
