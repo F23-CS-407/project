@@ -87,6 +87,10 @@ deleteAction() {
 
 }
 
+  create_community_action() {
+    
+  }
+
   signOut() {
     sessionStorage.removeItem('token');
     this.router.navigate(['/signup']);

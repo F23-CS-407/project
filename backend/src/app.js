@@ -2,6 +2,7 @@ import express from 'express';
 import body_parser from 'body-parser';
 
 import useAuthentication from './authentication/index.js';
+import useCommunities from './communities/index.js';
 
 export default async function createApp(options) {
   // set up express and define app
@@ -11,6 +12,9 @@ export default async function createApp(options) {
 
   // use authentication
   app = useAuthentication(app, options);
+
+  //use communities
+  app = useCommunities(app);
 
   return app;
 }
