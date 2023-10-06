@@ -19,8 +19,9 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';         // Here is the component being imported
 import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
-import { PostComponent } from './post/post.component';
+import { NewPostComponent } from './new_post/new_post.component';
 import { PermadeleteComponent } from './permadelete/permadelete.component';
+import { PostComponent } from './post/post.component';
 
 @NgModule({
   declarations: [
@@ -29,8 +30,9 @@ import { PermadeleteComponent } from './permadelete/permadelete.component';
     HomeComponent,
     SignupComponent,
     ProfileComponent,
-    PostComponent,
+    NewPostComponent,
     PermadeleteComponent,
+    PostComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +43,7 @@ import { PermadeleteComponent } from './permadelete/permadelete.component';
       {path: 'login', component: LoginComponent},                  // This is a new path. Can be found at localhost:port/login
       {path: 'signup', component: SignupComponent},
       {path: 'profile', component: ProfileComponent},
+      {path: 'new_post', component: NewPostComponent},
       {path: 'post', component: PostComponent}
     ]),
     BrowserAnimationsModule,
