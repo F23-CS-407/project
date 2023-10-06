@@ -180,7 +180,81 @@ describe('DELETE /logout', () => {
     response = await request(app).delete('/logout').set('Cookie', cookie);
     expect(response.statusCode).toBe(200);
 
-    response = await request(app).get('/auth_test');
+    response = await request(app).get('/auth_test').set('Cookie', cookie);
+    expect(response.statusCode).toBe(401);
+  });
+});
+
+describe('DELETE /delete_user', () => {
+  useMongoTestWrapper();
+
+  it('should 401 when not authenticated', async () => {
+    let response = await request(await createTestApp()).delete('/delete_user');
+    expect(response.statusCode).toBe(401);
+  });
+
+  it('should 400 when password not given', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    expect(cookie).toBeTruthy();
+
+    response = await request(app).delete('/delete_user').set('Cookie', cookie);
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should 401 when password is incorrect', async () => {
+    const username = 'username';
+    const password = 'password';
+    const not_password = 'incorrect';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    expect(cookie).toBeTruthy();
+
+    response = await request(app).delete('/delete_user').set('Cookie', cookie).send({ password: not_password });
+    expect(response.statusCode).toBe(401);
+  });
+
+  it('should delete user data', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    expect(cookie).toBeTruthy();
+    expect((await User.find({ username })).length).toBe(1);
+
+    response = await request(app).delete('/delete_user').set('Cookie', cookie).send({ password });
+    expect(response.statusCode).toBe(200);
+    expect((await User.find({ username })).length).toBe(0);
+  });
+
+  it('should logout', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    expect(cookie).toBeTruthy();
+
+    response = await request(app).get('/auth_test').set('Cookie', cookie);
+    expect(response.statusCode).toBe(200);
+
+    response = await request(app).delete('/delete_user').set('Cookie', cookie).send({ password });
+    expect(response.statusCode).toBe(200);
+
+    response = await request(app).get('/auth_test').set('Cookie', cookie);
     expect(response.statusCode).toBe(401);
   });
 });

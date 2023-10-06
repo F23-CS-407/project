@@ -1,18 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-//import { FormControl, Validators } from '@angular/forms';
-//import {ErrorStateMatcher} from '@angular/material/core';
-import { FormControl, Validators } from '@angular/forms';
+import {ErrorStateMatcher} from '@angular/material/core';
+import {   FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
-
+// form validation tips from https://coryrylan.com/blog/build-accessible-forms-with-angular       
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
-  // https://medium.com/@stephenfluin/adding-a-node-typescript-backend-to-your-angular-app-29b0e9925ff
-  message = this.http.get<any[]>('http://localhost:3000');
+  // https://jasonwatmore.com/post/2019/11/21/angular-http-post-request-examples
+  private backend_addr : string = "http://localhost:8080/api";
 
   constructor(private router: Router, private http: HttpClient) {
 
@@ -49,15 +48,14 @@ export class SignupComponent {
     if (password === null || password == "") {
       this.password_error_shown = true;
       this.password_error_text = "A password is required";
-      return;
+    
     } else if (new FormControl(password, Validators.minLength(8)).errors !== null) {
       this.password_error_shown = true;
       this.password_error_text = "Must be 8 or more characters";
-      return;
     } else if (!SignupComponent.pattern.test(password)) {
       this.password_error_shown = true;
       this.password_error_text = "Must contain special character";
-      return;
+      
     } else if (new FormControl(password, Validators.pattern(SignupComponent.uppercaseLetterPattern)).errors !== null) {
       this.password_error_shown = true;
       this.password_error_text = "Must contain uppercase letter";
@@ -75,22 +73,33 @@ export class SignupComponent {
       this.passwordc_error_text = "Passwords must match";
       return;
     }
-    } // End of password checking
+    } // End  of password checking
 
-    // Check if username exists
-    // call_backend(username);
-
-    // Password requirements match, check if username exists
+    // Password requirements match, delete this
     console.log("All fields are valid");
 
-
-    // Call backend for new account
-    // password_hash: string = sha256.hash(password);
-    // call_backend(username, *password hash*);
-
-    // Redirect to main page
-    sessionStorage.setItem("username", username);
-    this.router.navigate(['/']);
+    // Create user
+    const body = { "username" : username, "password" : password};
+    const options = { withCredentials : true };
+    this.http.post<any>(this.backend_addr + "/create_user", body, options).subscribe({
+      next: create_response => {          // On success
+        this.router.navigate(['/']);
+        /*
+        // Log the user in
+        this.http.post<any>(this.backend_addr + "/login", body, options).subscribe(
+          {next: login_response => {
+            console.log("login successful");
+            console.log(login_response);
+            // Redirect to main page
+            
+          }, 
+          error: error => {
+            console.log("Created account, but couldn't log in. This should never happen.");
+          }});
+          */
+      }, 
+      error: error => {         // On fail
+        console.log("Create Account Error: " + error.toString());
+      }});
   }
-  
 }

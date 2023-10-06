@@ -1,13 +1,21 @@
 # Backend
 
+The backend should run through the proxy when also running with the frontend. Through the proxy, localy, the backend is at
+
+```
+localhost:8080/api
+```
+
+If you wanted to run /login you would go to
+
+```
+localhost:8080/api/login
+```
+
 ## Running the backend
 
 ```
-docker compose build backend
-```
-
-```
-docker compose up [-d] backend
+docker compose up --build [-d] backend
 ```
 
 If running the service in the background, it can be taken down with
@@ -30,14 +38,6 @@ If the service is running in the background, it can be taken down with
 
 ```
 docker compose down backend_tests
-```
-
-## Make sure it works
-
-In your browser,
-
-```
-localhost:3000/test_auth
 ```
 
 ## Endpoints
@@ -73,6 +73,19 @@ Body
 
 Returns
 Error message or User object
+
+### DELETE /delete_user
+
+Body
+
+```
+{
+    "password": string
+}
+```
+
+Returns
+Error message or "Deleted account"
 
 ## Debug Endpoints (only exposed when testing)
 

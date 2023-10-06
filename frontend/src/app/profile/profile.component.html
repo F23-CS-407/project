@@ -3,6 +3,8 @@ id={{id}}
 <!-- Signout button -->
 <button mat-raised-button class="sign-out-button" (click)="signOut()">Sign Out</button>
 
+<!-- Delete button -->
+<button mat-raised-button class="delete-button" (click)="deleteAction()">Delete</button>
 
 <div class="profile_grid">
     <div class="col">
@@ -20,7 +22,7 @@ id={{id}}
             <textarea #new_bio class="bio_edit" rows=10 value="{{bio}}" placeholder="Add something interesting about yourself"></textarea>
         
             <div>
-                <button mat-raised-button class="cancel_button" (click)="edit_action()">Cancel</button>
+                <button mat-raised-button class="cancel_button" (click)="change_edit()">Cancel</button>
                 <button mat-raised-button class="confirm_button" (click)="change_bio(new_username.value, new_bio.value)">Confirm</button>
             </div>
         </form>
@@ -49,7 +51,7 @@ id={{id}}
     
     <!-- If viewing own profile -->
     <div class="col" *ngIf="viewing_own_profile">
-        <button mat-raised-button class="edit_button" (click)="edit_action()" disabled="{{currently_editting}}">Edit Profile</button>
+        <button mat-raised-button class="edit_button" (click)="change_edit()" disabled="{{currently_editting}}">Edit Profile</button>
     </div>
     <div class="col" *ngIf="viewing_own_profile">
         <button mat-raised-button class="share_button" (click)="share_action()"><mat-icon class="share_icon">share</mat-icon></button>

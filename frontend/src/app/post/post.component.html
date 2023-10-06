@@ -1,0 +1,46 @@
+<div class="middle_box">
+    <form class="post_form">
+        <mat-form-field class="input-80-width">
+            <h1>Description:</h1>
+            <textarea #post_desc class="post-text"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="input-80-width">
+            <h1>Tags:</h1>
+            <mat-chip-listbox>
+                <!-- This changes the color, but it doesn't look very good.
+                    style="background-color:{{chip.color}};"   -->
+                <mat-chip-option *ngFor="let chip of chip_options" color="accent" >
+                    {{chip.text}}
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </mat-form-field>
+
+        <mat-form-field class="input-80-width">
+            <h1>Community:</h1>
+            <mat-accordion>
+                <mat-expansion-panel hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Community Name
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <p>Community Description</p>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-form-field>
+
+        <mat-form-field class="input-80-width">
+            <h1>Add Photo/Video:</h1>
+            <div class="image-preview-box">
+                <div class="image-preview-box-text">
+                    This feature is currently not supported
+                </div>
+            </div>
+        </mat-form-field>
+    </form>
+    <div class="post-button-area">
+        <button mat-raised-button class="post-button">Post</button>
+    </div>
+    <div class="spacer"></div>
+</div>

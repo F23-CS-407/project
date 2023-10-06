@@ -1,0 +1,1 @@
+Using the tab key, press tab until username is highlighted. Then, type in the credentials that you want to use for your account. If the test case works as expected, one you click on "create", you should be re-directed to the home page, being notified that you have been logged in.
