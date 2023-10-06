@@ -43,6 +43,10 @@ id={{id}}
         <p class="profile_number_text">Communities</p>
     </div>
 
+    <div class="col" *ngIf="viewing_own_profile">
+        <button mat-raised-button class="create_new_community" (click)="create_community_action()" disabled="{{currently_editting}}">Create New Community</button>
+    </div>
+    
     <!-- If viewing own profile -->
     <div class="col" *ngIf="viewing_own_profile">
         <button mat-raised-button class="edit_button" (click)="edit_action()" disabled="{{currently_editting}}">Edit Profile</button>
