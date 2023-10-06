@@ -5,21 +5,21 @@ const communitySchema = new Schema({
   name: {
     type: String,
     unique: true,
-    required: true
+    required: true,
   },
   description: String,
   mods: [
     {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
   ],
   posts: [
     {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post'
-    }
-  ]
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post',
+    },
+  ],
 });
 
 export const Community = mongoose.model('Community', communitySchema);
