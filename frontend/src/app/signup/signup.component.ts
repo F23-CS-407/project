@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-//import {ErrorStateMatcher} from '@angular/material/core';
-import { FormControl, Validators } from '@angular/forms';
+import {ErrorStateMatcher} from '@angular/material/core';
+import {   FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 // form validation tips from https://coryrylan.com/blog/build-accessible-forms-with-angular       
 @Component({
@@ -48,15 +48,14 @@ export class SignupComponent {
     if (password === null || password == "") {
       this.password_error_shown = true;
       this.password_error_text = "A password is required";
-      return;
+    
     } else if (new FormControl(password, Validators.minLength(8)).errors !== null) {
       this.password_error_shown = true;
       this.password_error_text = "Must be 8 or more characters";
-      return;
     } else if (!SignupComponent.pattern.test(password)) {
       this.password_error_shown = true;
       this.password_error_text = "Must contain special character";
-      return;
+      
     } else if (new FormControl(password, Validators.pattern(SignupComponent.uppercaseLetterPattern)).errors !== null) {
       this.password_error_shown = true;
       this.password_error_text = "Must contain uppercase letter";
@@ -74,7 +73,7 @@ export class SignupComponent {
       this.passwordc_error_text = "Passwords must match";
       return;
     }
-    } // End of password checking
+    } // End  of password checking
 
     // Password requirements match, delete this
     console.log("All fields are valid");

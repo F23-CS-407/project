@@ -1,0 +1,10 @@
+<H1> Delete account</H1>
+<p> Are you sure that you want to permanently delete your account? This action can't be undone.</p>
+<mat-form-field class="input-full-width">
+    <mat-label>Re-Type Password:</mat-label>
+    <input #pc_field matInput type="password" id = "match_err" required>
+</mat-form-field>
+
+<div class="delete_button">
+    <button type='button' mat-raised-button disabled={{this.deleteAccount_button_disabled}} (click)="deleteAccount(pc_field.value)">Create</button>
+</div>
