@@ -1,0 +1,13 @@
+.hubit-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(0deg, #DD5241 1.35%, #EFB056 100%);
+    min-height: 100vh;  /* Ensure at least full viewport height */
+}
+
+.page-content {
+    display: flex;
+    flex-grow: 1;  /* Allow this element to grow and push the menu bar down */
+}

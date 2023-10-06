@@ -15,8 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 @NgModule({
     declarations: [
         AppComponent, 
-        IntroComponent, 
-        HubitComponent
+        IntroComponent,
     ],
     imports: [
         BrowserModule,
