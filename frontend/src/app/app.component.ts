@@ -22,13 +22,13 @@ performSearch() {
 
      const api = 'http://localhost:8080/api';
 
-      this.http.get(api, { params: { query: this.searchCriteria } }).subscribe(
+      this.http.get<any>(api + `/search_users?${this.searchCriteria}`).subscribe(
       (response: any) => {
         // Handle the response from the backend
         this.searchResults = response;
       },
       // TODO: Make HTTP request to backend
-    )
+    );
         
   
       } else {
