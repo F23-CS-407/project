@@ -109,6 +109,10 @@ export class ProfileComponent {
     // Idk what to put here?
   }
 
+  create_community_action() {
+    
+  }
+
   signOut() {
     sessionStorage.removeItem('token');
     this.router.navigate(['/signup']);

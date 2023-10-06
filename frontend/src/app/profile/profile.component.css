@@ -167,6 +167,10 @@
   align-self: center;
 }
 
+/* .create_new_community {
+  margin-left: 50px; 
+} */
+
 .sign-out-button {
   position: absolute;
   top: 10px; /* Adjust the top position as needed */
