@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms'
 
 // For Angular Material Library - https://material.angular.io/components/categories
 import { MatInputModule } from '@angular/material/input';
@@ -50,7 +51,8 @@ import { PermadeleteComponent } from './permadelete/permadelete.component';
     MatIconModule,
     MatCardModule,
     MatChipsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

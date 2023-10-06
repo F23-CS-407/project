@@ -1,4 +1,3 @@
-import { HttpBackend } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
@@ -22,10 +21,11 @@ performSearch() {
 
      const api = 'http://localhost:8080/api';
 
-      this.http.get<any>(api + `/search_users?${this.searchCriteria}`).subscribe(
+      this.http.get<any>(api + `/search_users?username=${this.searchCriteria}`).subscribe(
       (response: any) => {
         // Handle the response from the backend
         this.searchResults = response;
+        console.log(response);
       },
       // TODO: Make HTTP request to backend
     );
