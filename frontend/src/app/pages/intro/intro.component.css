@@ -1,0 +1,89 @@
+/* Disable Scrolling */
+body {
+    overflow: hidden;
+  }
+  
+/* Center Everything */
+.intro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full height of the viewport */
+    margin: 0;
+}
+
+/* Logo Styling */
+.logo-container {
+    margin-bottom: 20px; /* Adjust as per your design */
+}
+
+.logo {
+    width: 200px; /* Adjust as per your design */
+    height: auto;
+}
+
+/* Center Content Styling */
+.center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Space between form elements */
+    margin-bottom: 20px; /* Space between form and message */
+}
+
+/* Titles Styling */
+h1 {
+    color: #000;
+    font-family: Source Sans 3;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+mat-form-field {
+    width: 200px; /* Adjust as per your design */
+}
+
+/* Button Styling */
+button {
+    margin-top: 10px; /* Space between input and button */
+}
+
+/* Message Styling */
+h5 {
+    color: #000;
+    text-align: center;
+    font-family: Source Sans 3;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+/* Link Button Styling */
+.link-button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: #069;
+    cursor: pointer;
+
+    color: #F1580C;
+    text-align: center;
+    font-family: Source Sans 3;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+}
+.link-button:hover {
+    color: #00C;
+    text-decoration: underline;
+}
