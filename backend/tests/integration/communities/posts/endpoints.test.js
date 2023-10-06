@@ -155,6 +155,49 @@ describe('GET /community/posts', () => {
   });
 });
 
+describe('GET /user/posts', () => {
+  useMongoTestWrapper();
+
+  it('should fail due to not provided user id', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get(`/user/posts`);
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should return 0 posts', async () => {
+    const app = await createTestApp();
+
+    const new_user = new User({
+      username: 'username',
+      password: 'password',
+    });
+
+    const user = await new_user.save();
+
+    let response = await request(app).get(`/user/posts?user_id=${user._id}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveLength(0);
+  });
+
+  it('should return 1 post', async () => {
+    const app = await createTestApp();
+
+    const new_user = new User({
+      username: 'username',
+      password: 'password',
+    });
+
+    const user = await new_user.save();
+    const new_post = new Post({ content: 'Test', created_by: user._id });
+    new_post.save();
+
+    let response = await request(app).get(`/user/posts?user_id=${user._id}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveLength(1);
+  });
+});
+
 describe('POST /like_post', () => {
   useMongoTestWrapper();
 
