@@ -9,6 +9,7 @@ import { get_comments_by_post, new_comment } from './posts/comments/endpoints.js
 import {
   get_likes,
   get_posts_by_community,
+  get_posts_by_user_id,
   like_post,
   post_in_community,
   remove_like_post,
@@ -26,6 +27,7 @@ export default function useCommunities(app) {
   //post endpoints
   app.post('/create_post', post_in_community);
   app.get('/community/posts', get_posts_by_community);
+  app.get('/user/posts', get_posts_by_user_id);
   app.post('/like_post', like_post);
   app.delete('/like_post', remove_like_post);
   app.get('/post/likes', get_likes);
