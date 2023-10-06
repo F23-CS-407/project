@@ -1,4 +1,10 @@
-import { createCommunity, query_communities, query_users, search_single_user } from './endpoints.js';
+import {
+  createCommunity,
+  query_communities,
+  query_users,
+  search_single_user,
+  search_single_user_by_id,
+} from './endpoints.js';
 import { get_comments_by_post, new_comment } from './posts/comments/endpoints.js';
 import {
   get_likes,
@@ -15,6 +21,7 @@ export default function useCommunities(app) {
   app.get('/search_communities', query_communities);
   app.get('/search_users', query_users);
   app.get('/find_user', search_single_user);
+  app.get('/find_user_by_id', search_single_user_by_id);
 
   //post endpoints
   app.post('/create_post', post_in_community);
