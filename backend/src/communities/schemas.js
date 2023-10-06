@@ -16,12 +16,10 @@ const communitySchema = new Schema({
   ],
   posts: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Post'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
     }
   ]
-
-  /*To add rest later, particularly posts this sprint*/
 });
 
 export const Community = mongoose.model('Community', communitySchema);

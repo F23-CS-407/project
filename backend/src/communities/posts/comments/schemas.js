@@ -14,6 +14,7 @@ const commentSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
+    created_date: Date,
   });
   
-  export const comment = mongoose.model('Comment', commentSchema);
+  export const Comment = mongoose.model('Comment', commentSchema);
