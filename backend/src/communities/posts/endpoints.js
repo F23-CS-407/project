@@ -163,7 +163,7 @@ export async function remove_like_post(req, res) {
   const user_id = req.body.user;
 
   if (!post_id) {
-    res.status(400).send({ erro: 'No post ID provided' });
+    res.status(400).send({ error: 'No post ID provided' });
     return;
   }
 
