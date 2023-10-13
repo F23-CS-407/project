@@ -149,6 +149,16 @@ Errors
 401, 400
 ```
 
+### GET /user?id=(string)
+
+Returns User object
+
+Errors
+
+```
+400, 404
+```
+
 ### DELETE /delete_user
 
 Body
@@ -231,6 +241,16 @@ Error
 "A community with this name already exists"
 ```
 
+### GET /community?id=(string)
+
+Returns Community object
+
+Errors
+
+```
+400, 404
+```
+
 ### GET /search_communities?name=(string)
 
 **Performs Non-case sensitive Regex Match**
@@ -271,43 +291,6 @@ Return
     },
     ...
 ]
-```
-
-### GET /find_user?username=(string)
-
-**Performs case sensitive Match**
-
-Return
-
-```
-{
-    "_id": string,
-    "username": string,
-    "password_hash": string,
-    "salt": string,
-    "__v": number
-}
-```
-
-### GET /find_user_by_id?user_id=(string)
-
-Return
-
-```
-{
-    "_id": string,
-    "username": string,
-    "password_hash": string,
-    "salt": string,
-    "__v": number
-}
-```
-
-Error
-
-```
-"user_id missing",
-"Invalid user id"
 ```
 
 ### GET /search_community_by_post_id?post_id=(string)
@@ -368,6 +351,16 @@ Error
 "Invalid community ID",
 "A user must make a post",
 "Invalid User ID"
+```
+
+### GET /post?id=(string)
+
+Returns Post object
+
+Errors
+
+```
+400, 404
 ```
 
 ### GET /community/posts?community=(string)
@@ -603,6 +596,16 @@ Error **These are not JSON objects, they are text**
 "Invalid post id",
 "No user ID given",
 "Invalid User ID"
+```
+
+### GET /comment?id=(string)
+
+Returns Comment object
+
+Errors
+
+```
+400, 404
 ```
 
 ### GET /post/comments

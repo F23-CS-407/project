@@ -3,11 +3,12 @@ import {
   query_communities,
   query_users,
   search_single_user,
-  search_single_user_by_id,
   search_community_by_post_id,
+  getCommunity,
 } from './endpoints.js';
-import { get_comments_by_post, new_comment } from './posts/comments/endpoints.js';
+import { getComment, get_comments_by_post, new_comment } from './posts/comments/endpoints.js';
 import {
+  getPost,
   get_likes,
   get_posts_by_community,
   get_posts_by_user_id,
@@ -23,8 +24,8 @@ export default function useCommunities(app) {
   app.get('/search_communities', query_communities);
   app.get('/search_users', query_users);
   app.get('/find_user', search_single_user);
-  app.get('/find_user_by_id', search_single_user_by_id);
   app.get('/search_community_by_post_id', search_community_by_post_id);
+  app.get('/community', getCommunity);
 
   //post endpoints
   app.post('/create_post', post_in_community);
@@ -34,10 +35,12 @@ export default function useCommunities(app) {
   app.delete('/like_post', remove_like_post);
   app.get('/post/likes', get_likes);
   app.get('/post/user_liked', user_post_like);
+  app.get('/post', getPost);
 
   //comment endpoints
   app.post('/create_comment', new_comment);
   app.get('/post/comments', get_comments_by_post);
+  app.get('/comment', getComment);
 
   return app;
 }

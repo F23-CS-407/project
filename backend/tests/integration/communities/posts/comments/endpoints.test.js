@@ -121,3 +121,46 @@ describe('GET /post/comments', () => {
     expect(response.body).toHaveLength(1);
   });
 });
+
+describe('GET /comment', () => {
+  useMongoTestWrapper();
+
+  it('should 400 when id not provided', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get('/comment');
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should 404 when id not real', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get('/comment?id=fake');
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('should return Comment object', async () => {
+    const app = await createTestApp();
+
+    const new_user = new User({
+      username: 'username',
+      password: 'password',
+    });
+    const user = await new_user.save();
+
+    const new_post = new Post({
+      content: 'Test content',
+    });
+    const post = await new_post.save();
+
+    const comment = { content: 'Test comment content' };
+
+    let response = await request(app).post('/create_comment').send({ user: user._id, post: post._id, comment });
+    expect(response.statusCode).toBe(200);
+    const id = response.body._id;
+
+    response = await request(app).get(`/comment?id=${id}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.content).toBe(comment.content);
+  });
+});

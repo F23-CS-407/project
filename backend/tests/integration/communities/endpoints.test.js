@@ -214,52 +214,42 @@ describe('GET /find_user', () => {
   });
 });
 
-describe('GET /find_user_by_id', () => {
+describe('GET /community', () => {
   useMongoTestWrapper();
 
-  it('should require user_id', async () => {
+  it('should 400 when id not provided', async () => {
     const app = await createTestApp();
 
-    let response = await request(app).get(`/find_user_by_id`);
+    let response = await request(app).get('/community');
     expect(response.statusCode).toBe(400);
   });
 
-  it('should find no user', async () => {
+  it('should 404 when id not real', async () => {
     const app = await createTestApp();
 
-    let response = await request(app).get(`/find_user_by_id?user_id=fake`);
+    let response = await request(app).get('/community?id=fake');
     expect(response.statusCode).toBe(404);
   });
 
-  it('should find a user', async () => {
+  it('should return Community', async () => {
     const app = await createTestApp();
-
     const username = 'username';
     const password = 'password';
 
     let response = await request(app).post('/create_user').send({ username, password });
     expect(response.statusCode).toBe(200);
+    const user = response.body;
 
-    response = await request(app).get(`/find_user_by_id?user_id=${response.body._id}`);
+    const comm_name = 'test community';
+    const comm_desc = 'a test community';
+    response = await request(app)
+      .post('/create_community')
+      .send({ name: comm_name, description: comm_desc, mods: [user._id] });
     expect(response.statusCode).toBe(200);
-    expect(response.body.username).toBe(username);
-  });
+    const id = response.body._id;
 
-  it('should not find a user that has been deleted', async () => {
-    const app = await createTestApp();
-
-    const username = 'username';
-    const password = 'password';
-
-    let response = await request(app).post('/create_user').send({ username, password });
+    response = await request(app).get(`/community?id=${id}`);
     expect(response.statusCode).toBe(200);
-    let user_id = response.body._id;
-    const cookie = response.headers['set-cookie'];
-
-    response = await request(app).delete('/delete_user').set('Cookie', cookie).send({ password });
-    expect(response.statusCode).toBe(200);
-
-    response = await request(app).get(`/find_user_by_id?user_id=${response.body._id}`);
-    expect(response.statusCode).toBe(404);
+    expect(response.body.name).toBe(comm_name);
   });
 });

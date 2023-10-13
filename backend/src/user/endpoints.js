@@ -1,4 +1,21 @@
 import { User } from '../authentication/schemas.js';
+import mongoose from 'mongoose';
+
+export async function getUser(req, res, next) {
+  const id = req.query.id;
+  if (!id) {
+    res.status(400).send({ error: 'id param missing' });
+    return;
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(404).send({ error: 'Invalid user id' });
+    return;
+  }
+
+  const thisUser = await User.findById(id);
+  res.status(200).json(thisUser);
+}
 
 export async function changeDescription(req, res, next) {
   const new_description = req.body.new_description;

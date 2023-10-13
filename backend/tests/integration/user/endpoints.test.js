@@ -108,3 +108,35 @@ describe('POST /change_username', () => {
     expect(response.statusCode).toBe(409);
   });
 });
+
+describe('GET /user', () => {
+  useMongoTestWrapper();
+
+  it('should 400 when id not provided', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get('/user');
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should 404 when id not real', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get('/user?id=fake');
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('should return user object', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const id = response.body._id;
+
+    response = await request(app).get(`/user?id=${id}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.username).toBe(username);
+  });
+});

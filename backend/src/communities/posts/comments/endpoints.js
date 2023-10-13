@@ -58,6 +58,22 @@ export async function new_comment(req, res) {
   res.status(200).json(commented);
 }
 
+export async function getComment(req, res, next) {
+  const id = req.query.id;
+  if (!id) {
+    res.status(400).send({ error: 'id param missing' });
+    return;
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(404).send({ error: 'Invalid Comment id' });
+    return;
+  }
+
+  const thisComment = await Comment.findById(id);
+  res.status(200).json(thisComment);
+}
+
 //TODO, not explicitly required for the first sprint. Will be used for comment children.
 export async function new_reply(req, res) {
   return;
