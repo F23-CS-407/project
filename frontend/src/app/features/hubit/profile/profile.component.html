@@ -1,8 +1,5 @@
 id={{id}}
 
-<!-- Signout button -->
-<button mat-raised-button class="sign-out-button" (click)="signOut()">Sign Out</button>
-
 <div class="profile-container">
     <div class="info-container">
 
@@ -58,7 +55,7 @@ id={{id}}
         <button mat-raised-button 
             class="button" 
             (click)="edit_action()" 
-            disabled="{{currently_editting}}"
+            [disabled]="currently_editting"
             *ngIf="viewing_own_profile"
         >
             Edit

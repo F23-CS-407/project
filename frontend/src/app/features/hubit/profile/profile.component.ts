@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { MatDialog } from '@angular/material/dialog';
+import { SettingsDialogComponent } from '../../../components/settings-dialog/settings-dialog.component';
 
 import { User } from "../../../../models/User";
 import { Alias } from "../../../../models/Alias";
@@ -31,7 +33,7 @@ export class ProfileComponent {
   posts: Array<Post> = [];
   searchCriteria: string = ''; // Search in sidebar
 
-  constructor(private router: Router, private clipboard: Clipboard) {
+  constructor(private router: Router, private clipboard: Clipboard, public dialog: MatDialog) {
     // This is test data          
     this.posts.push(new Post(new Alias(new User("-1"), new Community())));
     this.posts.push(new Post(new Alias(new User("-1"), new Community())));
@@ -61,6 +63,7 @@ export class ProfileComponent {
 
 
   edit_action() {
+    console.log("Edit action");
     this.currently_editting = !this.currently_editting;
   }
   change_bio(new_username: string, new_bio: string) {
@@ -80,7 +83,7 @@ export class ProfileComponent {
     this.clipboard.copy(domain_name + this.router.url);
   }
   settings_action() {
-    // Idk what to put here?
+    this.dialog.open(SettingsDialogComponent);  // Open the dialog
   }
 
   create_community_action() {
