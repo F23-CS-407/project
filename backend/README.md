@@ -117,6 +117,38 @@ Errors
 "Username taken"
 ```
 
+### POST /change_username
+
+Body
+
+```
+    "new_username": string
+```
+
+If logged and new username is not taken, return updated User
+
+Errors
+
+```
+401, 400, 409
+```
+
+### POST /change_description
+
+Body
+
+```
+    "new_description": string
+```
+
+If logged in, return updated User
+
+Errors
+
+```
+401, 400
+```
+
 ### DELETE /delete_user
 
 Body
