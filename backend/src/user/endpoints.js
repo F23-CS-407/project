@@ -6,7 +6,7 @@ export async function changeDescription(req, res, next) {
   if (req.isAuthenticated()) {
     // must have new_username
     if (!new_description) {
-      res.status(401).send({ error: 'new_description missing' });
+      res.status(400).send({ error: 'new_description missing' });
       return;
     }
 
@@ -26,7 +26,7 @@ export async function changeUsername(req, res, next) {
   if (req.isAuthenticated()) {
     // must have new_username
     if (!new_username) {
-      res.status(401).send({ error: 'new_username missing' });
+      res.status(400).send({ error: 'new_username missing' });
       return;
     }
 
