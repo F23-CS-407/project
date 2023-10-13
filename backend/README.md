@@ -293,6 +293,22 @@ Return
 ]
 ```
 
+### GET /find_user?username=(string)
+
+**Performs case sensitive Match**
+
+Return
+
+```
+{
+    "_id": string,
+    "username": string,
+    "password_hash": string,
+    "salt": string,
+    "__v": number
+}
+```
+
 ### GET /search_community_by_post_id?post_id=(string)
 
 Return
