@@ -66,6 +66,7 @@ Return
 ```
 
 Errors
+
 ```
 "Missing username or password", "Login failed"
 ```
@@ -81,6 +82,7 @@ If logged in, Return
 ```
 
 Errors
+
 ```
 "Not logged in"
 ```
@@ -115,6 +117,48 @@ Errors
 "Username taken"
 ```
 
+### POST /change_username
+
+Body
+
+```
+    "new_username": string
+```
+
+If logged and new username is not taken, return updated User
+
+Errors
+
+```
+401, 400, 409
+```
+
+### POST /change_description
+
+Body
+
+```
+    "new_description": string
+```
+
+If logged in, return updated User
+
+Errors
+
+```
+401, 400
+```
+
+### GET /user?id=(string)
+
+Returns User object
+
+Errors
+
+```
+400, 404
+```
+
 ### DELETE /delete_user
 
 Body
@@ -134,10 +178,10 @@ If logged in, Return
 ```
 
 Errors
+
 ```
 "Missing password", "Password mismatch", "Not logged in"
 ```
-
 
 ### GET /user_info
 
@@ -154,6 +198,7 @@ If logged in, Return
 ```
 
 Error
+
 ```
 "Not logged in"
 ```
@@ -171,6 +216,7 @@ Body
 ```
 
 Return
+
 ```
 {
     "name": string,
@@ -186,6 +232,7 @@ Return
 ```
 
 Error
+
 ```
 "Community name required",
 "Community description required",
@@ -194,11 +241,22 @@ Error
 "A community with this name already exists"
 ```
 
+### GET /community?id=(string)
+
+Returns Community object
+
+Errors
+
+```
+400, 404
+```
+
 ### GET /search_communities?name=(string)
 
 **Performs Non-case sensitive Regex Match**
 
 Return
+
 ```
 [
     {
@@ -251,26 +309,6 @@ Return
 }
 ```
 
-### GET /find_user_by_id?user_id=(string)
-
-Return
-
-```
-{
-    "_id": string,
-    "username": string,
-    "password_hash": string,
-    "salt": string,
-    "__v": number
-}
-```
-
-Error
-```
-"user_id missing",
-"Invalid user id"
-```
-
 ### GET /search_community_by_post_id?post_id=(string)
 
 Return
@@ -290,7 +328,6 @@ Return
 }
 ```
 
-
 ### POST /create_post
 
 Body
@@ -298,7 +335,7 @@ Body
 ```
 {
     "post" : {"content" : string,
-                         "tags" : [string, ...]}, 
+                         "tags" : [string, ...]},
     "community" : string,
     "user" : string
 }
@@ -322,6 +359,7 @@ Return
 ```
 
 Error
+
 ```
 "No post data",
 "There is no content in the post",
@@ -331,9 +369,20 @@ Error
 "Invalid User ID"
 ```
 
+### GET /post?id=(string)
+
+Returns Post object
+
+Errors
+
+```
+400, 404
+```
+
 ### GET /community/posts?community=(string)
 
 Return
+
 ```
 [
     {
@@ -506,11 +555,13 @@ Error
 Return
 
 if user liked
+
 ```
-1 
+1
 ```
 
 if user not liked
+
 ```
 0
 ```
@@ -563,6 +614,16 @@ Error **These are not JSON objects, they are text**
 "Invalid User ID"
 ```
 
+### GET /comment?id=(string)
+
+Returns Comment object
+
+Errors
+
+```
+400, 404
+```
+
 ### GET /post/comments
 
 Return
@@ -589,32 +650,6 @@ Error **These are not JSON objects, they are text**
 "A post ID is required",
 "Invalid post ID"
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Debug Endpoints (only exposed when testing)
 

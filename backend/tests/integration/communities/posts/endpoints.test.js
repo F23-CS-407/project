@@ -386,3 +386,49 @@ describe('GET /post/likes', () => {
     expect(response.body).toHaveLength(1);
   });
 });
+
+describe('GET /post', () => {
+  useMongoTestWrapper();
+
+  it('should 400 when id not provided', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get('/post');
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should 404 when id not real', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get('/post?id=fake');
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('should return Post object', async () => {
+    const username = 'username';
+    const password = 'password';
+    const name = 'name';
+    const description = 'description';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
+
+    response = await request(app)
+      .post('/create_community')
+      .send({ name, description, mods: [user._id] });
+    expect(response.statusCode).toBe(200);
+    const community = response.body;
+
+    const post = { content: 'Test' };
+    response = await request(app).post('/create_post').send({ post, community: community._id, user: user._id });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.content).toBe(post.content);
+    const id = response.body._id;
+
+    response = await request(app).get(`/post?id=${id}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.content).toBe(post.content);
+  });
+});

@@ -61,6 +61,22 @@ export async function post_in_community(req, res) {
   res.status(200).json(posted);
 }
 
+export async function getPost(req, res, next) {
+  const id = req.query.id;
+  if (!id) {
+    res.status(400).send({ error: 'id param missing' });
+    return;
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(404).send({ error: 'Invalid post id' });
+    return;
+  }
+
+  const thisPost = await Post.findById(id);
+  res.status(200).json(thisPost);
+}
+
 //Given a community ID, in req.body.community, get all by recency.
 export async function get_posts_by_community(req, res) {
   const comm = req.query.community;
