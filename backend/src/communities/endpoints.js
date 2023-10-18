@@ -3,11 +3,16 @@ import { Community } from './schemas.js';
 import { User } from '../authentication/schemas.js';
 
 // Community, requires community name, description, and at least one valid mod
-// The mod array  must comprise of correct Object IDs for User objects.
+// The mod array  must comprise of correct Object IDs for User objects, the creator must be in the mod array.
 export async function createCommunity(req, res) {
   const req_name = req.body.name;
   const req_desc = req.body.description;
   const req_mods = req.body.mods;
+
+  if (!req.isAuthenticated()) {
+    res.status(401).send({ error: 'not logged in' });
+    return;
+  }
 
   // Must have username and password
   if (!req_name) {
@@ -31,6 +36,11 @@ export async function createCommunity(req, res) {
   if (!isValidMods) {
     res.status(400).send({ error: 'Invalid ObjectId in mods array' });
     return;
+  }
+
+  // Mods list must include creator
+  if (!req.body.mods.includes(req.user._id)) {
+    res.status(400).send({ error: 'Creator must be a mod' });
   }
 
   //Determine if community name already exists

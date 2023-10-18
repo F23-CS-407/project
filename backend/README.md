@@ -239,6 +239,8 @@ Error
 "At least one mod is required",
 "Invalid ObjectId in mods array",
 "A community with this name already exists"
+"Not logged in"
+"Creator must be a mod"
 ```
 
 ### GET /community?id=(string)

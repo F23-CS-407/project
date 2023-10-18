@@ -19,11 +19,13 @@ describe('POST /create_post', () => {
     const description = 'description';
 
     let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
     expect(response.statusCode).toBe(200);
     const user = response.body;
 
     response = await request(app)
       .post('/create_community')
+      .set('Cookie', cookie)
       .send({ name, description, mods: [user._id] });
     expect(response.statusCode).toBe(200);
     const community = response.body;
@@ -42,11 +44,13 @@ describe('POST /create_post', () => {
     const description = 'description';
 
     let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
     expect(response.statusCode).toBe(200);
     const user = response.body;
 
     response = await request(app)
       .post('/create_community')
+      .set('Cookie', cookie)
       .send({ name, description, mods: [user._id] });
     expect(response.statusCode).toBe(200);
     const community = response.body;
@@ -65,6 +69,7 @@ describe('POST /create_post', () => {
     const description = 'description';
 
     let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
     expect(response.statusCode).toBe(200);
     const user = response.body;
 
@@ -82,11 +87,13 @@ describe('POST /create_post', () => {
     const description = 'description';
 
     let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
     expect(response.statusCode).toBe(200);
     const user = response.body;
 
     response = await request(app)
       .post('/create_community')
+      .set('Cookie', cookie)
       .send({ name, description, mods: [user._id] });
     expect(response.statusCode).toBe(200);
     const community = response.body;
@@ -412,11 +419,13 @@ describe('GET /post', () => {
     const app = await createTestApp();
 
     let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
     expect(response.statusCode).toBe(200);
     const user = response.body;
 
     response = await request(app)
       .post('/create_community')
+      .set('Cookie', cookie)
       .send({ name, description, mods: [user._id] });
     expect(response.statusCode).toBe(200);
     const community = response.body;
