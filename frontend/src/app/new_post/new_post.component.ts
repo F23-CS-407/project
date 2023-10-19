@@ -23,27 +23,27 @@ export class NewPostComponent {
 
   // Post page data
   community_id: string = "";
-  community_name: string = "test_community";
-  community_desc: string = "This is a test community that is created to post to.";
+  community_name: string = "";
+  community_desc: string = "";
 
   constructor(private router : Router, private http : HttpClient) {
     this.async_constructor();
   }
   async async_constructor() {
-    this.getData();
+    await this.getData();
 
     // Resolving pre-definition error, ask Alex about it if curious
     await new Promise(f => setTimeout(f, 1000));
 
-    this.create_fake_community();
+    this.get_community();
 
     await new Promise(f => setTimeout(f, 1000));
 
   }
 
-  getData() {
+  async getData() {
     const options = { withCredentials : true};
-    this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
+    await this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
       next: info_response => {          // On success
         this.logged_in = true;
         this.self_id = info_response._id;
@@ -56,27 +56,9 @@ export class NewPostComponent {
       }});
   }
 
-  create_fake_community() {
-    const body = {name: this.community_name, description: this.community_desc, mods: [this.self_id]};
-    const options = { withCredentials : true};
-    this.http.post<any>(this.backend_addr + "/create_community", body, options).subscribe({
-      next: create_community_response => {          // On success
-        this.community_id = create_community_response._id;
-        console.log(create_community_response);
-      }, 
-      error: error => {         // On fail
-        console.log(error);
+  get_community() {
+    // TODO: Add HttpClient.get(/community?id=query_param)
 
-        // if already created
-        this.http.get<any>(this.backend_addr + "/search_communities?name=test_community", options).subscribe({
-          next: community_response => {          // On success
-            this.community_id = community_response[0]._id;
-            console.log(community_response);
-          }, 
-          error: error => {         // On fail
-            console.log(error);
-          }});
-      }});
   }
 
   create_post(description : string, chips : string[]) {

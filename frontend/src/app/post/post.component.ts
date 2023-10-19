@@ -27,7 +27,7 @@ export class PostComponent {
 
   get_post_data() {
     // Query backend for data on post id
-    const options = { withCredentials : true};
+    const options = { withCredentials : true };
     this.http.get<any>(this.backend_addr + "/find_user_by_id?user_id="+this.post_id, options).subscribe({
       next: get_user_response => {          // On success
         console.log(get_user_response);

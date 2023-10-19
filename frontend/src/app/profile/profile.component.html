@@ -46,7 +46,7 @@
     <div class="col" *ngIf="viewing_own_profile">
         <button mat-raised-button class="create_new_community" (click)="create_community_action()" disabled="{{currently_editting}}">Create New Community</button>
     </div>
-    
+
     <!-- If viewing own profile -->
     <div class="col" *ngIf="viewing_own_profile">
         <button mat-raised-button class="edit_button" (click)="change_edit()" disabled="{{currently_editting}}">Edit Profile</button>

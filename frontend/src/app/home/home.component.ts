@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClient } from '@angular/common/http';
 
+import { User } from '../../models/User';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -17,11 +19,24 @@ export class HomeComponent {
   logged_in: boolean = false;
 
   constructor(private router: Router, private http: HttpClient) {
-    this.getData();
+    //this.getData();
+
+    // TODO: Verify this works
+    this.async_constructor();
   }
 
+  private async async_constructor() {
+    let current_user : User = await User.get_current_user_data();
+
+    this.self_id = current_user.get_id();
+    if (this.self_id !== "-1" && this.self_id !== "-2") {
+      this.logged_in = true;
+    }
+    this.self_username = current_user.get_username();
+  }
+  
   getData() {
-    const options = { withCredentials : true};
+    const options = { withCredentials : true };
     this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
       next: info_response => {          // On success
         this.logged_in = true;
@@ -33,7 +48,6 @@ export class HomeComponent {
         console.log("No session: ");
         console.log(error);
       }});
-
   }
 
 }
