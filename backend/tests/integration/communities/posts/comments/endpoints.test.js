@@ -10,61 +10,68 @@ import { Comment } from '../../../../../src/communities/posts/comments/schemas.j
 describe('POST /create_comment', () => {
   useMongoTestWrapper();
 
-  it('should fail due to no content', async () => {
+  it('should fail due to no auth', async () => {
     const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
-    const user = await new_user.save();
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
     const new_post = new Post({
       content: 'Test content',
     });
     const post = await new_post.save();
 
-    let response = await request(app).post('/create_comment').send({ post: post._id, user: user._id });
-    expect(response.statusCode).toBe(400);
+    response = await request(app).post('/create_comment').send({ post: post._id });
+    expect(response.statusCode).toBe(401);
   });
 
-  it('should fail due to no user', async () => {
+  it('should fail due to no content', async () => {
     const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
     const new_post = new Post({
       content: 'Test content',
     });
     const post = await new_post.save();
 
-    const comment = { content: 'Test comment content' };
-
-    let response = await request(app).post('/create_comment').send({ post: post._id, comment });
+    response = await request(app).post('/create_comment').set('Cookie', cookie).send({ post: post._id });
     expect(response.statusCode).toBe(400);
   });
 
   it('should fail due to no post', async () => {
     const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
-    const user = await new_user.save();
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
     const comment = { content: 'Test comment content' };
 
-    let response = await request(app).post('/create_comment').send({ user: user._id, comment });
+    response = await request(app).post('/create_comment').set('Cookie', cookie).send({ comment });
     expect(response.statusCode).toBe(400);
   });
 
   it('should make a new comment', async () => {
     const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
-    const user = await new_user.save();
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
     const new_post = new Post({
       content: 'Test content',
@@ -73,7 +80,7 @@ describe('POST /create_comment', () => {
 
     const comment = { content: 'Test comment content' };
 
-    let response = await request(app).post('/create_comment').send({ user: user._id, post: post._id, comment });
+    response = await request(app).post('/create_comment').set('Cookie', cookie).send({ post: post._id, comment });
     expect(response.statusCode).toBe(200);
     expect(response.body.content).toBe(comment.content);
   });
@@ -141,12 +148,13 @@ describe('GET /comment', () => {
 
   it('should return Comment object', async () => {
     const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
-    const user = await new_user.save();
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
     const new_post = new Post({
       content: 'Test content',
@@ -155,7 +163,10 @@ describe('GET /comment', () => {
 
     const comment = { content: 'Test comment content' };
 
-    let response = await request(app).post('/create_comment').send({ user: user._id, post: post._id, comment });
+    response = await request(app)
+      .post('/create_comment')
+      .set('cookie', cookie)
+      .send({ user: user._id, post: post._id, comment });
     expect(response.statusCode).toBe(200);
     const id = response.body._id;
 
