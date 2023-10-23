@@ -126,7 +126,7 @@ describe('GET /user', () => {
     expect(response.statusCode).toBe(404);
   });
 
-  it('should return user object', async () => {
+  it('should return scrubbed user object', async () => {
     const username = 'username';
     const password = 'password';
     const app = await createTestApp();
@@ -138,5 +138,6 @@ describe('GET /user', () => {
     response = await request(app).get(`/user?id=${id}`);
     expect(response.statusCode).toBe(200);
     expect(response.body.username).toBe(username);
+    expect(response.body.salt).toBe(undefined);
   });
 });

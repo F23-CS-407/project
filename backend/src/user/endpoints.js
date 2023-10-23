@@ -13,7 +13,7 @@ export async function getUser(req, res, next) {
     return;
   }
 
-  const thisUser = await User.findById(id);
+  const thisUser = (await User.findById(id)).scrub();
   res.status(200).json(thisUser);
 }
 

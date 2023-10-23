@@ -60,4 +60,54 @@ describe('Authentication Schemas', () => {
     expect(db_user1obj.password_hash).toBe(password_hash1);
     expect(db_user1obj.salt).toBe(salt1);
   });
+
+  it('should scrub private data', async () => {
+    const username = 'test_username';
+    const password_hash = 'test_password_hash';
+    const salt = 'salty';
+
+    const test_user = new User({ username: username, password_hash: password_hash, salt });
+    await test_user.save();
+
+    const db_users = await User.find();
+
+    expect(db_users.length).toBe(1);
+
+    const db_user = db_users[0];
+
+    expect(db_user.username).toBe(username);
+    expect(db_user.password_hash).toBe(password_hash);
+    expect(db_user.salt).toBe(salt);
+
+    const scrubbed = db_user.scrub();
+    expect(scrubbed.username).toBe(username);
+    expect(scrubbed.password_hash).toBe(undefined);
+    expect(scrubbed.salt).toBe(undefined);
+  });
+
+  it('should call recursive delete', async () => {
+    const username = 'test_username';
+    const password_hash = 'test_password_hash';
+    const salt = 'salty';
+
+    const returnResultCb = (err, res) => {
+      return res;
+    };
+
+    const test_user = new User({ username: username, password_hash: password_hash, salt });
+    await test_user.save();
+
+    const db_users = await User.find();
+
+    expect(db_users.length).toBe(1);
+
+    const db_user = db_users[0];
+
+    expect(db_user.username).toBe(username);
+    expect(db_user.password_hash).toBe(password_hash);
+    expect(db_user.salt).toBe(salt);
+
+    expect(await db_user.deleteRecursive(returnResultCb)).toBe(true);
+    expect((await User.find({ username })).length).toBe(0);
+  });
 });

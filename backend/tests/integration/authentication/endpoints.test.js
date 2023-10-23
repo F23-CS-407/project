@@ -258,3 +258,29 @@ describe('DELETE /delete_user', () => {
     expect(response.statusCode).toBe(401);
   });
 });
+
+describe('GET /user_info', () => {
+  useMongoTestWrapper();
+
+  it('should 401 when not authenticated', async () => {
+    let response = await request(await createTestApp()).get('/user_info');
+    expect(response.statusCode).toBe(401);
+  });
+
+  it('should return scrubbed logged in user', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    expect(cookie).toBeTruthy();
+    expect((await User.find({ username })).length).toBe(1);
+
+    response = await request(app).get('/user_info').set('Cookie', cookie);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.username).toBe(username);
+    expect(response.body.password_hash).toBe(undefined);
+  });
+});
