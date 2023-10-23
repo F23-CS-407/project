@@ -1,5 +1,5 @@
 <div class="middle_box">
-    <form class="post_form">
+    <form class="new_community_form">
         <mat-form-field class="input-80-width" style="padding-top:20px">
             <mat-label>Community Name:</mat-label>
                     <input #community_name matInput>
@@ -7,33 +7,36 @@
 
         <mat-form-field class="input-80-width">
             <h1>Description:</h1>
-            <textarea matInput #community_desc class="post-text"></textarea>
+            <textarea matInput #community_desc class="description-text"></textarea>
         </mat-form-field>
 
+        <p class="input-80-width mod-title">Moderators</p>
         <mat-form-field class="input-80-width">
-            <mat-label>Search User</mat-label>
+            <mat-label>Search Moderator by Username</mat-label>
             <input #search_username matInput>
             <button mat-button style="background-color:#b0b0b0" (click)="filter_users(search_username.value)">Search</button>
         </mat-form-field>
         
-
         <mat-form-field class="input-80-width">
             <mat-label>Choose Moderators</mat-label>
-            <mat-chip-grid #chipGrid>
-                <mat-chip-row *ngFor="let user of choosenUsers" (removed)="remove(user)">
-                    {{user}}
+
+            <mat-chip-grid [disabled]="hide_chips" #chipGrid>
+                <mat-chip-row *ngFor="let mod of selected_mods" (removed)="remove_mod(mod)">
+                    {{mod.username}}
                     <button matChipRemove>
                         <mat-icon>cancel</mat-icon>
                     </button>
                 </mat-chip-row>
             </mat-chip-grid>
-            <input placehold="New Mod..." #modInput [formControl]="userCtrl"
+            
+            <input placeholder="New Mod..." #modInput [formControl]="userCtrl"
             [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
             [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
-            (matChipInputTokenEnd)="add($event)"/>
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
-                    {{user}}
+            (matChipInputTokenEnd)="add_mod($event)"/>
+
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select_mod($event)">
+                <mat-option *ngFor="let mod of filtered_mods | async" [value]="mod">
+                    {{mod}}
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
@@ -48,9 +51,9 @@
             </div>
         </mat-form-field>
     
-        <div class="post-button-area">
+        <div class="create-community-button-area">
                                                             <!-- Couldn't figure out chip values, will fix later -->
-            <button mat-raised-button class="post-button" (click)="create_community(community_name.value, community_desc.value, ['General'])">Post</button>
+            <button mat-raised-button class="create-community-button" (click)="create_community(community_name.value, community_desc.value, ['General'])">Create Community</button>
         </div>
     </form>
     <div class="spacer"></div>

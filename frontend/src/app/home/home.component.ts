@@ -19,10 +19,11 @@ export class HomeComponent {
   logged_in: boolean = false;
 
   constructor(private router: Router, private http: HttpClient) {
-    //this.getData();
+    this.getData();
 
     // TODO: Verify this works
-    this.async_constructor();
+    // This does not work
+    //this.async_constructor();
   }
 
   private async async_constructor() {

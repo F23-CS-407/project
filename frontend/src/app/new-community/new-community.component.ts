@@ -26,9 +26,9 @@ export class NewCommunityComponent {
 
   constructor(private router : Router, private http : HttpClient) {
     // For moderator code
-    this.filteredUsers = this.userCtrl.valueChanges.pipe(
+    this.filtered_mods = this.userCtrl.valueChanges.pipe(
       startWith(null),
-      map((user: string | null) => (user ? this._filter(user) : this.allUsers.slice())),
+      map((mod_name)=>this.filterOnValueChange(mod_name)),
     );
 
     this.async_constructor();
@@ -55,24 +55,24 @@ export class NewCommunityComponent {
         console.log(error);
 
         // TODO: If not logged in, redirect to another page
-        //this.router.navigate(["/"]);
+        this.router.navigate(["/"]);
       }});
   }
 
   public filter_users(username : string) {
-    // TODO: Search for users matching given pattern
+    // Search for users matching given pattern
     const options = { withCredentials : true };
     this.http.get<any>(this.backend_addr + "/search_users?username="+username, options).subscribe({
       next: search_users_response => {
         let count = search_users_response.length;
 
         // Clear users list
-        this.allUsers.splice(0, this.allUsers.length);
+        this.autocomplete_mods.splice(0, this.autocomplete_mods.length);
 
         // Append returned users to all users list
         for (let i = 0; i < count; i++) {
-          this.allUsers.push(search_users_response[i].username);
-          // TODO: use objects along with search_users_reponse[i]._id
+          this.autocomplete_mods.push(new moderator(search_users_response[i].username,
+                                                    search_users_response[i]._id));
         }
       },
       error: error => {
@@ -80,44 +80,61 @@ export class NewCommunityComponent {
       }});
   }
 
+  // https://stackblitz.com/edit/chip-list-with-objects-wbvz6k?file=src%2Fapp%2Fapp.component.ts,src%2Fapp%2Fapp.component.html
   separatorKeyCodes: number[] = [ENTER, COMMA];
-  userCtrl = new FormControl('');                                 // !!! DEPRECATED
-  filteredUsers?: Observable<string[]>;                           // !!! DEPRECATED
-  filteredMods?: Observable<moderator[]>;
-  choosenUsers: string[] = ['Gary'];                              // !!! DEPRECATED
-  selected_Mods: moderator[] = [];
-  allUsers: string[] = ['John', 'Sam', 'Mike', 'Alan'];           // !!! DEPRECATED
-  autocomplete_Mods: moderator[] = [];
+  userCtrl = new FormControl('');
+  filtered_mods?: Observable<String[]>;
+  selected_mods: moderator[] = [];
+  autocomplete_mods: moderator[] = [];
+  hide_chips : boolean = false;
   @ViewChild('modInput') modInput?: ElementRef<HTMLInputElement>;
-  public search_users(partial_username : string) {
-    // TODO: Call backend /search_users?username=(string)
-
-  }
-  public add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim(); 
-
-    // Add to list
-    if (value) {
-      this.choosenUsers.push(value);
-    }
+  public add_mod(event: MatChipInputEvent): void {
+    const mod_name = event.value;
+    
+    this.add_mod_username(mod_name);
 
     event.chipInput.clear();
-
     this.userCtrl.setValue(null);
   }
-  public remove(user: string) {
-    const index = this.choosenUsers.indexOf(user);
+  private add_mod_username(mod_name : string) {
+    // Add to list
+    if (mod_name) {
+      let foundMod = this.autocomplete_mods.filter( (mod) => mod.username==mod_name );
+
+      if (foundMod.length && !this.selected_mods.includes(foundMod[0])){
+        this.selected_mods.push(foundMod[0]);
+      } else {
+        // No match found, or already selected
+      }
+    }
+  }
+  public remove_mod(mod: moderator) {
+    const index = this.selected_mods.indexOf(mod);
 
     if (index >= 0) {
-      this.choosenUsers.splice(index, 1);
+      this.selected_mods.splice(index, 1);
     }
-  }
-  public selected(event: MatAutocompleteSelectedEvent): void {
-    this.choosenUsers.push(event.option.viewValue);
     if (this.modInput) {
       this.modInput.nativeElement.value = '';
+      this.userCtrl.setValue(null);
     }
-    this.userCtrl.setValue(null);
+  }
+  public select_mod(event: MatAutocompleteSelectedEvent): void {
+    this.add_mod_username(event.option.viewValue);
+    
+    if (this.modInput) {
+      this.modInput.nativeElement.value = '';
+      this.userCtrl.setValue(null);
+    }
+  }
+  private filterOnValueChange(mod_name: string | null): String[] {
+    let result: String[] = [];
+
+    // Get mods not selected
+    let allModsLessSelected = this.autocomplete_mods.filter((mod)=>(this.selected_mods.indexOf(mod) < 0));
+
+    result = allModsLessSelected.map((mod)=>mod.username);
+    return result;
   }
 
   public create_community(community_name : string, community_desc : string, mods : string[]) {
@@ -126,27 +143,18 @@ export class NewCommunityComponent {
     const body = {
       "name" : community_name,
       "description" : community_desc,
-      // TODO: Fix this later with IDs
-      "mods" : [this.self_id],
+      "mods" : this.selected_mods.map((mod)=>mod.id),
     };
     this.http.post<any>(this.backend_addr + "/create_community", body, options).subscribe({
-      next: create_community_response => {
+      next: async create_community_response => {
         let community_id = create_community_response._id;
 
-        this.router.navigate(["/community?community="+community_id]);
-
+        this.router.navigate(['community'], {queryParams:{'community' : community_id}});
       },
       error: error => {
         // TODO: Check error statement
-
+        console.log('Could not make community');
       }});
-
-  }
-  
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allUsers.filter(user => user.toLowerCase().includes(filterValue));
   }
 }
 
