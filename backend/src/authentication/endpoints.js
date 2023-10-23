@@ -105,7 +105,7 @@ export async function deleteUser(req, res, next) {
 
 export async function get_user(req, res, next) {
   if (req.isAuthenticated()) {
-    res.send(req.user);
+    res.send((await User.findOne({ username: req.user.username })).scrub());
   } else {
     res.status(401).send({ error: 'Not logged in' });
   }

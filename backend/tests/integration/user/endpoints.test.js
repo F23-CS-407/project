@@ -48,6 +48,20 @@ describe('POST /change_description', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.description).toBe('hello');
   });
+
+  it('should scrub response', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const cookie = response.headers['set-cookie'];
+
+    response = await request(app).post('/change_description').set('Cookie', cookie).send({ new_description: 'hello' });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.salt).toBe(undefined);
+  });
 });
 
 describe('POST /change_username', () => {
@@ -93,6 +107,20 @@ describe('POST /change_username', () => {
     expect(response.body.username).toBe('hello');
   });
 
+  it('should scrub response', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const cookie = response.headers['set-cookie'];
+
+    response = await request(app).post('/change_username').set('Cookie', cookie).send({ new_username: 'hello' });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.salt).toBe(undefined);
+  });
+
   it('should fail when username is taken', async () => {
     const username = 'username';
     const password = 'password';
@@ -126,7 +154,7 @@ describe('GET /user', () => {
     expect(response.statusCode).toBe(404);
   });
 
-  it('should return user object', async () => {
+  it('should return scrubbed user object', async () => {
     const username = 'username';
     const password = 'password';
     const app = await createTestApp();
@@ -138,5 +166,6 @@ describe('GET /user', () => {
     response = await request(app).get(`/user?id=${id}`);
     expect(response.statusCode).toBe(200);
     expect(response.body.username).toBe(username);
+    expect(response.body.salt).toBe(undefined);
   });
 });
