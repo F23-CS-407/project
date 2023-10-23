@@ -21,7 +21,7 @@ export class ProfileComponent {
   // Logged in user info
   logged_in: boolean = false;
   self_id: string = "not logged in";
-  viewing_own_profile: boolean = true;
+  viewing_own_profile: boolean = false;
 
   // Viewed Profile info/stats
   id: string = "-1";

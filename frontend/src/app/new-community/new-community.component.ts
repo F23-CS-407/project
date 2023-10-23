@@ -54,7 +54,7 @@ export class NewCommunityComponent {
         console.log("No session: ");
         console.log(error);
 
-        // TODO: If not logged in, redirect to another page
+        // If not logged in, redirect to another page
         this.router.navigate(["/"]);
       }});
   }
@@ -84,7 +84,7 @@ export class NewCommunityComponent {
   separatorKeyCodes: number[] = [ENTER, COMMA];
   userCtrl = new FormControl('');
   filtered_mods?: Observable<String[]>;
-  selected_mods: moderator[] = [];
+  selected_mods: moderator[] = [new moderator(this.self_username, this.self_id)];
   autocomplete_mods: moderator[] = [];
   hide_chips : boolean = false;
   @ViewChild('modInput') modInput?: ElementRef<HTMLInputElement>;

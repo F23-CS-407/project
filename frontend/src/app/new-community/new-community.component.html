@@ -23,7 +23,7 @@
             <mat-chip-grid [disabled]="hide_chips" #chipGrid>
                 <mat-chip-row *ngFor="let mod of selected_mods" (removed)="remove_mod(mod)">
                     {{mod.username}}
-                    <button matChipRemove>
+                    <button matChipRemove *ngIf="mod.id != this.self_id">
                         <mat-icon>cancel</mat-icon>
                     </button>
                 </mat-chip-row>
