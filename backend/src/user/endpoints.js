@@ -30,7 +30,7 @@ export async function changeDescription(req, res, next) {
     // save and return new user object
     const thisUser = await User.findOne({ username: req.user.username });
     thisUser.description = new_description;
-    res.send(await thisUser.save());
+    res.send((await thisUser.save()).scrub());
     return;
   }
 
@@ -56,7 +56,7 @@ export async function changeUsername(req, res, next) {
     // save and return new user object
     const thisUser = await User.findOne({ username: req.user.username });
     thisUser.username = new_username;
-    res.send(await thisUser.save());
+    res.send((await thisUser.save()).scrub());
     return;
   }
 
