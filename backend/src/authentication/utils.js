@@ -35,7 +35,7 @@ export async function deleteAllUserData(username, cb) {
     return cb('user not found', false);
   }
 
-  // delete users comments
+  // delete user's comments
   for (const comment of user.comments) {
     const com = await Comment.findById(comment);
     if (com) {
@@ -43,12 +43,13 @@ export async function deleteAllUserData(username, cb) {
     }
   }
 
+  // TODO delete user's posts
+
   // remove user from mod lists
   for (const community of user.mod_for) {
     const com = await Community.findById(community);
     if (com) {
-      com.mods = com.mods.filter((mod) => !mod.equals(user._id));
-      await com.save();
+      await com.removeMod(user._id);
     }
   }
 
