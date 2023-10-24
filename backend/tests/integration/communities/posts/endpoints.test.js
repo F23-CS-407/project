@@ -10,6 +10,31 @@ import { Post } from '../../../../src/communities/posts/schemas.js';
 describe('POST /create_post', () => {
   useMongoTestWrapper();
 
+  it('should fail due to no auth', async () => {
+    const app = await createTestApp();
+
+    const username = 'username';
+    const password = 'password';
+    const name = 'name';
+    const description = 'description';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
+
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie)
+      .send({ name, description, mods: [user._id] });
+    expect(response.statusCode).toBe(200);
+    const community = response.body;
+
+    const post = {};
+    response = await request(app).post('/create_post').send({ post, community: community._id, user: user._id });
+    expect(response.statusCode).toBe(401);
+  });
+
   it('should fail due to no content', async () => {
     const app = await createTestApp();
 
@@ -19,40 +44,22 @@ describe('POST /create_post', () => {
     const description = 'description';
 
     let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
     expect(response.statusCode).toBe(200);
     const user = response.body;
 
     response = await request(app)
       .post('/create_community')
+      .set('Cookie', cookie)
       .send({ name, description, mods: [user._id] });
     expect(response.statusCode).toBe(200);
     const community = response.body;
 
     const post = {};
-    response = await request(app).post('/create_post').send({ post, community: community._id, user: user._id });
-    expect(response.statusCode).toBe(400);
-  });
-
-  it('should fail due to no user', async () => {
-    const app = await createTestApp();
-
-    const username = 'username';
-    const password = 'password';
-    const name = 'name';
-    const description = 'description';
-
-    let response = await request(app).post('/create_user').send({ username, password });
-    expect(response.statusCode).toBe(200);
-    const user = response.body;
-
     response = await request(app)
-      .post('/create_community')
-      .send({ name, description, mods: [user._id] });
-    expect(response.statusCode).toBe(200);
-    const community = response.body;
-
-    const post = { content: 'Test' };
-    response = await request(app).post('/create_post').send({ post, community: community._id });
+      .post('/create_post')
+      .set('Cookie', cookie)
+      .send({ post, community: community._id, user: user._id });
     expect(response.statusCode).toBe(400);
   });
 
@@ -65,11 +72,12 @@ describe('POST /create_post', () => {
     const description = 'description';
 
     let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
     expect(response.statusCode).toBe(200);
     const user = response.body;
 
     const post = { content: 'Test' };
-    response = await request(app).post('/create_post').send({ post, user: user._id });
+    response = await request(app).post('/create_post').set('Cookie', cookie).send({ post, user: user._id });
     expect(response.statusCode).toBe(400);
   });
 
@@ -82,17 +90,22 @@ describe('POST /create_post', () => {
     const description = 'description';
 
     let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
     expect(response.statusCode).toBe(200);
     const user = response.body;
 
     response = await request(app)
       .post('/create_community')
+      .set('Cookie', cookie)
       .send({ name, description, mods: [user._id] });
     expect(response.statusCode).toBe(200);
     const community = response.body;
 
     const post = { content: 'Test' };
-    response = await request(app).post('/create_post').send({ post, community: community._id, user: user._id });
+    response = await request(app)
+      .post('/create_post')
+      .set('Cookie', cookie)
+      .send({ post, community: community._id, user: user._id });
     expect(response.statusCode).toBe(200);
     expect(response.body.content).toBe(post.content);
   });
@@ -131,22 +144,26 @@ describe('GET /community/posts', () => {
 
   it('should return 1 post', async () => {
     const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
     const new_community = new Community({
       name: 'Test comm',
       desc: 'A test',
     });
 
-    const user = await new_user.save();
     const community = await new_community.save();
 
     const post = { content: 'Test' };
-    let response = await request(app).post('/create_post').send({ post, community: community._id, user: user._id });
+    response = await request(app)
+      .post('/create_post')
+      .set('Cookie', cookie)
+      .send({ post, community: community._id, user: user._id });
     expect(response.statusCode).toBe(200);
 
     response = await request(app).get(`/community/posts?community=${community._id}`);
@@ -201,30 +218,32 @@ describe('GET /user/posts', () => {
 describe('POST /like_post', () => {
   useMongoTestWrapper();
 
+  it('should fail because no auth', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
+
+    response = await request(app).post('/like_post').send({ user: user._id });
+    expect(response.statusCode).toBe(401);
+  });
+
   it('should fail because no post was sent', async () => {
     const app = await createTestApp();
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
+    const username = 'username';
+    const password = 'password';
 
-    const user = await new_user.save();
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
-    let response = await request(app).post('/like_post').send({ user: user._id });
-    expect(response.statusCode).toBe(400);
-  });
-
-  it('should fail because no user was sent', async () => {
-    const app = await createTestApp();
-
-    const new_post = new Post({
-      content: 'Test content',
-    });
-
-    const post = await new_post.save();
-
-    let response = await request(app).post('/like_post').send({ post: post._id });
+    response = await request(app).post('/like_post').set('Cookie', cookie).send({ user: user._id });
     expect(response.statusCode).toBe(400);
   });
 
@@ -235,15 +254,16 @@ describe('POST /like_post', () => {
       content: 'Test content',
     });
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
+    const username = 'username';
+    const password = 'password';
 
-    const user = await new_user.save();
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
     const post = await new_post.save();
 
-    let response = await request(app).post('/like_post').send({ user: user._id, post: post._id });
+    response = await request(app).post('/like_post').set('Cookie', cookie).send({ user: user._id, post: post._id });
     expect(response.statusCode).toBe(200);
     expect(response.body.liked_by).toHaveLength(1);
   });
@@ -251,12 +271,13 @@ describe('POST /like_post', () => {
   it('should fail because the post was already liked', async () => {
     const app = await createTestApp();
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
+    const username = 'username';
+    const password = 'password';
 
-    const user = await new_user.save();
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
     const new_post = new Post({
       content: 'Test content',
@@ -265,7 +286,7 @@ describe('POST /like_post', () => {
 
     const post = await new_post.save();
 
-    let response = await request(app).post('/like_post').send({ user: user._id, post: post._id });
+    response = await request(app).post('/like_post').set('Cookie', cookie).send({ user: user._id, post: post._id });
     expect(response.statusCode).toBe(409);
   });
 });
@@ -276,18 +297,19 @@ describe('DELETE /like_post', () => {
   it('should fail because no post was sent', async () => {
     const app = await createTestApp();
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
+    const username = 'username';
+    const password = 'password';
 
-    const user = await new_user.save();
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
-    let response = await request(app).delete('/like_post').send({ user: user._id });
+    response = await request(app).delete('/like_post').set('Cookie', cookie).send({ user: user._id });
     expect(response.statusCode).toBe(400);
   });
 
-  it('should fail because no user was sent', async () => {
+  it('should fail because no auth', async () => {
     const app = await createTestApp();
 
     const new_post = new Post({
@@ -297,18 +319,19 @@ describe('DELETE /like_post', () => {
     const post = await new_post.save();
 
     let response = await request(app).delete('/like_post').send({ post: post._id });
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(401);
   });
 
   it('should return a post with 0 likes', async () => {
     const app = await createTestApp();
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
+    const username = 'username';
+    const password = 'password';
 
-    const user = await new_user.save();
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
     const new_post = new Post({
       content: 'Test content',
@@ -317,7 +340,7 @@ describe('DELETE /like_post', () => {
 
     const post = await new_post.save();
 
-    let response = await request(app).delete('/like_post').send({ user: user._id, post: post._id });
+    response = await request(app).delete('/like_post').set('Cookie', cookie).send({ user: user._id, post: post._id });
     expect(response.statusCode).toBe(200);
     expect(response.body.liked_by).toHaveLength(0);
   });
@@ -325,12 +348,13 @@ describe('DELETE /like_post', () => {
   it('should fail because the post was not already liked', async () => {
     const app = await createTestApp();
 
-    const new_user = new User({
-      username: 'username',
-      password: 'password',
-    });
+    const username = 'username';
+    const password = 'password';
 
-    const user = await new_user.save();
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
 
     const new_post = new Post({
       content: 'Test content',
@@ -338,7 +362,7 @@ describe('DELETE /like_post', () => {
 
     const post = await new_post.save();
 
-    let response = await request(app).delete('/like_post').send({ user: user._id, post: post._id });
+    response = await request(app).delete('/like_post').set('Cookie', cookie).send({ user: user._id, post: post._id });
     expect(response.statusCode).toBe(409);
   });
 });
@@ -412,17 +436,22 @@ describe('GET /post', () => {
     const app = await createTestApp();
 
     let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
     expect(response.statusCode).toBe(200);
     const user = response.body;
 
     response = await request(app)
       .post('/create_community')
+      .set('Cookie', cookie)
       .send({ name, description, mods: [user._id] });
     expect(response.statusCode).toBe(200);
     const community = response.body;
 
     const post = { content: 'Test' };
-    response = await request(app).post('/create_post').send({ post, community: community._id, user: user._id });
+    response = await request(app)
+      .post('/create_post')
+      .set('Cookie', cookie)
+      .send({ post, community: community._id, user: user._id });
     expect(response.statusCode).toBe(200);
     expect(response.body.content).toBe(post.content);
     const id = response.body._id;

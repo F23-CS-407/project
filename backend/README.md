@@ -239,6 +239,8 @@ Error
 "At least one mod is required",
 "Invalid ObjectId in mods array",
 "A community with this name already exists"
+"Not logged in"
+"Creator must be a mod"
 ```
 
 ### GET /community?id=(string)
@@ -336,8 +338,7 @@ Body
 {
     "post" : {"content" : string,
                          "tags" : [string, ...]},
-    "community" : string,
-    "user" : string
+    "community" : string
 }
 ```
 
@@ -366,7 +367,7 @@ Error
 "A post must exist in a community",
 "Invalid community ID",
 "A user must make a post",
-"Invalid User ID"
+"Not logged in"
 ```
 
 ### GET /post?id=(string)
@@ -442,8 +443,7 @@ Body
 
 ```
 {
-    "post" : string,
-    "user" : string
+    "post" : string
 }
 ```
 
@@ -474,9 +474,8 @@ Error
 
 ```
 "No post ID provided",
-"No user ID provided",
 "Invalid post ID",
-"Invalid user ID",
+"Not logged in",
 "Post not found",
 "User has already liked this post"
 ```
@@ -487,8 +486,7 @@ Body
 
 ```
 {
-    "post" : string,
-    "user" : string
+    "post" : string
 }
 ```
 
@@ -519,9 +517,8 @@ Error
 
 ```
 "No post ID provided",
-"No user ID provided",
 "Invalid post ID",
-"Invalid user ID",
+"Not logged in",
 "Post not found, or internal server error",
 "User did not already like this post"
 ```
@@ -585,8 +582,7 @@ Body
     "comment" : {
         "content" : string
     },
-    "post" : string,
-    "user" : string
+    "post" : string
 }
 ```
 
@@ -603,15 +599,14 @@ Return
 }
 ```
 
-Error **These are not JSON objects, they are text**
+Error
 
 ```
 "No comment data",
 "There is no content in this comment",
 "A new top level comment requires a post ID",
 "Invalid post id",
-"No user ID given",
-"Invalid User ID"
+"Not logged in"
 ```
 
 ### GET /comment?id=(string)
@@ -644,7 +639,7 @@ Return
 ]
 ```
 
-Error **These are not JSON objects, they are text**
+Error
 
 ```
 "A post ID is required",
