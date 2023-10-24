@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { deleteAllUserData } from './utils';
+import { deleteAllUserData } from './utils.js';
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
