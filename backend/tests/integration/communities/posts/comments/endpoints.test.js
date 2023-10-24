@@ -83,6 +83,131 @@ describe('POST /create_comment', () => {
     response = await request(app).post('/create_comment').set('Cookie', cookie).send({ post: post._id, comment });
     expect(response.statusCode).toBe(200);
     expect(response.body.content).toBe(comment.content);
+    expect(response.body.parent == post._id).toBeTruthy();
+  });
+
+  it('should update post and user', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+
+    const new_post = new Post({
+      content: 'Test content',
+    });
+    let post = await new_post.save();
+
+    const comment = { content: 'Test comment content' };
+
+    response = await request(app).post('/create_comment').set('Cookie', cookie).send({ post: post._id, comment });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.content).toBe(comment.content);
+
+    post = await Post.findById(post._id);
+    user = await User.findById(user._id);
+    expect(post.comments.includes(response.body._id)).toBe(true);
+    expect(user.comments.includes(response.body._id)).toBe(true);
+  });
+});
+
+describe('DELETE /comment', () => {
+  useMongoTestWrapper();
+
+  it('should fail when no comment', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).delete('/comment').send({});
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should fail when not logged in', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).delete('/comment').send({ comment: 'fake' });
+    expect(response.statusCode).toBe(401);
+  });
+
+  it('should fail when comment does not exist', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+
+    response = await request(app).delete('/comment').set('Cookie', cookie).send({ comment: 'fake' });
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('should fail when user is not creator', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+
+    response = await request(app).post('/create_user').send({ username: 'wow', password });
+    const cookie2 = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    let user2 = response.body;
+
+    const new_post = new Post({
+      content: 'Test content',
+    });
+    let post = await new_post.save();
+
+    const comment = { content: 'Test comment content' };
+
+    response = await request(app).post('/create_comment').set('Cookie', cookie2).send({ post: post._id, comment });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.content).toBe(comment.content);
+
+    response = await request(app).delete('/comment').set('Cookie', cookie).send({ comment: response.body._id });
+    expect(response.statusCode).toBe(403);
+  });
+
+  it('should delete the comment', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+
+    const new_post = new Post({
+      content: 'Test content',
+    });
+    let post = await new_post.save();
+
+    const comment = { content: 'Test comment content' };
+
+    response = await request(app).post('/create_comment').set('Cookie', cookie).send({ post: post._id, comment });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.content).toBe(comment.content);
+    post = await Post.findById(post._id);
+    expect(post.comments.includes(response.body._id)).toBeTruthy();
+    user = await User.findById(user._id);
+    expect(user.comments.includes(response.body._id)).toBe(true);
+    expect((await Comment.find()).length).toBe(1);
+
+    response = await request(app).delete('/comment').set('Cookie', cookie).send({ comment: response.body._id });
+    expect(response.statusCode).toBe(200);
+    post = await Post.findById(post._id);
+    expect(post.comments.includes(response.body._id)).toBe(false);
+    user = await User.findById(user._id);
+    expect(user.comments.includes(response.body._id)).toBe(false);
+    expect((await Comment.find()).length).toBe(0);
   });
 });
 

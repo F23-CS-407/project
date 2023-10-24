@@ -609,6 +609,25 @@ Error
 "Not logged in"
 ```
 
+### DELETE /comment
+
+Body
+
+```
+{
+    comment: string
+}
+```
+
+Error
+
+```
+Comment missing
+Comment not found
+Not logged in
+Not creator of comment
+```
+
 ### GET /comment?id=(string)
 
 Returns Comment object

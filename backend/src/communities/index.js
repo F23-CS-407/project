@@ -6,7 +6,7 @@ import {
   search_community_by_post_id,
   getCommunity,
 } from './endpoints.js';
-import { getComment, get_comments_by_post, new_comment } from './posts/comments/endpoints.js';
+import { deleteComment, getComment, get_comments_by_post, new_comment } from './posts/comments/endpoints.js';
 import {
   getPost,
   get_likes,
@@ -41,6 +41,7 @@ export default function useCommunities(app) {
   app.post('/create_comment', new_comment);
   app.get('/post/comments', get_comments_by_post);
   app.get('/comment', getComment);
+  app.delete('/comment', deleteComment);
 
   return app;
 }

@@ -2,6 +2,7 @@ import { sha256 } from 'js-sha256';
 import { User } from './schemas.js';
 import crypto from 'crypto';
 import { Community } from '../communities/schemas.js';
+import { Comment } from '../communities/posts/comments/schemas.js';
 
 /* 
 Takes a username, a password, and a callback function
@@ -34,11 +35,21 @@ export async function deleteAllUserData(username, cb) {
     return cb('user not found', false);
   }
 
+  // delete users comments
+  for (const comment of user.comments) {
+    const com = await Comment.findById(comment);
+    if (com) {
+      await com.deleteRecursive();
+    }
+  }
+
   // remove user from mod lists
   for (const community of user.mod_for) {
     const com = await Community.findById(community);
-    com.mods = com.mods.filter((mod) => !mod.equals(user._id));
-    await com.save();
+    if (com) {
+      com.mods = com.mods.filter((mod) => !mod.equals(user._id));
+      await com.save();
+    }
   }
 
   // delete user object

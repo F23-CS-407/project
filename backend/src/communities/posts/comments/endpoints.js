@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Post } from '../schemas.js';
 import { Comment } from './schemas.js';
+import { User } from '../../../authentication/schemas.js';
 
 //Needs a post ID in the req body, as well as the commenting user.
 export async function new_comment(req, res) {
@@ -41,17 +42,51 @@ export async function new_comment(req, res) {
     children_comments: [],
     created_by: comment_user,
     created_date: created_date,
+    parent: post_id,
+    parent_ref: 'Post',
   });
 
   const commented = await new_comment.save();
 
   //Update the post with the new comment.
   const post = await Post.findOne({ _id: post_id });
-
   post.comments.push(commented._id);
   await post.save();
 
+  //Update the user with the new comment.
+  const user = await User.findById(req.user._id);
+  user.comments.push(commented._id);
+  await user.save();
+
   res.status(200).json(commented);
+}
+
+export async function deleteComment(req, res, next) {
+  const comment_id = req.body.comment;
+  if (!comment_id) {
+    res.status(400).send('Comment missing');
+    return;
+  }
+
+  if (!req.isAuthenticated()) {
+    res.status(401).send('Not logged in');
+    return;
+  }
+  const user = await User.findById(req.user._id);
+
+  if (!mongoose.Types.ObjectId.isValid(comment_id)) {
+    res.status(404).send({ error: 'Comment not found' });
+    return;
+  }
+  const comment = await Comment.findById(comment_id);
+
+  if (!comment.created_by.equals(user._id)) {
+    res.status(403).send('Not creator of comment');
+    return;
+  }
+
+  await comment.deleteRecursive();
+  res.status(200).send('Deleted');
 }
 
 export async function getComment(req, res, next) {

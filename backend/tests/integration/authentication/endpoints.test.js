@@ -6,6 +6,7 @@ import { hash } from '../../../src/authentication/utils.js';
 import createTestApp from '../../../src/debug/test-app.js';
 import useMongoTestWrapper from '../../../src/debug/jest-mongo.js';
 import { Community } from '../../../src/communities/schemas.js';
+import { Comment } from '../../../src/communities/posts/comments/schemas.js';
 
 describe('POST /create_user', () => {
   useMongoTestWrapper();
@@ -271,6 +272,55 @@ describe('DELETE /delete_user', () => {
     community = await Community.findById(community._id);
     expect(community.mods.includes(user1id)).toBe(false);
     expect(community.mods.includes(user2id)).toBe(true);
+  });
+
+  it('should delete user comments', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    // user1 and user 2
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user1id = response.body._id;
+
+    response = await request(app).post('/create_user').send({ username: 'wow', password });
+    expect(response.statusCode).toBe(200);
+    const cookie2 = response.headers['set-cookie'];
+    const user2id = response.body._id;
+
+    // user2 makes community
+    const comm_name = 'test community';
+    const comm_desc = 'a test community';
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie2)
+      .send({ name: comm_name, description: comm_desc, mods: [user1id, user2id] });
+    expect(response.statusCode).toBe(200);
+    let community = response.body;
+    expect(community.mods.includes(user1id)).toBe(true);
+    expect(community.mods.includes(user2id)).toBe(true);
+
+    // user2 makes post
+    const post = { content: 'Test' };
+    response = await request(app).post('/create_post').set('Cookie', cookie2).send({ post, community: community._id });
+    expect(response.statusCode).toBe(200);
+
+    // user1 comments
+    let comment = { content: 'Test comment content' };
+    response = await request(app)
+      .post('/create_comment')
+      .set('Cookie', cookie)
+      .send({ post: response.body._id, comment });
+    expect(response.statusCode).toBe(200);
+    expect((await Comment.find()).length).toBe(1);
+
+    // user1 deletes account
+    response = await request(app).delete('/delete_user').set('Cookie', cookie).send({ password });
+    expect(response.statusCode).toBe(200);
+    expect((await User.find({ username })).length).toBe(0);
+    expect((await Comment.find()).length).toBe(0);
   });
 
   it('should logout', async () => {
