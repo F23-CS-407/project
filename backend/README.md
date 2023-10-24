@@ -370,6 +370,25 @@ Error
 "Not logged in"
 ```
 
+### DELETE /post
+
+Body
+
+```
+{
+    post: string
+}
+```
+
+Error
+
+```
+Post missing
+Post not found
+Not logged in
+Not creator of post
+```
+
 ### GET /post?id=(string)
 
 Returns Post object

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { User } from '../authentication/schemas';
+import { User } from '../authentication/schemas.js';
 const { Schema } = mongoose;
 
 const communitySchema = new Schema(
@@ -54,7 +54,7 @@ const communitySchema = new Schema(
 
         // remove all mods
         const com = await Community.findById(this._id);
-        for (const mod in com.mods) {
+        for (const mod of com.mods) {
           await com.removeMod(mod);
         }
 
