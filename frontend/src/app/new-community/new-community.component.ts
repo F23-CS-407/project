@@ -48,6 +48,7 @@ export class NewCommunityComponent {
         this.logged_in = true;
         this.self_id = info_response["_id"];
         this.self_username = info_response.username;
+        this.selected_mods.push(new moderator(this.self_username, this.self_id));
         console.log(info_response);
       }, 
       error: error => {         // On fail
@@ -84,7 +85,7 @@ export class NewCommunityComponent {
   separatorKeyCodes: number[] = [ENTER, COMMA];
   userCtrl = new FormControl('');
   filtered_mods?: Observable<String[]>;
-  selected_mods: moderator[] = [new moderator(this.self_username, this.self_id)];
+  selected_mods: moderator[] = [];
   autocomplete_mods: moderator[] = [];
   hide_chips : boolean = false;
   @ViewChild('modInput') modInput?: ElementRef<HTMLInputElement>;
