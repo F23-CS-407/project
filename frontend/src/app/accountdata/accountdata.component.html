@@ -1,0 +1,17 @@
+<div class="account-data">
+    <h2>Account Data</h2>
+    <form (ngSubmit)="updateAccount()">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" [(ngModel)]="user.name" [disabled]="!editingName">
+            <button type="button" (click)="toggleEditing('name')">Edit</button>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" [(ngModel)]="user.email" [disabled]="!editingEmail">
+            <button type="button" (click)="toggleEditing('email')">Edit</button>
+        </div>
+        <!-- Add more fields for other account data here -->
+        <button type="submit" [hidden]="!isEditing">Save Changes</button>
+    </form>
+</div>
