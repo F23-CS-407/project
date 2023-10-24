@@ -5,6 +5,7 @@ import {
   search_single_user,
   search_community_by_post_id,
   getCommunity,
+  deleteCommunity,
 } from './endpoints.js';
 import { deleteComment, getComment, get_comments_by_post, new_comment } from './posts/comments/endpoints.js';
 import {
@@ -27,6 +28,7 @@ export default function useCommunities(app) {
   app.get('/find_user', search_single_user);
   app.get('/search_community_by_post_id', search_community_by_post_id);
   app.get('/community', getCommunity);
+  app.delete('/community', deleteCommunity);
 
   //post endpoints
   app.post('/create_post', post_in_community);

@@ -243,6 +243,25 @@ Error
 "Creator must be a mod"
 ```
 
+### DELETE /community
+
+Body
+
+```
+{
+    community: string
+}
+```
+
+Error
+
+```
+Community missing
+Community not found
+Not logged in
+Not mod of community
+```
+
 ### GET /community?id=(string)
 
 Returns Community object

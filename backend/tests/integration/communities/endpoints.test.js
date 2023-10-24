@@ -3,6 +3,8 @@ import request from 'supertest';
 import createTestApp from '../../../src/debug/test-app.js';
 import useMongoTestWrapper from '../../../src/debug/jest-mongo.js';
 import { User } from '../../../src/authentication/schemas.js';
+import { Community } from '../../../src/communities/schemas.js';
+import { Post } from '../../../src/communities/posts/schemas.js';
 
 describe('GET /search_users', () => {
   useMongoTestWrapper();
@@ -202,6 +204,126 @@ describe('POST /create_community', () => {
       .set('Cookie', cookie)
       .send({ name: comm_name, description: comm_desc, mods: comm_mods });
     expect(response.statusCode).toBe(400);
+  });
+});
+
+describe('DELETE /community', () => {
+  useMongoTestWrapper();
+
+  it('should fail when no community', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).delete('/community').send({});
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should fail when not logged in', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).delete('/community').send({ community: 'fake' });
+    expect(response.statusCode).toBe(401);
+  });
+
+  it('should fail when community does not exist', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+
+    response = await request(app).delete('/community').set('Cookie', cookie).send({ community: 'fake' });
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('should fail when user is not mod', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+    const name = 'name';
+    const description = 'description';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+
+    response = await request(app).post('/create_user').send({ username: 'wow', password });
+    const cookie2 = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    let user2 = response.body;
+
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie2)
+      .send({ name, description, mods: [user2._id] });
+    expect(response.statusCode).toBe(200);
+    let community = response.body;
+
+    response = await request(app).delete('/community').set('Cookie', cookie).send({ community: response.body._id });
+    expect(response.statusCode).toBe(403);
+  });
+
+  it('should delete the community and follow procedure', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+    const name = 'name';
+    const description = 'description';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+
+    // user makes community
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie)
+      .send({ name, description, mods: [user._id] });
+    expect(response.statusCode).toBe(200);
+    let community = response.body;
+
+    // user posts in community
+    let post = { content: 'Test' };
+    response = await request(app)
+      .post('/create_post')
+      .set('Cookie', cookie)
+      .send({ post, community: community._id, user: user._id });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.content).toBe(post.content);
+    post = response.body;
+
+    // database has one community and one post
+    expect((await Community.find()).length).toBe(1);
+    expect((await Post.find()).length).toBe(1);
+
+    // community has one post
+    community = await Community.findById(community._id);
+    expect(community.posts.length).toBe(1);
+    expect(community.posts.includes(post._id)).toBe(true);
+
+    // user mod_for has one and one post
+    user = await User.findById(user._id);
+    expect(user.mod_for.length).toBe(1);
+    expect(user.mod_for.includes(community._id)).toBe(true);
+    expect(user.posts.length).toBe(1);
+    expect(user.posts.includes(post._id)).toBe(true);
+
+    // user deletes the community
+    response = await request(app).delete('/community').set('Cookie', cookie).send({ community: community._id });
+    expect(response.statusCode).toBe(200);
+
+    // database has no communities and no posts
+    expect((await Community.find()).length).toBe(0);
+    expect((await Post.find()).length).toBe(0);
+
+    // user mod_for has 0 and no posts
+    user = await User.findById(user._id);
+    expect(user.mod_for.length).toBe(0);
+    expect(user.posts.length).toBe(0);
   });
 });
 

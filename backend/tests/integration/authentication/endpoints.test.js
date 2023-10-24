@@ -434,6 +434,190 @@ describe('DELETE /delete_user', () => {
     expect(post2.liked_by.length).toBe(0);
   });
 
+  it('should remove user as mod from communities', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    // user1 and user 2
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user1id = response.body._id;
+
+    response = await request(app).post('/create_user').send({ username: 'wow', password });
+    expect(response.statusCode).toBe(200);
+    const cookie2 = response.headers['set-cookie'];
+    const user2id = response.body._id;
+
+    // user2 makes community
+    const comm_name = 'test community';
+    const comm_desc = 'a test community';
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie2)
+      .send({ name: comm_name, description: comm_desc, mods: [user1id, user2id] });
+    expect(response.statusCode).toBe(200);
+    let community = response.body;
+    expect(community.mods.includes(user1id)).toBe(true);
+    expect(community.mods.includes(user2id)).toBe(true);
+
+    // user makes post
+    let post1 = { content: 'Test' };
+    response = await request(app)
+      .post('/create_post')
+      .set('Cookie', cookie)
+      .send({ post: post1, community: community._id });
+    expect(response.statusCode).toBe(200);
+    post1 = response.body;
+
+    // user2 makes post
+    let post2 = { content: 'Test' };
+    response = await request(app)
+      .post('/create_post')
+      .set('Cookie', cookie2)
+      .send({ post: post2, community: community._id });
+    expect(response.statusCode).toBe(200);
+    post2 = response.body;
+
+    // database has 1 community, 2 posts, and 2 users
+    expect((await Community.find()).length).toBe(1);
+    expect((await Post.find()).length).toBe(2);
+    expect((await User.find()).length).toBe(2);
+
+    // community has 2 mods and 2 posts
+    community = await Community.findById(community._id);
+    expect(community.mods.length).toBe(2);
+    expect(community.mods.includes(user1id)).toBe(true);
+    expect(community.mods.includes(user2id)).toBe(true);
+    expect(community.posts.length).toBe(2);
+    expect(community.posts.includes(post1._id)).toBe(true);
+    expect(community.posts.includes(post2._id)).toBe(true);
+
+    // user1 mods for 1 and has 1 post
+    let user1 = await User.findById(user1id);
+    expect(user1.mod_for.length).toBe(1);
+    expect(user1.mod_for.includes(community._id)).toBe(true);
+    expect(user1.posts.length).toBe(1);
+    expect(user1.posts.includes(post1._id)).toBe(true);
+
+    // user2 mods for 1 and has 1 post
+    let user2 = await User.findById(user2id);
+    expect(user2.mod_for.length).toBe(1);
+    expect(user2.mod_for.includes(community._id)).toBe(true);
+    expect(user2.posts.length).toBe(1);
+    expect(user2.posts.includes(post2._id)).toBe(true);
+
+    // user1 deletes account
+    response = await request(app).delete('/delete_user').set('Cookie', cookie).send({ password });
+    expect(response.statusCode).toBe(200);
+
+    // database has 1 community, 1 post, and 1 user
+    expect((await Community.find()).length).toBe(1);
+    expect((await Post.find()).length).toBe(1);
+    expect((await User.find()).length).toBe(1);
+
+    // community has 1 mod and 1 post
+    community = await Community.findById(community._id);
+    expect(community.mods.length).toBe(1);
+    expect(community.mods.includes(user2id)).toBe(true);
+    expect(community.posts.length).toBe(1);
+    expect(community.posts.includes(post2._id)).toBe(true);
+
+    // user2 mods for 1 and has 1 post
+    user2 = await User.findById(user2id);
+    expect(user2.mod_for.length).toBe(1);
+    expect(user2.mod_for.includes(community._id)).toBe(true);
+    expect(user2.posts.length).toBe(1);
+    expect(user2.posts.includes(post2._id)).toBe(true);
+  });
+
+  it('should delete community when removing user as mod results in 0 mods', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    // user1 and user 2
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user1id = response.body._id;
+
+    response = await request(app).post('/create_user').send({ username: 'wow', password });
+    expect(response.statusCode).toBe(200);
+    const cookie2 = response.headers['set-cookie'];
+    const user2id = response.body._id;
+
+    // user1 makes community
+    const comm_name = 'test community';
+    const comm_desc = 'a test community';
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie)
+      .send({ name: comm_name, description: comm_desc, mods: [user1id] });
+    expect(response.statusCode).toBe(200);
+    let community = response.body;
+    expect(community.mods.includes(user1id)).toBe(true);
+
+    // user makes post
+    let post1 = { content: 'Test' };
+    response = await request(app)
+      .post('/create_post')
+      .set('Cookie', cookie)
+      .send({ post: post1, community: community._id });
+    expect(response.statusCode).toBe(200);
+    post1 = response.body;
+
+    // user2 makes post
+    let post2 = { content: 'Test' };
+    response = await request(app)
+      .post('/create_post')
+      .set('Cookie', cookie2)
+      .send({ post: post2, community: community._id });
+    expect(response.statusCode).toBe(200);
+    post2 = response.body;
+
+    // database has 1 community, 2 posts, and 2 users
+    expect((await Community.find()).length).toBe(1);
+    expect((await Post.find()).length).toBe(2);
+    expect((await User.find()).length).toBe(2);
+
+    // community has 1 mod and 2 posts
+    community = await Community.findById(community._id);
+    expect(community.mods.length).toBe(1);
+    expect(community.mods.includes(user1id)).toBe(true);
+    expect(community.posts.length).toBe(2);
+    expect(community.posts.includes(post1._id)).toBe(true);
+    expect(community.posts.includes(post2._id)).toBe(true);
+
+    // user1 mods for 1 and has 1 post
+    let user1 = await User.findById(user1id);
+    expect(user1.mod_for.length).toBe(1);
+    expect(user1.mod_for.includes(community._id)).toBe(true);
+    expect(user1.posts.length).toBe(1);
+    expect(user1.posts.includes(post1._id)).toBe(true);
+
+    // user2 mods for 0 and has 1 post
+    let user2 = await User.findById(user2id);
+    expect(user2.mod_for.length).toBe(0);
+    expect(user2.posts.length).toBe(1);
+    expect(user2.posts.includes(post2._id)).toBe(true);
+
+    // user1 deletes account
+    response = await request(app).delete('/delete_user').set('Cookie', cookie).send({ password });
+    expect(response.statusCode).toBe(200);
+
+    // database has 0 communities, 0 posts, and 1 user
+    expect((await Community.find()).length).toBe(0);
+    expect((await Post.find()).length).toBe(0);
+    expect((await User.find()).length).toBe(1);
+
+    // user2 mods for 0 and has 0 posts
+    user2 = await User.findById(user2id);
+    expect(user2.mod_for.length).toBe(0);
+    expect(user2.posts.length).toBe(0);
+  });
+
   it('should logout', async () => {
     const username = 'username';
     const password = 'password';

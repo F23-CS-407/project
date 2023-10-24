@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { User } from '../authentication/schemas.js';
+import { Post } from './posts/schemas.js';
 const { Schema } = mongoose;
 
 const communitySchema = new Schema(
@@ -50,10 +51,17 @@ const communitySchema = new Schema(
 
       // remove all mods, delete all child content, delete community object
       async deleteRecursive() {
-        // TODO delete all posts
+        const com = await Community.findById(this._id);
+
+        // delete all posts
+        for (const post of com.posts) {
+          const post_obj = await Post.findById(post);
+          if (post_obj) {
+            await post_obj.deleteRecursive();
+          }
+        }
 
         // remove all mods
-        const com = await Community.findById(this._id);
         for (const mod of com.mods) {
           await com.removeMod(mod);
         }
