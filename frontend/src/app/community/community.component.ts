@@ -16,7 +16,7 @@ export class CommunityComponent {
   private backend_addr : string = "http://localhost:8080/api";
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
 
-  private community_id : string = "";
+  community_id : string = "";
   community_name : string = "N/A";
   community_desc : string = "N/A";
   community_post_ids : string[] = [];

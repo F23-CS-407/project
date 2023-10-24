@@ -13,6 +13,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 })
 export class NewPostComponent {
   private backend_addr : string = "http://localhost:8080/api";
+  private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
   
   chip_options: Chip[] = [new Chip("green", "General"), new Chip("yellow", "Question"), new Chip("red", "Clip") ];
 
@@ -57,14 +58,29 @@ export class NewPostComponent {
   }
 
   get_community() {
-    // TODO: Add HttpClient.get(/community?id=query_param)
+    // Get community id from query parameters
+    this.community_id = this.urlParams.get('community') as string;
+    if (this.community_id == undefined || this.community_id == "") {
+      this.router.navigate(["/"]);
+    }
 
+    // Get community data
+    const options = { withCredentials : true };
+    this.http.get<any>(this.backend_addr + "/community?id="+this.community_id, options).subscribe({
+      next: get_community_response => {          // On success
+        this.community_name = get_community_response.name;
+        this.community_desc = get_community_response.description;
+      }, 
+      error: error => {         // On fail
+        console.log(error);
+
+        // Trying to post to a community that doesn't exist
+        this.router.navigate(["/"]);
+      }});
   }
 
   create_post(description : string, chips : string[]) {
     const body = {post: {content : description,
-                         post_user : this.self_id,
-                         created_date : Date(),
                          tags : chips}, 
                   community: this.community_id, 
                   user: this.self_id};
@@ -72,6 +88,7 @@ export class NewPostComponent {
     this.http.post<any>(this.backend_addr + "/create_post", body, options).subscribe({
       next: create_post_response => {          // On success
         console.log(create_post_response);
+        this.router.navigate(['post'], {queryParams:{'post' : create_post_response._id}});
       }, 
       error: error => {         // On fail
         console.log(error);

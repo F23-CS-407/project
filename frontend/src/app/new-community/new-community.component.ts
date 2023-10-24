@@ -21,8 +21,8 @@ export class NewCommunityComponent {
   private backend_addr : string = "http://localhost:8080/api";
 
   // Community page data
-  community_name: string = "test_community";
-  community_desc: string = "This is a test community that is created to post to.";
+  community_name: string = "";
+  community_desc: string = "";
 
   constructor(private router : Router, private http : HttpClient) {
     // For moderator code
@@ -110,7 +110,6 @@ export class NewCommunityComponent {
         if (!already_added_mod.length) {
           this.selected_mods.push(foundMod[0]);
         }
-        
       } else {
         // No match found, or already selected
       }
