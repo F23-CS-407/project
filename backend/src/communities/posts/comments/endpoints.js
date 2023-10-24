@@ -6,37 +6,33 @@ import { Comment } from './schemas.js';
 export async function new_comment(req, res) {
   const comment = req.body.comment;
   const post_id = req.body.post;
-  const comment_user = req.body.user;
+
+  if (!req.isAuthenticated()) {
+    res.status(401).send({ error: 'not logged in' });
+    return;
+  }
+
+  const comment_user = req.user._id;
 
   const created_date = Date.now();
 
   if (!comment) {
-    res.status(400).send('No comment data');
+    res.status(400).send({ error: 'No comment data' });
     return;
   }
 
   if (!comment.content) {
-    res.status(400).send('There is no content in this comment');
+    res.status(400).send({ error: 'There is no content in this comment' });
     return;
   }
 
   if (!post_id) {
-    res.status(400).send('A new top level comment requires a post ID');
+    res.status(400).send({ error: 'A new top level comment requires a post ID' });
     return;
   }
 
   if (!mongoose.Types.ObjectId.isValid(post_id)) {
-    res.status(400).send('Invalid post id');
-    return;
-  }
-
-  if (!comment_user) {
-    res.status(400).send('No user ID given');
-    return;
-  }
-
-  if (!mongoose.Types.ObjectId.isValid(comment_user)) {
-    res.status(400).send('Invalid User ID');
+    res.status(400).send({ error: 'Invalid post id' });
     return;
   }
 
@@ -84,12 +80,12 @@ export async function get_comments_by_post(req, res) {
   const post = req.query.post;
 
   if (!post) {
-    res.status(400).send('A post ID is required');
+    res.status(400).send({ error: 'A post ID is required' });
     return;
   }
 
   if (!mongoose.Types.ObjectId.isValid(post)) {
-    res.status(400).send('Invalid post ID');
+    res.status(400).send({ error: 'Invalid post ID' });
     return;
   }
 
@@ -100,7 +96,7 @@ export async function get_comments_by_post(req, res) {
     })
     .exec((err, post) => {
       if (err) {
-        res.status(400).send('Internal Server Error');
+        res.status(500).send({ error: 'Internal Server Error' });
         return;
       }
 

@@ -6,9 +6,15 @@ import { Post } from './schemas.js';
 export async function post_in_community(req, res) {
   const post = req.body.post;
   const post_comm = req.body.community;
-  const post_user = req.body.user;
 
   const created_date = Date.now();
+
+  if (!req.isAuthenticated()) {
+    res.status(401).send({ error: 'Not logged in' });
+    return;
+  }
+
+  const post_user = req.user._id;
 
   if (!post) {
     res.status(400).send({ error: 'No post data' });
@@ -32,11 +38,6 @@ export async function post_in_community(req, res) {
 
   if (!post_user) {
     res.status(400).send({ error: 'A user must make a post' });
-    return;
-  }
-
-  if (!mongoose.Types.ObjectId.isValid(post_user)) {
-    res.status(400).send({ error: 'Invalid User ID' });
     return;
   }
 
@@ -133,25 +134,21 @@ export async function get_posts_by_user_id(req, res) {
 //Likes a post given a user ID and post ID. Only if the like doesn't already exist.
 export async function like_post(req, res) {
   const post_id = req.body.post;
-  const user_id = req.body.user;
+
+  if (!req.isAuthenticated()) {
+    res.status(401).send({ error: 'Not logged in' });
+    return;
+  }
+
+  const user_id = req.user._id;
 
   if (!post_id) {
     res.status(400).send({ error: 'No post ID provided' });
     return;
   }
 
-  if (!user_id) {
-    res.status(400).send({ error: 'No user ID provided' });
-    return;
-  }
-
   if (!mongoose.Types.ObjectId.isValid(post_id)) {
     res.status(400).send({ error: 'Invalid post ID' });
-    return;
-  }
-
-  if (!mongoose.Types.ObjectId.isValid(user_id)) {
-    res.status(400).send({ error: 'Invalid user ID' });
     return;
   }
 
@@ -176,25 +173,20 @@ export async function like_post(req, res) {
 //Given a user ID and post ID, will remove a like from a post provided it was already there.
 export async function remove_like_post(req, res) {
   const post_id = req.body.post;
-  const user_id = req.body.user;
 
+  if (!req.isAuthenticated()) {
+    res.status(401).send({ error: 'Not logged in' });
+    return;
+  }
+
+  const user_id = req.user._id;
   if (!post_id) {
     res.status(400).send({ error: 'No post ID provided' });
     return;
   }
 
-  if (!user_id) {
-    res.status(400).send({ error: 'No user ID provided' });
-    return;
-  }
-
   if (!mongoose.Types.ObjectId.isValid(post_id)) {
     res.status(400).send({ error: 'Invalid post ID' });
-    return;
-  }
-
-  if (!mongoose.Types.ObjectId.isValid(user_id)) {
-    res.status(400).send({ error: 'Invalid user ID' });
     return;
   }
 
