@@ -165,6 +165,7 @@ describe('POST /create_community', () => {
 
     let response = await request(app).post('/create_user').send({ username, password });
     expect(response.statusCode).toBe(200);
+    const cookie = response.headers['set-cookie'];
     const user = response.body;
 
     response = await request(app).post('/create_user').send({ username: 'wow', password });
@@ -175,6 +176,7 @@ describe('POST /create_community', () => {
     const comm_desc = 'a test community';
     response = await request(app)
       .post('/create_community')
+      .set('Cookie', cookie)
       .send({ name: comm_name, description: comm_desc, mods: [user._id, other_user._id] });
     expect(response.statusCode).toBe(200);
 

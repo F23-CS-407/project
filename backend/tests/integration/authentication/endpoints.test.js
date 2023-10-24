@@ -257,6 +257,7 @@ describe('DELETE /delete_user', () => {
     const comm_desc = 'a test community';
     response = await request(app)
       .post('/create_community')
+      .set('Cookie', cookie)
       .send({ name: comm_name, description: comm_desc, mods: [user1id, user2id] });
     expect(response.statusCode).toBe(200);
     let community = response.body;
