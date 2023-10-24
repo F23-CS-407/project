@@ -102,8 +102,15 @@ export class NewCommunityComponent {
     if (mod_name) {
       let foundMod = this.autocomplete_mods.filter( (mod) => mod.username==mod_name );
 
-      if (foundMod.length && !this.selected_mods.includes(foundMod[0])){
-        this.selected_mods.push(foundMod[0]);
+      // Real person
+      if (foundMod.length){
+        let already_added_mod = this.selected_mods.filter( (mod) => mod.id == foundMod[0].id);
+        
+        // Person is not already a mod
+        if (!already_added_mod.length) {
+          this.selected_mods.push(foundMod[0]);
+        }
+        
       } else {
         // No match found, or already selected
       }
