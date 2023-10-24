@@ -53,27 +53,27 @@ export class ProfileComponent {
         this.viewing_own_profile = true;
       }
 
-      // Query backend for data on id
       const options = { withCredentials : true};
-      this.http.get<any>(this.backend_addr + "/find_user_by_id?user_id="+this.id, options).subscribe({
+
+      // Get username
+      this.http.get<any>(this.backend_addr + "/user?id="+this.id, options).subscribe({
         next: get_user_response => {          // On success
           this.username = get_user_response.username;
-          console.log(get_user_response);
         }, 
         error: error => {         // On fail
           console.log(error);
         }});
   
+        // Get posts
         this.http.get<any>(this.backend_addr + "/user/posts?user_id="+this.id, options).subscribe({
           next: get_user_posts_response => {          // On success
-            //this.posts = get_user_posts_response;
+            this.num_posts = get_user_posts_response.length;
             let i:number = 0;
             for (i = 0; i < get_user_posts_response.length; i++) {
               let newPost: Post = new Post(new Alias(new User(this.username as string), new Community()));
               newPost.content = get_user_posts_response[i].content;
               this.posts.push(newPost);
             }
-            console.log(get_user_posts_response);
           }, 
           error: error => {         // On fail
             console.log(error);

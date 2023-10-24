@@ -9,13 +9,6 @@
             <h1>Description:</h1>
             <textarea matInput #community_desc class="description-text"></textarea>
         </mat-form-field>
-
-        <p class="input-80-width mod-title">Moderators</p>
-        <mat-form-field class="input-80-width">
-            <mat-label>Search Moderator by Username</mat-label>
-            <input #search_username matInput>
-            <button mat-button style="background-color:#b0b0b0" (click)="filter_users(search_username.value)">Search</button>
-        </mat-form-field>
         
         <mat-form-field class="input-80-width">
             <mat-label>Choose Moderators</mat-label>
@@ -31,6 +24,7 @@
             
             <input placeholder="New Mod..." #modInput [formControl]="userCtrl"
             [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+            (input)="filter_users(modInput.value)"
             [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
             (matChipInputTokenEnd)="add_mod($event)"/>
 

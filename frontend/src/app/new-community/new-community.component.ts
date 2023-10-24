@@ -61,6 +61,14 @@ export class NewCommunityComponent {
   }
 
   public filter_users(username : string) {
+    if (username == ""){
+      // Clear list
+      this.autocomplete_mods.splice(0, this.autocomplete_mods.length);
+      this.userCtrl.setValue(null);
+      
+      return;
+    }
+
     // Search for users matching given pattern
     const options = { withCredentials : true };
     this.http.get<any>(this.backend_addr + "/search_users?username="+username, options).subscribe({
@@ -71,14 +79,13 @@ export class NewCommunityComponent {
         this.autocomplete_mods.splice(0, this.autocomplete_mods.length);
 
         // Append returned users to all users list
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < Math.min(count, 20); i++) {
           this.autocomplete_mods.push(new moderator(search_users_response[i].username,
                                                     search_users_response[i]._id));
         }
+        this.userCtrl.setValue(null);
       },
-      error: error => {
-
-      }});
+      error: error => {}});
   }
 
   // https://stackblitz.com/edit/chip-list-with-objects-wbvz6k?file=src%2Fapp%2Fapp.component.ts,src%2Fapp%2Fapp.component.html
@@ -143,7 +150,6 @@ export class NewCommunityComponent {
     result = allModsLessSelected.map((mod)=>mod.username);
     return result;
   }
-
   public create_community(community_name : string, community_desc : string, mods : string[]) {
     // Call backend /create_community
     const options = { withCredentials : true };
