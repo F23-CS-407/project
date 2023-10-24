@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { deleteAllUserData } from './utils';
+import { deleteAllUserData } from './utils.js';
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
@@ -8,6 +8,12 @@ const userSchema = new Schema(
     password_hash: String,
     salt: String,
     description: String,
+    mod_for: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Community',
+      },
+    ],
   },
   {
     methods: {

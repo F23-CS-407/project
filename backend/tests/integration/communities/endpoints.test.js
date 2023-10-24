@@ -111,6 +111,30 @@ describe('POST /create_community', () => {
     expect(response.body.name).toBe(comm_name);
   });
 
+  it("should add community to mods' mod_for list", async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const user = response.body;
+
+    response = await request(app).post('/create_user').send({ username: 'wow', password });
+    expect(response.statusCode).toBe(200);
+    const other_user = response.body;
+
+    const comm_name = 'test community';
+    const comm_desc = 'a test community';
+    response = await request(app)
+      .post('/create_community')
+      .send({ name: comm_name, description: comm_desc, mods: [user._id, other_user._id] });
+    expect(response.statusCode).toBe(200);
+
+    expect((await User.findById(user._id)).mod_for.includes(response.body._id)).toBe(true);
+    expect((await User.findById(other_user._id)).mod_for.includes(response.body._id)).toBe(true);
+  });
+
   it('should fail as the user ID is made up', async () => {
     const app = await createTestApp();
     const comm_name = 'test community';

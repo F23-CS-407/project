@@ -48,6 +48,14 @@ export async function createCommunity(req, res) {
       mods: req_mods,
     });
     await new_comm.save();
+
+    // add community to each mods mod_for list
+    for (const mod of req_mods) {
+      const thisMod = await User.findById(mod);
+      thisMod.mod_for.push(new_comm._id);
+      await thisMod.save();
+    }
+
     res.status(200).json(new_comm);
   } catch (err) {}
 }
