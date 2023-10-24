@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { User } from '../../../authentication/schemas';
+import { User } from '../../../authentication/schemas.js';
 const { Schema } = mongoose;
 
 //Similarly to posts, only has content of type string for now.
