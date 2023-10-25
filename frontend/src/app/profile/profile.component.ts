@@ -57,7 +57,7 @@ export class ProfileComponent {
 
       // Query backend for data on id
       const options = { withCredentials : true};
-      this.http.get<any>(this.backend_addr + "/find_user_by_id?user_id="+this.id, options).subscribe({
+      this.http.get<any>(this.backend_addr + "/user?id="+this.id, options).subscribe({
         next: get_user_response => {          // On success
           this.username = get_user_response.username;
           console.log(get_user_response);
@@ -152,13 +152,13 @@ export class ProfileComponent {
       next: delete_response => {          // On success
         console.log(delete_response);
         
-        // Redirect to signup page
-        this.router.navigate(['/signup']);
+        // Redirect to login page
+        this.router.navigate(['/login']);
       },
       error: error_response => {
         if (error_response.error.text == "Logged out successfully") {   // Success
-          // Redirect to signup page
-          this.router.navigate(['/signup']);
+          // Redirect to login page
+          this.router.navigate(['/login']);
         }
         console.log(error_response);
       }
