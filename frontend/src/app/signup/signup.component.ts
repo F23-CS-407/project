@@ -84,22 +84,10 @@ export class SignupComponent {
     this.http.post<any>(this.backend_addr + "/create_user", body, options).subscribe({
       next: create_response => {          // On success
         this.router.navigate(['/']);
-        /*
-        // Log the user in
-        this.http.post<any>(this.backend_addr + "/login", body, options).subscribe(
-          {next: login_response => {
-            console.log("login successful");
-            console.log(login_response);
-            // Redirect to main page
-            
-          }, 
-          error: error => {
-            console.log("Created account, but couldn't log in. This should never happen.");
-          }});
-          */
       }, 
       error: error => {         // On fail
-        console.log("Create Account Error: " + error.toString());
+        console.log("Create account error:");
+        console.log(error);
       }});
   }
 }
