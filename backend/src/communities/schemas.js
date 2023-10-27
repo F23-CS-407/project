@@ -23,6 +23,12 @@ const communitySchema = new Schema(
         ref: 'Post',
       },
     ],
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   {
     methods: {
@@ -52,6 +58,14 @@ const communitySchema = new Schema(
       // remove all mods, delete all child content, delete community object
       async deleteRecursive() {
         const com = await Community.findById(this._id);
+
+        // remove all follows
+        for (const follower of com.followers) {
+          const follower_obj = await User.findById(follower);
+          if (follower_obj) {
+            await follower_obj.unfollowCommunity(com._id);
+          }
+        }
 
         // delete all posts
         for (const post of com.posts) {

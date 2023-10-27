@@ -618,6 +618,64 @@ describe('DELETE /delete_user', () => {
     expect(user2.posts.length).toBe(0);
   });
 
+  it('should unfollow communities before deleting', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    // user1 and user 2
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    const user1id = response.body._id;
+
+    response = await request(app).post('/create_user').send({ username: 'wow', password });
+    expect(response.statusCode).toBe(200);
+    const cookie2 = response.headers['set-cookie'];
+    const user2id = response.body._id;
+
+    // user1 makes community
+    const comm_name = 'test community';
+    const comm_desc = 'a test community';
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie)
+      .send({ name: comm_name, description: comm_desc, mods: [user1id, user2id] });
+    expect(response.statusCode).toBe(200);
+    let community = response.body;
+
+    // user1 follows community
+    response = await request(app).post('/user/follow_community').set('Cookie', cookie).send({ id: community._id });
+
+    // database has 1 community, and 2 users
+    expect((await Community.find()).length).toBe(1);
+    expect((await User.find()).length).toBe(2);
+
+    // community 1 follower
+    community = await Community.findById(community._id);
+    expect(community.followers.length).toBe(1);
+    expect(community.followers.includes(user1id)).toBe(true);
+
+    // user1 mods for 1 and follows 1 community
+    let user1 = await User.findById(user1id);
+    expect(user1.mod_for.length).toBe(1);
+    expect(user1.mod_for.includes(community._id)).toBe(true);
+    expect(user1.followed_communities.length).toBe(1);
+    expect(user1.followed_communities.includes(community._id)).toBe(true);
+
+    // user1 deletes account
+    response = await request(app).delete('/delete_user').set('Cookie', cookie).send({ password });
+    expect(response.statusCode).toBe(200);
+
+    // database has 1 community and 1 user
+    expect((await Community.find()).length).toBe(1);
+    expect((await User.find()).length).toBe(1);
+
+    // community has no followers
+    community = await Community.findById(community._id);
+    expect(community.followers.length).toBe(0);
+  });
+
   it('should logout', async () => {
     const username = 'username';
     const password = 'password';
