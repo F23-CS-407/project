@@ -54,7 +54,9 @@ export class ProfileComponent {
       }
 
       const options = { withCredentials : true};
-      this.http.get<any>(this.backend_addr + "/find_user_by_id?user_id="+this.id, options).subscribe({
+      
+      // Get username
+      this.http.get<any>(this.backend_addr + "/user?id="+this.id, options).subscribe({
         next: get_user_response => {          // On success
           this.username = get_user_response.username;
         }, 
