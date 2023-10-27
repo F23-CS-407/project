@@ -289,7 +289,7 @@ describe('DELETE /community', () => {
 
     // user makes board
     response = await request(app)
-      .post('/create_board')
+      .post('/board')
       .set('Cookie', cookie)
       .send({ name: 'board', community: community._id });
     expect(response.statusCode).toBe(200);

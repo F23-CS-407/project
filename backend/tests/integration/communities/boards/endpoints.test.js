@@ -5,7 +5,7 @@ import useMongoTestWrapper from '../../../../src/debug/jest-mongo.js';
 import { Community } from '../../../../src/communities/schemas.js';
 import { Board } from '../../../../src/communities/boards/schemas.js';
 
-describe('POST /create_board', () => {
+describe('POST /board', () => {
   useMongoTestWrapper();
 
   it('should fail with missing body params', async () => {
@@ -13,13 +13,13 @@ describe('POST /create_board', () => {
     const name = 'board';
     const community = 'fakeId';
 
-    let response = await request(app).post('/create_board').send({});
+    let response = await request(app).post('/board').send({});
     expect(response.statusCode).toBe(400);
 
-    response = await request(app).post('/create_board').send({ name });
+    response = await request(app).post('/board').send({ name });
     expect(response.statusCode).toBe(400);
 
-    response = await request(app).post('/create_board').send({ community });
+    response = await request(app).post('/board').send({ community });
     expect(response.statusCode).toBe(400);
   });
 
@@ -28,7 +28,7 @@ describe('POST /create_board', () => {
     const name = 'board';
     const community = 'fakeId';
 
-    let response = await request(app).post('/create_board').send({ name, community });
+    let response = await request(app).post('/board').send({ name, community });
     expect(response.statusCode).toBe(404);
   });
 
@@ -52,7 +52,7 @@ describe('POST /create_board', () => {
     expect(response.statusCode).toBe(200);
     const community = response.body._id;
 
-    response = await request(app).post('/create_board').send({ name, community });
+    response = await request(app).post('/board').send({ name, community });
     expect(response.statusCode).toBe(401);
   });
 
@@ -81,7 +81,7 @@ describe('POST /create_board', () => {
     expect(response.statusCode).toBe(200);
     const community = response.body._id;
 
-    response = await request(app).post('/create_board').set('Cookie', cookie).send({ name, community });
+    response = await request(app).post('/board').set('Cookie', cookie).send({ name, community });
     expect(response.statusCode).toBe(403);
   });
 
@@ -105,7 +105,7 @@ describe('POST /create_board', () => {
     expect(response.statusCode).toBe(200);
     let community = response.body._id;
 
-    response = await request(app).post('/create_board').set('Cookie', cookie).send({ name, community });
+    response = await request(app).post('/board').set('Cookie', cookie).send({ name, community });
     expect(response.statusCode).toBe(200);
     const board = response.body;
     expect(board.name).toBe(name);
@@ -136,10 +136,10 @@ describe('POST /create_board', () => {
     expect(response.statusCode).toBe(200);
     let community = response.body._id;
 
-    response = await request(app).post('/create_board').set('Cookie', cookie).send({ name, community });
+    response = await request(app).post('/board').set('Cookie', cookie).send({ name, community });
     expect(response.statusCode).toBe(200);
 
-    response = await request(app).post('/create_board').set('Cookie', cookie).send({ name, community });
+    response = await request(app).post('/board').set('Cookie', cookie).send({ name, community });
     expect(response.statusCode).toBe(409);
   });
 });
@@ -186,7 +186,7 @@ describe('DELETE /board', () => {
     expect(response.statusCode).toBe(200);
     const community = response.body._id;
 
-    response = await request(app).post('/create_board').set('Cookie', cookie).send({ name, community });
+    response = await request(app).post('/board').set('Cookie', cookie).send({ name, community });
     expect(response.statusCode).toBe(200);
     let board = response.body._id;
 
@@ -219,7 +219,7 @@ describe('DELETE /board', () => {
     expect(response.statusCode).toBe(200);
     const community = response.body._id;
 
-    response = await request(app).post('/create_board').set('Cookie', cookie2).send({ name, community });
+    response = await request(app).post('/board').set('Cookie', cookie2).send({ name, community });
     expect(response.statusCode).toBe(200);
     let board = response.body._id;
 
@@ -247,7 +247,7 @@ describe('DELETE /board', () => {
     expect(response.statusCode).toBe(200);
     let community = response.body._id;
 
-    response = await request(app).post('/create_board').set('Cookie', cookie).send({ name, community });
+    response = await request(app).post('/board').set('Cookie', cookie).send({ name, community });
     expect(response.statusCode).toBe(200);
     const board = response.body;
     expect(board.name).toBe(name);
@@ -311,7 +311,7 @@ describe('GET /board', () => {
     expect(response.statusCode).toBe(200);
     let community = response.body._id;
 
-    response = await request(app).post('/create_board').set('Cookie', cookie).send({ name, community });
+    response = await request(app).post('/board').set('Cookie', cookie).send({ name, community });
     expect(response.statusCode).toBe(200);
     const board = response.body;
 
@@ -365,7 +365,7 @@ describe('GET /community/boards', () => {
     expect(response.statusCode).toBe(200);
     let community = response.body._id;
 
-    response = await request(app).post('/create_board').set('Cookie', cookie).send({ name, community });
+    response = await request(app).post('/board').set('Cookie', cookie).send({ name, community });
     expect(response.statusCode).toBe(200);
     const board = response.body;
 

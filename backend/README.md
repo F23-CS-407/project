@@ -349,7 +349,7 @@ Return
 }
 ```
 
-### POST /create_board
+### POST /board
 
 Body
 
