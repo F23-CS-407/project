@@ -111,3 +111,51 @@ export async function deleteBoard(req, res, next) {
   res.status(200).send('Deleted');
   return;
 }
+
+export async function getBoard(req, res, next) {
+  const id = req.query.id;
+
+  // must have id
+  if (!id) {
+    res.status(400).send({ error: 'id missing' });
+    return;
+  }
+
+  // id must be valid
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(404).send({ error: 'board not found' });
+    return;
+  }
+  let board = await Board.findById(id);
+  if (!board) {
+    res.status(404).send({ error: 'board not found' });
+    return;
+  }
+
+  // send the board
+  res.status(200).send(board);
+}
+
+export async function getCommunityBoards(req, res, next) {
+  const id = req.query.id;
+
+  // must have id
+  if (!id) {
+    res.status(400).send({ error: 'id missing' });
+    return;
+  }
+
+  // id must be valid
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(404).send({ error: 'community not found' });
+    return;
+  }
+  let com = await Community.findById(id).populate('boards');
+  if (!com) {
+    res.status(404).send({ error: 'community not found' });
+    return;
+  }
+
+  //send the boards
+  res.status(200).send(com.boards);
+}

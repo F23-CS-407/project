@@ -393,6 +393,28 @@ Errors
 403
 ```
 
+### GET /board?id={string}
+
+Returns Board object
+
+Errors
+
+```
+400
+404
+```
+
+### GET /community/boards?id={string}
+
+Returns Board object array
+
+Errors
+
+```
+400
+404
+```
+
 ### POST /create_post
 
 Body

@@ -268,3 +268,112 @@ describe('DELETE /board', () => {
     // TODO delete board deletes posts
   });
 });
+
+describe('GET /board', () => {
+  useMongoTestWrapper();
+
+  it('should fail with missing id param', async () => {
+    const app = await createTestApp();
+    const id = '';
+
+    let response = await request(app).get('/board');
+    expect(response.statusCode).toBe(400);
+
+    response = await request(app).get(`/board?id=${id}`);
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should fail with invalid id', async () => {
+    const app = await createTestApp();
+    const id = 'fakeId';
+
+    let response = await request(app).get(`/board?id=${id}`);
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('should return board', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+    const name = 'board';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const cookie = response.headers['set-cookie'];
+    const user = response.body;
+
+    const comm_name = 'test community';
+    const comm_desc = 'a test community';
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie)
+      .send({ name: comm_name, description: comm_desc, mods: [user._id] });
+    expect(response.statusCode).toBe(200);
+    let community = response.body._id;
+
+    response = await request(app).post('/create_board').set('Cookie', cookie).send({ name, community });
+    expect(response.statusCode).toBe(200);
+    const board = response.body;
+
+    response = await request(app).get(`/board?id=${board._id}`);
+    expect(response.statusCode).toBe(200);
+    let got_board = response.body;
+    expect(got_board.name).toBe(name);
+    expect(got_board.parent).toBe(community);
+  });
+});
+
+describe('GET /community/boards', () => {
+  useMongoTestWrapper();
+
+  it('should fail with missing id param', async () => {
+    const app = await createTestApp();
+    const id = '';
+
+    let response = await request(app).get('/community/boards');
+    expect(response.statusCode).toBe(400);
+
+    response = await request(app).get(`/community/boards?id=${id}`);
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should fail with invalid id', async () => {
+    const app = await createTestApp();
+    const id = 'fakeId';
+
+    let response = await request(app).get(`/community/boards?id=${id}`);
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('should return boards', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+    const name = 'board';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const cookie = response.headers['set-cookie'];
+    const user = response.body;
+
+    const comm_name = 'test community';
+    const comm_desc = 'a test community';
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie)
+      .send({ name: comm_name, description: comm_desc, mods: [user._id] });
+    expect(response.statusCode).toBe(200);
+    let community = response.body._id;
+
+    response = await request(app).post('/create_board').set('Cookie', cookie).send({ name, community });
+    expect(response.statusCode).toBe(200);
+    const board = response.body;
+
+    response = await request(app).get(`/community/boards?id=${community}`);
+    expect(response.statusCode).toBe(200);
+    let got_boards = response.body;
+    expect(got_boards.length).toBe(1);
+    expect(got_boards[0].name).toBe(name);
+    expect(got_boards[0].parent).toBe(community);
+  });
+});
