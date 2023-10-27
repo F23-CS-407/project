@@ -372,6 +372,27 @@ Errors
 409
 ```
 
+### DELETE /board
+
+Body
+
+```
+{
+    "board": string
+}
+```
+
+Returns "Deleted"
+
+Errors
+
+```
+400
+404
+401
+403
+```
+
 ### POST /create_post
 
 Body
