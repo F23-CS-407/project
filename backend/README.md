@@ -427,32 +427,16 @@ Body
 }
 ```
 
-Return
+### GET /board/posts?id={string}
 
-```
-{
-    "content": string,
-    "created_by": string,
-    "created_date": Date,
-    "tags": [string,
-        ...
-    ],
-    "liked_by": [],
-    "comments": [],
-    "_id": string,
-    "__v": number
-}
-```
+Returns Post object array
 
 Error
 
 ```
-"No post data",
-"There is no content in the post",
-"A post must exist in a board",
-"Invalid board ID",
-"A user must make a post",
-"Not logged in"
+400
+404
+```
 
 ### POST /create_post
 
@@ -871,4 +855,7 @@ Error
 ### GET /test_auth
 
 Returns a message to test your auth status
+
+```
+
 ```

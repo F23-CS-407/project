@@ -227,3 +227,27 @@ export async function postInBoard(req, res) {
 
   res.status(200).json(posted);
 }
+
+export async function getBoardPosts(req, res, next) {
+  const id = req.query.id;
+
+  // must have id
+  if (!id) {
+    res.status(400).send({ error: 'id missing' });
+    return;
+  }
+
+  // id must be valid
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(404).send({ error: 'board not found' });
+    return;
+  }
+  let board = await Board.findById(id).populate('posts');
+  if (!board) {
+    res.status(404).send({ error: 'board not found' });
+    return;
+  }
+
+  //send the posts
+  res.status(200).send(board.posts);
+}

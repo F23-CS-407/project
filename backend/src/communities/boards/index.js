@@ -1,4 +1,4 @@
-import { createBoard, deleteBoard, getBoard, getCommunityBoards, postInBoard } from './endpoints.js';
+import { createBoard, deleteBoard, getBoard, getBoardPosts, getCommunityBoards, postInBoard } from './endpoints.js';
 
 export default function useBoards(app) {
   app.post('/board', createBoard);
@@ -6,6 +6,7 @@ export default function useBoards(app) {
   app.get('/board', getBoard);
   app.get('/community/boards', getCommunityBoards);
   app.post('/board/post', postInBoard);
+  app.get('/board/posts', getBoardPosts);
 
   return app;
 }

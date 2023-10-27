@@ -627,3 +627,63 @@ describe('POST /board/post', () => {
     expect((await Comment.find()).length).toBe(0);
   });
 });
+
+describe('GET /board/posts', () => {
+  useMongoTestWrapper();
+
+  it('should fail with missing id param', async () => {
+    const app = await createTestApp();
+    const id = '';
+
+    let response = await request(app).get('/board/posts');
+    expect(response.statusCode).toBe(400);
+
+    response = await request(app).get(`/board/posts?id=${id}`);
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should fail with invalid id', async () => {
+    const app = await createTestApp();
+    const id = 'fakeId';
+
+    let response = await request(app).get(`/board/posts?id=${id}`);
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('should return posts', async () => {
+    const app = await createTestApp();
+    const username = 'username';
+    const password = 'password';
+    const name = 'board';
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const cookie = response.headers['set-cookie'];
+    const user = response.body;
+
+    const comm_name = 'test community';
+    const comm_desc = 'a test community';
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie)
+      .send({ name: comm_name, description: comm_desc, mods: [user._id] });
+    expect(response.statusCode).toBe(200);
+    let community = response.body._id;
+
+    response = await request(app).post('/board').set('Cookie', cookie).send({ name, community });
+    expect(response.statusCode).toBe(200);
+    const board = response.body;
+
+    let post = { content: 'Test' };
+    response = await request(app).post('/board/post').set('Cookie', cookie).send({ post, board: board._id });
+    expect(response.statusCode).toBe(200);
+    post = response.body;
+
+    response = await request(app).get(`/board/posts?id=${board._id}`);
+    expect(response.statusCode).toBe(200);
+    let got_posts = response.body;
+    expect(got_posts.length).toBe(1);
+    expect(got_posts[0].content).toBe(post.content);
+    expect(got_posts[0]._id).toBe(post._id);
+  });
+});
