@@ -1,17 +1,32 @@
-<div class="account-data">
-    <h2>Account Data</h2>
-    <form (ngSubmit)="updateAccount()">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" [(ngModel)]="user.name" [disabled]="!editingName">
-            <button type="button" (click)="toggleEditing('name')">Edit</button>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" [(ngModel)]="user.email" [disabled]="!editingEmail">
-            <button type="button" (click)="toggleEditing('email')">Edit</button>
-        </div>
-        <!-- Add more fields for other account data here -->
-        <button type="submit" [hidden]="!isEditing">Save Changes</button>
-    </form>
+<h1>Account Data</h1>
+<div>
+  <p>Name: 
+    <ng-container *ngIf="!isNameEditing; else editNameField">{{ user.name }}</ng-container>
+    <ng-template #editNameField>
+      <input [(ngModel)]="updatedName">
+      <button mat-icon-button (click)="saveName()">Save</button>
+    </ng-template>
+    <button mat-icon-button *ngIf="!isNameEditing" (click)="editName()">Edit</button>
+  </p>
+</div>
+<div>
+  <p>Email: 
+    <ng-container *ngIf="!isEmailEditing; else editEmailField">{{ user.email }}</ng-container>
+    <ng-template #editEmailField>
+      <input [(ngModel)]="updatedEmail">
+      <button mat-icon-button (click)="saveEmail()">Save</button>
+    </ng-template>
+    <button mat-icon-button *ngIf="!isEmailEditing" (click)="editEmail()">Edit</button>
+  </p>
+</div>
+<div>
+  <img [src]="user.profilePicture" alt="Profile Picture">
+  <p>
+    <ng-container *ngIf="!isProfilePictureEditing; else editProfilePictureField">Profile Picture</ng-container>
+    <ng-template #editProfilePictureField>
+      <input [(ngModel)]="updatedProfilePicture">
+      <button mat-icon-button (click)="saveProfilePicture()">Save</button>
+    </ng-template>
+    <button mat-icon-button *ngIf="!isProfilePictureEditing" (click)="editProfilePicture()">Edit</button>
+  </p>
 </div>

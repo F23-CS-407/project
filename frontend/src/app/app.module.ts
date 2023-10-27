@@ -22,6 +22,7 @@ import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PostComponent } from './post/post.component';
 import { PermadeleteComponent } from './permadelete/permadelete.component';
+import { AccountDataComponent } from './accountdata/accountdata.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { PermadeleteComponent } from './permadelete/permadelete.component';
     ProfileComponent,
     PostComponent,
     PermadeleteComponent,
+    AccountDataComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +44,8 @@ import { PermadeleteComponent } from './permadelete/permadelete.component';
       {path: 'login', component: LoginComponent},                  // This is a new path. Can be found at localhost:port/login
       {path: 'signup', component: SignupComponent},
       {path: 'profile', component: ProfileComponent},
-      {path: 'post', component: PostComponent}
+      {path: 'post', component: PostComponent},
+      {path: 'account-data', component: AccountDataComponent },
     ]),
     BrowserAnimationsModule,
     MatInputModule,
