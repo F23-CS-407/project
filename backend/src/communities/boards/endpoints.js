@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { Community } from '../schemas.js';
 import { Board } from './schemas.js';
 import { User } from '../../authentication/schemas.js';
+import { Post } from '../posts/schemas.js';
 
 export async function createBoard(req, res, next) {
   const name = req.body.name;
@@ -158,4 +159,71 @@ export async function getCommunityBoards(req, res, next) {
 
   //send the boards
   res.status(200).send(com.boards);
+}
+
+export async function postInBoard(req, res) {
+  const post = req.body.post;
+  const post_board = req.body.board;
+
+  const created_date = Date.now();
+
+  if (!req.isAuthenticated()) {
+    res.status(401).send({ error: 'Not logged in' });
+    return;
+  }
+
+  const post_user = req.user._id;
+
+  if (!post) {
+    res.status(400).send({ error: 'No post data' });
+    return;
+  }
+
+  if (!post.content) {
+    res.status(400).send({ error: 'There is no content in the post' });
+    return;
+  }
+
+  if (!post_board) {
+    res.status(400).send({ error: 'A post must exist in a board' });
+    return;
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(post_board)) {
+    res.status(400).send({ error: 'Invalid board ID' });
+    return;
+  }
+
+  if (!post_user) {
+    res.status(400).send({ error: 'A user must make a post' });
+    return;
+  }
+
+  const new_post = new Post({
+    content: post.content,
+    created_by: post_user,
+    created_date: created_date,
+    tags: post.tags,
+    liked_by: [],
+    comments: [],
+    parent: post_board,
+    parent_ref: 'Board',
+  });
+
+  //Creates new post in database
+  const posted = await new_post.save();
+
+  //Updates the board with the new post ID.
+  const board = await Board.findOne({ _id: post_board });
+  board.posts.push(posted._id);
+  await board.save();
+
+  //Updates the user with new post ID
+  const user = await User.findById(post_user);
+  if (user) {
+    user.posts.push(posted._id);
+    await user.save();
+  }
+
+  res.status(200).json(posted);
 }
