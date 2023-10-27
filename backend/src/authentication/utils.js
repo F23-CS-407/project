@@ -1,6 +1,9 @@
 import { sha256 } from 'js-sha256';
 import { User } from './schemas.js';
 import crypto from 'crypto';
+import { Community } from '../communities/schemas.js';
+import { Comment } from '../communities/posts/comments/schemas.js';
+import { Post } from '../communities/posts/schemas.js';
 
 /* 
 Takes a username, a password, and a callback function
@@ -28,11 +31,42 @@ export async function verify(username, password, cb) {
 // delete all user data, posts, comments, etc. cb
 export async function deleteAllUserData(username, cb) {
   // if username not found, error
-  const users = await User.find({ username: username });
-  if (users.length != 1) {
+  const user = await User.findOne({ username: username });
+  if (!user) {
     return cb('user not found', false);
   }
-  const user = users[0];
+
+  // delete user's comments
+  for (const comment of user.comments) {
+    const com = await Comment.findById(comment);
+    if (com) {
+      await com.deleteRecursive();
+    }
+  }
+
+  // remove user's likes
+  for (const post of user.liked_posts) {
+    const post_obj = await Post.findById(post);
+    if (post_obj) {
+      await post_obj.removeUserLike(user._id);
+    }
+  }
+
+  // delete user's posts
+  for (const post of user.posts) {
+    const post_obj = await Post.findById(post);
+    if (post_obj) {
+      await post_obj.deleteRecursive();
+    }
+  }
+
+  // remove user from mod lists
+  for (const community of user.mod_for) {
+    const com = await Community.findById(community);
+    if (com) {
+      await com.removeMod(user._id);
+    }
+  }
 
   // delete user object
   await user.delete();

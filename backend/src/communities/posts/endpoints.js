@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Community } from '../schemas.js';
 import { Post } from './schemas.js';
+import { User } from '../../authentication/schemas.js';
 
 //Needs to be given post content, tags (if there are any), and the Object IDs for the community and user.
 export async function post_in_community(req, res) {
@@ -48,6 +49,8 @@ export async function post_in_community(req, res) {
     tags: post.tags,
     liked_by: [],
     comments: [],
+    parent: post_comm,
+    parent_ref: 'Community',
   });
 
   //Creates new post in database
@@ -55,11 +58,45 @@ export async function post_in_community(req, res) {
 
   //Updates the community with the new post ID.
   const community = await Community.findOne({ _id: post_comm });
-
   community.posts.push(posted._id);
   await community.save();
 
+  //Updates the user with new post ID
+  const user = await User.findById(post_user);
+  if (user) {
+    user.posts.push(posted._id);
+    await user.save();
+  }
+
   res.status(200).json(posted);
+}
+
+export async function deletePost(req, res, next) {
+  const post_id = req.body.post;
+  if (!post_id) {
+    res.status(400).send('Post missing');
+    return;
+  }
+
+  if (!req.isAuthenticated()) {
+    res.status(401).send('Not logged in');
+    return;
+  }
+  const user = await User.findById(req.user._id);
+
+  if (!mongoose.Types.ObjectId.isValid(post_id)) {
+    res.status(404).send({ error: 'Post not found' });
+    return;
+  }
+  const post = await Post.findById(post_id);
+
+  if (!post.created_by.equals(user._id)) {
+    res.status(403).send('Not creator of post');
+    return;
+  }
+
+  await post.deleteRecursive();
+  res.status(200).send('Deleted');
 }
 
 export async function getPost(req, res, next) {
@@ -152,18 +189,16 @@ export async function like_post(req, res) {
     return;
   }
 
-  const post = await Post.findById(post_id);
+  let post = await Post.findById(post_id);
   if (!post) {
     res.status(400).send({ error: 'Post not found' });
     return;
   }
 
-  //Add the like to the post's array of likes and return the post to the caller.
-  if (post.liked_by.indexOf(user_id) == -1) {
-    post.liked_by.push(user_id);
-    post.save();
+  // try to add the like
+  if (await post.addUserLike(user_id)) {
+    post = await Post.findById(post_id);
     res.status(200).json(post);
-
     return;
   }
 
@@ -190,18 +225,16 @@ export async function remove_like_post(req, res) {
     return;
   }
 
-  const post = await Post.findById(post_id);
+  let post = await Post.findById(post_id);
   if (!post) {
     res.status(400).send({ error: 'Post not found, or internal server error' });
     return;
   }
 
-  const index = post.liked_by.indexOf(user_id);
-  if (index !== -1) {
-    post.liked_by.splice(index, 1);
-    post.save();
+  // try to remove the like
+  if (await post.removeUserLike(user_id)) {
+    post = await Post.findById(post_id);
     res.status(200).json(post);
-
     return;
   }
 
