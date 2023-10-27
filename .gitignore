@@ -3,4 +3,4 @@ node_modules
 database/data
 .angular
 .vscode
-coverage
+backend/coverage
