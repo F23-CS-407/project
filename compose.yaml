@@ -6,6 +6,8 @@ services:
     build: frontend/
     ports:
       - 4200:4200
+    volumes:
+      - ./frontend/:/usr/frontend
 
   backend:
     container_name: hubit_backend
@@ -16,6 +18,8 @@ services:
       - MONGO_URL=${MONGO_URL}
     depends_on:
       - database
+    volumes:
+      - ./backend/:/usr/backend
 
   database:
     container_name: hubit_mongo
