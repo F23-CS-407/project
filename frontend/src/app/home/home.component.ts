@@ -41,13 +41,15 @@ export class HomeComponent {
     this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
       next: info_response => {          // On success
         this.logged_in = true;
-        this.self_id = info_response["_id"];
-        this.self_username = info_response.username;
         console.log(info_response);
+        // if already logged in, go to their profile
+        this.router.navigate(['/profile'], { queryParams: {id: info_response["_id"]}});
       }, 
       error: error => {         // On fail
         console.log("No session: ");
         console.log(error);
+        // if not logged in, take them to login
+        this.router.navigate([`/login`]);
       }});
   }
 

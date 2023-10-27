@@ -54,7 +54,7 @@ export class ProfileComponent {
       }
 
       const options = { withCredentials : true};
-
+      
       // Get username
       this.http.get<any>(this.backend_addr + "/user?id="+this.id, options).subscribe({
         next: get_user_response => {          // On success
@@ -145,12 +145,12 @@ export class ProfileComponent {
       next: logout_response => {          // On success
         console.log(logout_response);
         
-        // Redirect to signup page
+        // Redirect to login page
         this.router.navigate(['/login']);
       },
       error: error_response => {
         if (error_response.error.text == "Logged out successfully") {   // Success
-          // Redirect to signup page
+          // Redirect to login page
           this.router.navigate(['/login']);
         }
         console.log(error_response);
