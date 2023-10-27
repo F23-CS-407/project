@@ -16,7 +16,6 @@ import { Community } from "../../models/Community";
 export class ProfileComponent {
   private backend_addr : string = "http://localhost:8080/api";
 
-  // This gets: /profile?id=1234
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
   
   // Logged in user info
@@ -25,7 +24,6 @@ export class ProfileComponent {
   viewing_own_profile: boolean = false;
 
   // Viewed Profile info/stats
-  currently_deleting: boolean = false;    // I'm not sure who added this or what it does
   id: string = "-1";
   username?: string = "N/A";
   bio: string = "N/A";
@@ -55,46 +53,31 @@ export class ProfileComponent {
         this.viewing_own_profile = true;
       }
 
-      // Query backend for data on id
       const options = { withCredentials : true};
-      this.http.get<any>(this.backend_addr + "/user?id="+this.id, options).subscribe({
+      this.http.get<any>(this.backend_addr + "/find_user_by_id?user_id="+this.id, options).subscribe({
         next: get_user_response => {          // On success
           this.username = get_user_response.username;
-          console.log(get_user_response);
         }, 
         error: error => {         // On fail
           console.log(error);
         }});
   
+        // Get posts
         this.http.get<any>(this.backend_addr + "/user/posts?user_id="+this.id, options).subscribe({
           next: get_user_posts_response => {          // On success
-            //this.posts = get_user_posts_response;
+            this.num_posts = get_user_posts_response.length;
             let i:number = 0;
             for (i = 0; i < get_user_posts_response.length; i++) {
               let newPost: Post = new Post(new Alias(new User(this.username as string), new Community()));
               newPost.content = get_user_posts_response[i].content;
               this.posts.push(newPost);
             }
-            console.log(get_user_posts_response);
           }, 
           error: error => {         // On fail
             console.log(error);
           }});
     } else {
-      // This is a test
-      this.viewing_own_profile = true;
-
-      this.username = "John Smith";
-      this.bio = `John has been an avid surfer for half of his life. He has climbed
-                          8 mountains including Mount Everest standing at a whopping 29,032
-                          feet. He also enjoys olympic rowing and running, completing his
-                          fastest marathon in 3 hours.
-                          `;
-
-      // This is test data          
-      this.posts.push(new Post(new Alias(new User(this.self_id), new Community())));
-      this.posts.push(new Post(new Alias(new User(this.self_id), new Community())));
-      this.posts.push(new Post(new Alias(new User(this.self_id), new Community())));
+      this.router.navigate(['/']);
     }
 
     this.num_posts = this.posts.length;
@@ -118,7 +101,7 @@ export class ProfileComponent {
     this.currently_editting = !this.currently_editting;
   }
 
-  change_bio(new_username: string, new_bio: string) {
+  change_info(new_username: string, new_bio: string) {
     this.currently_editting = false;
 
     // Visual fix
@@ -127,8 +110,16 @@ export class ProfileComponent {
     }
     this.bio = new_bio;
 
-    // Call to backend
+    // Call to backend to update data
+    const options = { withCredentials : true };
+    const username_body = { "new_username" : new_username };
+    this.http.post<any>(this.backend_addr + "/change_username", username_body, options).subscribe({
+      next: change_username_response => {}, error: error => {}});
 
+    const desc_body = { "new_description" : new_bio }; 
+    this.http.post<any>(this.backend_addr + "/change_description", desc_body, options).subscribe({
+      next: change_description_response => {}, error: error => {}});
+      
   } 
   share_action() {
     let domain_name: string = "";
@@ -143,14 +134,14 @@ export class ProfileComponent {
   }
 
   create_community_action() {
-    
+    this.router.navigate(['/new_community']);
   }
 
   signOut() {
     const options = { withCredentials : true };
     this.http.delete<any>(this.backend_addr + "/logout", options).subscribe({
-      next: delete_response => {          // On success
-        console.log(delete_response);
+      next: logout_response => {          // On success
+        console.log(logout_response);
         
         // Redirect to login page
         this.router.navigate(['/login']);

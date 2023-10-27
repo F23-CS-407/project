@@ -243,6 +243,25 @@ Error
 "Creator must be a mod"
 ```
 
+### DELETE /community
+
+Body
+
+```
+{
+    community: string
+}
+```
+
+Error
+
+```
+Community missing
+Community not found
+Not logged in
+Not mod of community
+```
+
 ### GET /community?id=(string)
 
 Returns Community object
@@ -368,6 +387,25 @@ Error
 "Invalid community ID",
 "A user must make a post",
 "Not logged in"
+```
+
+### DELETE /post
+
+Body
+
+```
+{
+    post: string
+}
+```
+
+Error
+
+```
+Post missing
+Post not found
+Not logged in
+Not creator of post
 ```
 
 ### GET /post?id=(string)
@@ -607,6 +645,25 @@ Error
 "A new top level comment requires a post ID",
 "Invalid post id",
 "Not logged in"
+```
+
+### DELETE /comment
+
+Body
+
+```
+{
+    comment: string
+}
+```
+
+Error
+
+```
+Comment missing
+Comment not found
+Not logged in
+Not creator of comment
 ```
 
 ### GET /comment?id=(string)

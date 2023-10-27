@@ -8,6 +8,30 @@ const userSchema = new Schema(
     password_hash: String,
     salt: String,
     description: String,
+    mod_for: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Community',
+      },
+    ],
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment',
+      },
+    ],
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post',
+      },
+    ],
+    liked_posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post',
+      },
+    ],
   },
   {
     methods: {

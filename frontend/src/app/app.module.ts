@@ -5,7 +5,9 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 // For Angular Material Library - https://material.angular.io/components/categories
 import { MatInputModule } from '@angular/material/input';
@@ -15,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';         // Here is the component being imported
@@ -23,6 +26,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { NewPostComponent } from './new_post/new_post.component';
 import { PermadeleteComponent } from './permadelete/permadelete.component';
 import { PostComponent } from './post/post.component';
+import { CommunityComponent } from './community/community.component';
+import { NewCommunityComponent } from './new-community/new-community.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +39,8 @@ import { PostComponent } from './post/post.component';
     NewPostComponent,
     PermadeleteComponent,
     PostComponent,
+    CommunityComponent,
+    NewCommunityComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +52,9 @@ import { PostComponent } from './post/post.component';
       {path: 'signup', component: SignupComponent},
       {path: 'profile', component: ProfileComponent},
       {path: 'new_post', component: NewPostComponent},
-      {path: 'post', component: PostComponent}
+      {path: 'post', component: PostComponent},
+      {path: 'new_community', component: NewCommunityComponent},
+      {path: 'community', component: CommunityComponent}
     ]),
     BrowserAnimationsModule,
     MatInputModule,
@@ -55,7 +64,9 @@ import { PostComponent } from './post/post.component';
     MatCardModule,
     MatChipsModule,
     MatExpansionModule,
-    FormsModule
+    MatSelectModule,
+    FormsModule, ReactiveFormsModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
