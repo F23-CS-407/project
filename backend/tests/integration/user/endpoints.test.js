@@ -169,3 +169,78 @@ describe('GET /user', () => {
     expect(response.body.salt).toBe(undefined);
   });
 });
+
+describe('POST /change_password', () => {
+  useMongoTestWrapper();
+
+  it('should 401 when not logged in', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).post(`/change_password`).send({});
+    expect(response.statusCode).toBe(401);
+  });
+
+  it('should 400 when args missing', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+    const cookie = response.headers['set-cookie'];
+
+    response = await request(app).post(`/change_password`).set('Cookie', cookie).send({});
+    expect(response.statusCode).toBe(400);
+
+    response = await request(app).post(`/change_password`).set('Cookie', cookie).send({ old_password: password });
+    expect(response.statusCode).toBe(400);
+
+    response = await request(app).post(`/change_password`).set('Cookie', cookie).send({ new_password: password });
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should 401 when old password is incorrect', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+    const cookie = response.headers['set-cookie'];
+
+    response = await request(app)
+      .post(`/change_password`)
+      .set('Cookie', cookie)
+      .send({ new_password: 'cool', old_password: 'nope' });
+    expect(response.statusCode).toBe(401);
+  });
+
+  it('should update the password', async () => {
+    const username = 'username';
+    const password = 'password';
+    const new_password = 'password2';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+    const cookie = response.headers['set-cookie'];
+
+    response = await request(app)
+      .post(`/change_password`)
+      .set('Cookie', cookie)
+      .send({ new_password, old_password: password });
+    expect(response.statusCode).toBe(200);
+
+    response = await request(app).delete(`/logout`).set('Cookie', cookie);
+    expect(response.statusCode).toBe(200);
+
+    response = await request(app).post(`/login`).send({ username, password });
+    expect(response.statusCode).toBe(401);
+
+    response = await request(app).post(`/login`).send({ username, password: new_password });
+    expect(response.statusCode).toBe(200);
+  });
+});
