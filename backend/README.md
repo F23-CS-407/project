@@ -349,6 +349,29 @@ Return
 }
 ```
 
+### POST /create_board
+
+Body
+
+```
+{
+    "name": string,
+    "community": string
+}
+```
+
+Returns Board object
+
+Errors
+
+```
+400
+404
+401
+403
+409
+```
+
 ### POST /create_post
 
 Body
