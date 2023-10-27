@@ -42,5 +42,7 @@ services:
     container_name: hubit_backend_test
     build: backend/
     command: npm run test
+    volumes:
+      - ./backend/:/usr/backend
 
 
