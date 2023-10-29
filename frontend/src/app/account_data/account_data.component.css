@@ -1,64 +1,38 @@
-/* Style the container for the page */
-.account-data-container {
-    padding: 20px;
-    background-color: #f2f2f2;
-  }
-  
-  /* Style the title */
-  h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  /* Style the field containers */
-  .field-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  /* Style the edit button */
-  .edit-button {
-    margin-left: 10px;
-  }
-  
-  /* Style the input fields in edit mode */
-  input.edit-field {
-    border: 1px solid #ccc;
-    padding: 5px;
-    font-size: 16px;
-  }
-  
-  /* Style the save button in edit mode */
-  button.save-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  /* Style the profile picture */
-  .profile-picture {
-    max-width: 100px;
-    max-height: 100px;
-    border: 1px solid #ccc;
-  }
-  
-  /* Style for success message or other notifications */
-  .success-message {
-    color: #4CAF50;
-    font-size: 14px;
-    margin-top: 10px;
-  }
-  
-  /* Style for error message */
-  .error-message {
-    color: #FF5733;
-    font-size: 14px;
-    margin-top: 10px;
-  }
-  
-  /* Add more styles as needed */
-  
+.account-form {
+  position: absolute;
+  left: 10vw;
+  width: 80vw;
+  top: 15vh;
+  height: auto;
+  margin-bottom: 10px;
+
+  border-radius: 50px;
+  background-color: white;
+  box-shadow: 0px 0px 10px gray;
+}
+
+.account-form mat-form-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.account-button-area {
+  width: 100%;
+  text-align: center;
+  height: 10vh;
+}
+
+.account-button {
+  width: 15%;
+  height: 60%;
+  font-size: 2em;
+  background-color: rgb(210, 210, 210);
+}
+
+.spacer {
+  height: 5vh;
+  margin: 0 0 -5vh 0;
+  background: transparent;
+}
