@@ -128,6 +128,7 @@ export class ProfileComponent {
     this.clipboard.copy(domain_name + this.router.url);
   }
   settings_action() {
+    this.router.navigate(['/account_data'])
     // Idk what to put here?
   }
 

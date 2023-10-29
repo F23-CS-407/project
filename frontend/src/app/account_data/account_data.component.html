@@ -1,32 +1,32 @@
 <div class="middle_box">
-  <form class="account-form">
-      <mat-form-field class="input-80-width">
-          <h1>Name:</h1>
-          <input matInput [(ngModel)]="user.name" [disabled]="!editingName" />
-          <button mat-button (click)="toggleEditing('name')">Edit</button>
-      </mat-form-field>
+    <h1 class="page-heading">Account Data</h1> <!-- Add a centered heading -->
+    <form class="account-form">
+        <mat-form-field class="input-80-width">
+            <h2>Name:</h2>
+            <input matInput [(ngModel)]="user.name" [disabled]="!editingName" />
+            <button mat-button (click)="toggleEditing('name')">Edit</button>
+        </mat-form-field>
 
-      <mat-form-field class="input-80-width">
-          <h1>Email:</h1>
-          <input matInput [(ngModel)]="user.email" [disabled]="!editingEmail" />
-          <button mat-button (click)="toggleEditing('email')">Edit</button>
-      </mat-form-field>
+        <mat-form-field class="input-80-width">
+            <h2>Password:</h2>
+            <input matInput [(ngModel)]="user.password" [disabled]="!editingPassword" />
+            <button mat-button (click)="toggleEditing('password')">Edit</button>
+        </mat-form-field>
 
-      <mat-form-field class="input-80-width">
-        <h1>Password:</h1>
-        <input matInput type="password" [(ngModel)]="user.password" [disabled]="!editingPassword" />
-        <button mat-button (click)="toggleEditing('password')">Edit</button>
-    </mat-form-field>
+        <mat-form-field class="input-80-width">
+            <h2>Email:</h2>
+            <input matInput [(ngModel)]="user.email" [disabled]="!editingEmail" />
+            <button mat-button (click)="toggleEditing('email')">Edit</button>
+        </mat-form-field>
 
-      <mat-form-field class="input-80-width">
-          <h1>Profile Picture:</h1>
-          <input type="file" accept="image/*" (change)="updateProfilePicture($event)" [disabled]="!editingProfilePicture" />
-          <button mat-button (click)="toggleEditing('profilePicture')">Edit</button>
-      </mat-form-field>
-
-      <div class="account-button-area">
-          <button mat-raised-button class="account-button" (click)="saveChanges()">Save Changes</button>
-      </div>
-  </form>
-  <div class="spacer"></div>
+        <mat-form-field class="input-80-width">
+            <h2>Profile Picture:</h2>
+            <input type="file" accept="image/*" (change)="selectProfilePicture($event)" [disabled]="!editingProfilePicture" />
+        </mat-form-field>
+        
+        <div class="account-button-area">
+            <button mat-raised-button class="account-button" (click)="saveChanges()">Save Changes</button>
+        </div>
+    </form>
+    <div class="spacer"></div>
 </div>

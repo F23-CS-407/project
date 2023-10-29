@@ -17,6 +17,7 @@ export class AccountDataComponent {
   user = {
     name: 'John Doe',
     email: 'johndoe@example.com',
+    password: '',
     profilePicture: 'profile.jpg'
   };
 
@@ -24,6 +25,8 @@ export class AccountDataComponent {
   editingEmail = false;
   editingPassword = false;
   editingProfilePicture = false;
+
+  constructor(private http: HttpClient) {}
 
   toggleEditing(field: string) {
     if (field === 'name') {
@@ -40,11 +43,31 @@ export class AccountDataComponent {
   updateProfilePicture(event: any) {
     const file = event.target.files[0];
     // Handle the file upload and update the user's profile picture
+    if(file) {
+      console.log('Selected file:', file);
+    }
     // Set the user's profile picture URL here.
   }
 
   saveChanges() {
+    const updateUser = {
+      name: this.user.name,
+      email: this.user.email,
+      password: this.user.password,
+      // Add other properties as needed
+    };
+
     // Send an HTTP request to update the user's account data on the backend based on the changes made to this.user.
+    this.http.post<any>('/api/updateUser', updateUser).subscribe({
+      next: (response) => {
+        console.log('User data updated successfully:', response);
+        // Handle the success response, e.g., show a success message.
+      },
+      error: (error) => {
+        console.error('Failed to update user data:', error);
+        // Handle the error, e.g., show an error message.
+      }
+    });
     
   }
 }

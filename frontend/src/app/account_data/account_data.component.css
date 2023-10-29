@@ -1,14 +1,21 @@
-.account-form {
+/* account_data.component.css */
+
+.middle_box {
   position: absolute;
   left: 10vw;
   width: 80vw;
   top: 15vh;
   height: auto;
   margin-bottom: 10px;
-
+  text-align: center; /* Center align content */
   border-radius: 50px;
   background-color: white;
   box-shadow: 0px 0px 10px gray;
+}
+
+.page-heading {
+  font-size: 2rem;
+  margin: 20px 0; /* Add some spacing above the heading */
 }
 
 .account-form mat-form-field {
