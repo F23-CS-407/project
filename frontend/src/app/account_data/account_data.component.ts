@@ -22,6 +22,7 @@ export class AccountDataComponent {
 
   editingName = false;
   editingEmail = false;
+  editingPassword = false;
   editingProfilePicture = false;
 
   toggleEditing(field: string) {
@@ -29,6 +30,8 @@ export class AccountDataComponent {
       this.editingName = !this.editingName;
     } else if (field === 'email') {
       this.editingEmail = !this.editingEmail;
+    } else if (field === 'password') { 
+      this.editingPassword = !this.editingPassword;
     } else if (field === 'profilePicture') {
       this.editingProfilePicture = !this.editingProfilePicture;
     }
