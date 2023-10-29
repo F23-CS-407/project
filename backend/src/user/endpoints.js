@@ -1,4 +1,21 @@
 import { User } from '../authentication/schemas.js';
+import mongoose from 'mongoose';
+
+export async function getUser(req, res, next) {
+  const id = req.query.id;
+  if (!id) {
+    res.status(400).send({ error: 'id param missing' });
+    return;
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(404).send({ error: 'Invalid user id' });
+    return;
+  }
+
+  const thisUser = (await User.findById(id)).scrub();
+  res.status(200).json(thisUser);
+}
 
 export async function changeDescription(req, res, next) {
   const new_description = req.body.new_description;
@@ -6,14 +23,14 @@ export async function changeDescription(req, res, next) {
   if (req.isAuthenticated()) {
     // must have new_username
     if (!new_description) {
-      res.status(401).send({ error: 'new_description missing' });
+      res.status(400).send({ error: 'new_description missing' });
       return;
     }
 
     // save and return new user object
     const thisUser = await User.findOne({ username: req.user.username });
     thisUser.description = new_description;
-    res.send(await thisUser.save());
+    res.send((await thisUser.save()).scrub());
     return;
   }
 
@@ -26,7 +43,7 @@ export async function changeUsername(req, res, next) {
   if (req.isAuthenticated()) {
     // must have new_username
     if (!new_username) {
-      res.status(401).send({ error: 'new_username missing' });
+      res.status(400).send({ error: 'new_username missing' });
       return;
     }
 
@@ -39,7 +56,7 @@ export async function changeUsername(req, res, next) {
     // save and return new user object
     const thisUser = await User.findOne({ username: req.user.username });
     thisUser.username = new_username;
-    res.send(await thisUser.save());
+    res.send((await thisUser.save()).scrub());
     return;
   }
 

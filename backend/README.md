@@ -117,6 +117,48 @@ Errors
 "Username taken"
 ```
 
+### POST /change_username
+
+Body
+
+```
+    "new_username": string
+```
+
+If logged and new username is not taken, return updated User
+
+Errors
+
+```
+401, 400, 409
+```
+
+### POST /change_description
+
+Body
+
+```
+    "new_description": string
+```
+
+If logged in, return updated User
+
+Errors
+
+```
+401, 400
+```
+
+### GET /user?id=(string)
+
+Returns User object
+
+Errors
+
+```
+400, 404
+```
+
 ### DELETE /delete_user
 
 Body
@@ -197,6 +239,37 @@ Error
 "At least one mod is required",
 "Invalid ObjectId in mods array",
 "A community with this name already exists"
+"Not logged in"
+"Creator must be a mod"
+```
+
+### DELETE /community
+
+Body
+
+```
+{
+    community: string
+}
+```
+
+Error
+
+```
+Community missing
+Community not found
+Not logged in
+Not mod of community
+```
+
+### GET /community?id=(string)
+
+Returns Community object
+
+Errors
+
+```
+400, 404
 ```
 
 ### GET /search_communities?name=(string)
@@ -257,6 +330,8 @@ Return
 }
 ```
 
+<<<<<<< HEAD
+
 ### GET /find_user_by_id?user_id=(string)
 
 Return
@@ -277,6 +352,10 @@ Error
 "user_id missing",
 "Invalid user id"
 ```
+
+=======
+
+> > > > > > > main
 
 ### GET /search_community_by_post_id?post_id=(string)
 
@@ -305,8 +384,12 @@ Body
 {
     "post" : {"content" : string,
                          "tags" : [string, ...]},
+<<<<<<< HEAD
     "community" : string,
     "user" : string
+=======
+    "community" : string
+>>>>>>> main
 }
 ```
 
@@ -335,7 +418,36 @@ Error
 "A post must exist in a community",
 "Invalid community ID",
 "A user must make a post",
-"Invalid User ID"
+"Not logged in"
+```
+
+### DELETE /post
+
+Body
+
+```
+{
+    post: string
+}
+```
+
+Error
+
+```
+Post missing
+Post not found
+Not logged in
+Not creator of post
+```
+
+### GET /post?id=(string)
+
+Returns Post object
+
+Errors
+
+```
+400, 404
 ```
 
 ### GET /community/posts?community=(string)
@@ -401,8 +513,7 @@ Body
 
 ```
 {
-    "post" : string,
-    "user" : string
+    "post" : string
 }
 ```
 
@@ -433,9 +544,8 @@ Error
 
 ```
 "No post ID provided",
-"No user ID provided",
 "Invalid post ID",
-"Invalid user ID",
+"Not logged in",
 "Post not found",
 "User has already liked this post"
 ```
@@ -446,8 +556,7 @@ Body
 
 ```
 {
-    "post" : string,
-    "user" : string
+    "post" : string
 }
 ```
 
@@ -478,9 +587,8 @@ Error
 
 ```
 "No post ID provided",
-"No user ID provided",
 "Invalid post ID",
-"Invalid user ID",
+"Not logged in",
 "Post not found, or internal server error",
 "User did not already like this post"
 ```
@@ -544,8 +652,7 @@ Body
     "comment" : {
         "content" : string
     },
-    "post" : string,
-    "user" : string
+    "post" : string
 }
 ```
 
@@ -562,15 +669,43 @@ Return
 }
 ```
 
-Error **These are not JSON objects, they are text**
+Error
 
 ```
 "No comment data",
 "There is no content in this comment",
 "A new top level comment requires a post ID",
 "Invalid post id",
-"No user ID given",
-"Invalid User ID"
+"Not logged in"
+```
+
+### DELETE /comment
+
+Body
+
+```
+{
+    comment: string
+}
+```
+
+Error
+
+```
+Comment missing
+Comment not found
+Not logged in
+Not creator of comment
+```
+
+### GET /comment?id=(string)
+
+Returns Comment object
+
+Errors
+
+```
+400, 404
 ```
 
 ### GET /post/comments
@@ -593,7 +728,7 @@ Return
 ]
 ```
 
-Error **These are not JSON objects, they are text**
+Error
 
 ```
 "A post ID is required",
