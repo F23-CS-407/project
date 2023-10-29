@@ -1,5 +1,3 @@
-id={{id}}
-
 <!-- Signout button -->
 <button mat-raised-button class="sign-out-button" (click)="signOut()">Sign Out</button>
 
@@ -23,7 +21,7 @@ id={{id}}
         
             <div>
                 <button mat-raised-button class="cancel_button" (click)="change_edit()">Cancel</button>
-                <button mat-raised-button class="confirm_button" (click)="change_bio(new_username.value, new_bio.value)">Confirm</button>
+                <button mat-raised-button class="confirm_button" (click)="change_info(new_username.value, new_bio.value)">Confirm</button>
             </div>
         </form>
     </div>
@@ -48,7 +46,7 @@ id={{id}}
     <div class="col" *ngIf="viewing_own_profile">
         <button mat-raised-button class="create_new_community" (click)="create_community_action()" disabled="{{currently_editting}}">Create New Community</button>
     </div>
-    
+
     <!-- If viewing own profile -->
     <div class="col" *ngIf="viewing_own_profile">
         <button mat-raised-button class="edit_button" (click)="change_edit()" disabled="{{currently_editting}}">Edit Profile</button>
@@ -69,12 +67,13 @@ id={{id}}
                     {{username}}
                 </mat-card-title>
                 <mat-card-subtitle>
-                    community here?
+                    <!-- Fix this later -->
+                    community_not_set
                 </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
                 <p>
-                    Post {{i}}. {{post.content}}
+                    {{post.content}}
                 </p>
             </mat-card-content>
             <mat-card-actions>

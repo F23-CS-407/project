@@ -8,6 +8,7 @@
 
     background-color: lightgray;
     border: 2px solid gray;
+    padding-bottom: 10px;
 }
 
 .input-form {
@@ -19,4 +20,8 @@
 
 .input-full-width {
     width: 100%;
+}
+
+.create_button {
+    padding-bottom: 10px;
 }

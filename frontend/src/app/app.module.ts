@@ -5,7 +5,9 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 // For Angular Material Library - https://material.angular.io/components/categories
 import { MatInputModule } from '@angular/material/input';
@@ -15,14 +17,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';         // Here is the component being imported
 import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
-import { PostComponent } from './post/post.component';
+import { NewPostComponent } from './new_post/new_post.component';
 import { PermadeleteComponent } from './permadelete/permadelete.component';
 import { AccountDataComponent } from './accountdata/accountdata.component';
+import { PostComponent } from './post/post.component';
+import { CommunityComponent } from './community/community.component';
+import { NewCommunityComponent } from './new-community/new-community.component';
 
 @NgModule({
   declarations: [
@@ -31,9 +37,12 @@ import { AccountDataComponent } from './accountdata/accountdata.component';
     HomeComponent,
     SignupComponent,
     ProfileComponent,
-    PostComponent,
+    NewPostComponent,
     PermadeleteComponent,
     AccountDataComponent,
+    PostComponent,
+    CommunityComponent,
+    NewCommunityComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +55,9 @@ import { AccountDataComponent } from './accountdata/accountdata.component';
       {path: 'profile', component: ProfileComponent},
       {path: 'post', component: PostComponent},
       {path: 'account-data', component: AccountDataComponent },
+      {path: 'new_post', component: NewPostComponent},
+      {path: 'new_community', component: NewCommunityComponent},
+      {path: 'community', component: CommunityComponent}
     ]),
     BrowserAnimationsModule,
     MatInputModule,
@@ -55,7 +67,9 @@ import { AccountDataComponent } from './accountdata/accountdata.component';
     MatCardModule,
     MatChipsModule,
     MatExpansionModule,
-    FormsModule
+    MatSelectModule,
+    FormsModule, ReactiveFormsModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
