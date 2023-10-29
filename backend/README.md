@@ -330,33 +330,6 @@ Return
 }
 ```
 
-<<<<<<< HEAD
-
-### GET /find_user_by_id?user_id=(string)
-
-Return
-
-```
-{
-    "_id": string,
-    "username": string,
-    "password_hash": string,
-    "salt": string,
-    "__v": number
-}
-```
-
-Error
-
-```
-"user_id missing",
-"Invalid user id"
-```
-
-=======
-
-> > > > > > > main
-
 ### GET /search_community_by_post_id?post_id=(string)
 
 Return
@@ -384,12 +357,7 @@ Body
 {
     "post" : {"content" : string,
                          "tags" : [string, ...]},
-<<<<<<< HEAD
-    "community" : string,
-    "user" : string
-=======
     "community" : string
->>>>>>> main
 }
 ```
 
