@@ -66,6 +66,7 @@ Return
 ```
 
 Errors
+
 ```
 "Missing username or password", "Login failed"
 ```
@@ -81,6 +82,7 @@ If logged in, Return
 ```
 
 Errors
+
 ```
 "Not logged in"
 ```
@@ -134,10 +136,10 @@ If logged in, Return
 ```
 
 Errors
+
 ```
 "Missing password", "Password mismatch", "Not logged in"
 ```
-
 
 ### GET /user_info
 
@@ -154,6 +156,7 @@ If logged in, Return
 ```
 
 Error
+
 ```
 "Not logged in"
 ```
@@ -171,6 +174,7 @@ Body
 ```
 
 Return
+
 ```
 {
     "name": string,
@@ -186,6 +190,7 @@ Return
 ```
 
 Error
+
 ```
 "Community name required",
 "Community description required",
@@ -199,6 +204,7 @@ Error
 **Performs Non-case sensitive Regex Match**
 
 Return
+
 ```
 [
     {
@@ -266,6 +272,7 @@ Return
 ```
 
 Error
+
 ```
 "user_id missing",
 "Invalid user id"
@@ -290,7 +297,6 @@ Return
 }
 ```
 
-
 ### POST /create_post
 
 Body
@@ -298,7 +304,7 @@ Body
 ```
 {
     "post" : {"content" : string,
-                         "tags" : [string, ...]}, 
+                         "tags" : [string, ...]},
     "community" : string,
     "user" : string
 }
@@ -322,6 +328,7 @@ Return
 ```
 
 Error
+
 ```
 "No post data",
 "There is no content in the post",
@@ -334,6 +341,7 @@ Error
 ### GET /community/posts?community=(string)
 
 Return
+
 ```
 [
     {
@@ -506,11 +514,13 @@ Error
 Return
 
 if user liked
+
 ```
-1 
+1
 ```
 
 if user not liked
+
 ```
 0
 ```
@@ -589,32 +599,6 @@ Error **These are not JSON objects, they are text**
 "A post ID is required",
 "Invalid post ID"
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Debug Endpoints (only exposed when testing)
 

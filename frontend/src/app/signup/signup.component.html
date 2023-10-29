@@ -6,22 +6,22 @@
                 <mat-form-field class="input-full-width">
                     <mat-label>Username (required):</mat-label>
                     <input #u_field matInput id = "user_err"
-                    required>
-                    <mat-hint *ngIf="username_error_shown" style="color:red">{{ getError()}}</mat-hint>
+                    required (change)="getError(u_field.value, p_field.value, pc_field.value)">
+                    <mat-hint *ngIf="username_error_shown" aria-describedby = "user_err" style="color:red">{{ username_error_text }}</mat-hint>
                     <!-- It appears that <mat-error> doesn't work for some reason-->
                 </mat-form-field>
 
                 <mat-form-field class="input-full-width">
                     <mat-label>Password: </mat-label>
-                    <input #p_field matInput type="password" id = "password_err" aria-describedby = "Should contain more than 6 characters."
-                    required>
-                    <mat-error *ngIf="password.invalid">{{getError()}}</mat-error>                    
+                    <input #p_field matInput type="password" id = "password_err" aria-describedby = "Should contain more than 6 characters." required (change)="getError(u_field.value, p_field.value, pc_field.value)">
+                    <mat-hint *ngIf="password_error_shown" aria-describedby = "password_err" style="color:red">{{ password_error_text }}</mat-hint>
+                    
                 </mat-form-field>
 
                 <mat-form-field class="input-full-width">
                     <mat-label>Re-Type Password:</mat-label>
-                    <input #pc_field matInput type="password" id = "match_err" required>
-                    <mat-hint *ngIf="passwordc_error_shown" style="color:red">{{getError()}}</mat-hint>
+                    <input #pc_field matInput type="password" id = "match_err" required (change)="getError(u_field.value, p_field.value, pc_field.value)">
+                    <mat-hint *ngIf="passwordc_error_shown" aria-describedby="match_err" style="color:red">{{ passwordc_error_text }}</mat-hint>
                 </mat-form-field>
 
                 <br>
@@ -29,6 +29,7 @@
                     <button type='button' mat-raised-button disabled={{this.create_account_button_disabled}} (click)="create_account(u_field.value, p_field.value, pc_field.value)">Create</button>
                 </div>
             </form>
+            <a href="/login">Already have an account?</a>
         </div>
     </div>
 </div>
