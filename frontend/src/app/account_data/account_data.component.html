@@ -1,0 +1,28 @@
+<!-- account_data.component.html -->
+
+<div class="middle_box">
+  <form class="account-form">
+      <mat-form-field class="input-80-width">
+          <h1>Name:</h1>
+          <input matInput [(ngModel)]="user.name" [disabled]="!editingName" />
+          <button mat-button (click)="toggleEditing('name')">Edit</button>
+      </mat-form-field>
+
+      <mat-form-field class="input-80-width">
+          <h1>Email:</h1>
+          <input matInput [(ngModel)]="user.email" [disabled]="!editingEmail" />
+          <button mat-button (click)="toggleEditing('email')">Edit</button>
+      </mat-form-field>
+
+      <mat-form-field class="input-80-width">
+          <h1>Profile Picture:</h1>
+          <input type="file" accept="image/*" (change)="updateProfilePicture($event)" [disabled]="!editingProfilePicture" />
+          <button mat-button (click)="toggleEditing('profilePicture')">Edit</button>
+      </mat-form-field>
+
+      <div class="account-button-area">
+          <button mat-raised-button class="account-button" (click)="saveChanges()">Save Changes</button>
+      </div>
+  </form>
+  <div class="spacer"></div>
+</div>
