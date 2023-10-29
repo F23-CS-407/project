@@ -54,7 +54,7 @@ import { NewCommunityComponent } from './new-community/new-community.component';
       {path: 'signup', component: SignupComponent},
       {path: 'profile', component: ProfileComponent},
       {path: 'post', component: PostComponent},
-      {path: 'account-data', component: AccountDataComponent },
+      {path: 'account_data', component: AccountDataComponent },
       {path: 'new_post', component: NewPostComponent},
       {path: 'new_community', component: NewCommunityComponent},
       {path: 'community', component: CommunityComponent}
