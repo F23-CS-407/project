@@ -7,6 +7,15 @@
     color: #ffffff;
 }
 
+.follow-toggle {
+    position: fixed;
+    top: 14px;
+    right: 150px;
+    width: 80px;
+    background-color: #aaaaaa;
+    border-radius: 5px;
+}
+
 .community {
     width: 100%;
 }

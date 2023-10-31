@@ -1,3 +1,13 @@
+<div *ngIf="show_follow_button">
+    <div *ngIf="user_following; else followCommunity">
+        <button mat-button (click)="unfollowCommunityCall()" class="follow-toggle">Unfollow</button>
+    </div>
+</div>
+<ng-template #followCommunity>
+    <div>
+        <button mat-button (click)="followCommunityCall()" class="follow-toggle">Follow</button>
+    </div>
+</ng-template>
 <a href="/new_post?community={{community_id}}" class="new-post-button"><button mat-button>New Post</button></a>
 <div class="community">
     <div class="community-background">
