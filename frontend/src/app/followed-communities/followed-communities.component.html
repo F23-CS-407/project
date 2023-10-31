@@ -1,3 +1,16 @@
 <div>
-    <h1>{{username}}</h1>
+    <h1>Followed Communities: {{username}}</h1>
+    <div *ngFor="let entry of entries; index as i">
+        <div (click)="toCommunity(i)">
+            <p>{{entry.community.name}}</p>
+            <div *ngIf="entry.show_follow_button">
+                <div *ngIf="entry.logged_in_user_following; else followCommunity">
+                    <button mat-button (click)="unfollowCommunityCall(i)">Unfollow</button>
+                </div>
+            </div>
+            <ng-template #followCommunity>
+                <button mat-button (click)="followCommunityCall(i)">Follow</button>
+            </ng-template>
+        </div>
+    </div>
 </div>
