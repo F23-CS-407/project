@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { User } from "../../../models/User";
 
 @Component({
   selector: 'app-intro',
@@ -15,8 +16,23 @@ export class IntroComponent {
   email!: string;
   showLoginForm = true;
   errorMessage: string = '';  // To hold error messages
+  self_id: string = "";
+  self_username?: string = undefined;
+  logged_in: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.getData();
+  }
+
+  private async async_constructor() {
+    let current_user : User = await User.get_current_user_data();
+
+    this.self_id = current_user.get_id();
+    if (this.self_id !== "-1" && this.self_id !== "-2") {
+      this.logged_in = true;
+    }
+    this.self_username = current_user.get_username();
+  }
 
   showRegistrationForm() {
     this.showLoginForm = false;
@@ -24,6 +40,20 @@ export class IntroComponent {
 
   showLoginFormAgain() {
     this.showLoginForm = true;
+  }
+
+  getData() {
+    const options = { withCredentials : true};
+    this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
+      next: login_response => {          // On success
+        this.logged_in = true;
+        console.log(login_response.username);
+      }, 
+      error: error => {         // On fail
+        console.log("No session: ");
+        console.log(error);
+      }});
+
   }
 
   loginUser(event: Event) {

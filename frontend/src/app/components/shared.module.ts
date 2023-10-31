@@ -5,17 +5,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { PermadeleteComponent } from './permadelete/permadelete.component';
 
 @NgModule({
   declarations: [
     MenuBarComponent,
-    SettingsDialogComponent
+    SettingsDialogComponent,
+    PermadeleteComponent
   ],
   imports: [
     CommonModule,
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
+    MatFormFieldModule,
   ],
   exports: [
     MenuBarComponent,

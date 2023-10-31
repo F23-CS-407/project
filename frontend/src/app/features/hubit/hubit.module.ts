@@ -16,6 +16,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     HubitComponent,  // Declare HubitComponent
@@ -36,6 +38,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatCardModule,
     MatChipsModule,
     MatExpansionModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
     RouterModule  // Add RouterModule to imports
   ],
   exports: [

@@ -39,9 +39,11 @@ export class ProfileComponent {
     this.posts.push(new Post(new Alias(new User("-1"), new Community())));
     this.posts.push(new Post(new Alias(new User("-1"), new Community())));
 
-    if (sessionStorage.getItem("username")) {
-      this.current_user?.set_username(sessionStorage.getItem("username")?.toString());
+    const username = sessionStorage.getItem("username");
+    if (username) {
+      this.current_user?.set_username(username);
     }
+
 
     if (this.urlParams.get('id')) {
       this.id = this.urlParams.get('id') as string;
