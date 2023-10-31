@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { User } from '../authentication/schemas.js';
 import { Post } from './posts/schemas.js';
+import { Board } from './boards/schemas.js';
 const { Schema } = mongoose;
 
 const communitySchema = new Schema(
@@ -21,6 +22,12 @@ const communitySchema = new Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
+      },
+    ],
+    boards: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Board',
       },
     ],
     followers: [
@@ -72,6 +79,14 @@ const communitySchema = new Schema(
           const post_obj = await Post.findById(post);
           if (post_obj) {
             await post_obj.deleteRecursive();
+          }
+        }
+
+        // delete all boards
+        for (const board of com.boards) {
+          const board_obj = await Board.findById(board);
+          if (board_obj) {
+            await board_obj.deleteRecursive();
           }
         }
 

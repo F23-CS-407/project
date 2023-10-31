@@ -1,3 +1,4 @@
+import useBoards from './boards/index.js';
 import {
   createCommunity,
   query_communities,
@@ -46,6 +47,9 @@ export default function useCommunities(app) {
   app.get('/post/comments', get_comments_by_post);
   app.get('/comment', getComment);
   app.delete('/comment', deleteComment);
+
+  // board endpoints
+  app = useBoards(app);
 
   return app;
 }

@@ -5,6 +5,7 @@ import useMongoTestWrapper from '../../../src/debug/jest-mongo.js';
 import { User } from '../../../src/authentication/schemas.js';
 import { Community } from '../../../src/communities/schemas.js';
 import { Post } from '../../../src/communities/posts/schemas.js';
+import { Board } from '../../../src/communities/boards/schemas.js';
 
 describe('GET /search_users', () => {
   useMongoTestWrapper();
@@ -286,6 +287,14 @@ describe('DELETE /community', () => {
     expect(response.statusCode).toBe(200);
     let community = response.body;
 
+    // user makes board
+    response = await request(app)
+      .post('/board')
+      .set('Cookie', cookie)
+      .send({ name: 'board', community: community._id });
+    expect(response.statusCode).toBe(200);
+    let board = response.body;
+
     // user follows community
     response = await request(app).post('/user/follow_community').set('Cookie', cookie).send({ id: community._id });
 
@@ -299,14 +308,17 @@ describe('DELETE /community', () => {
     expect(response.body.content).toBe(post.content);
     post = response.body;
 
-    // database has one community and one post
+    // database has one community, one post, one board
     expect((await Community.find()).length).toBe(1);
     expect((await Post.find()).length).toBe(1);
+    expect((await Board.find()).length).toBe(1);
 
-    // community has one post
+    // community has one post and one board
     community = await Community.findById(community._id);
     expect(community.posts.length).toBe(1);
     expect(community.posts.includes(post._id)).toBe(true);
+    expect(community.boards.length).toBe(1);
+    expect(community.boards.includes(board._id)).toBe(true);
 
     // user mod_for has one, one post, one followed community
     user = await User.findById(user._id);
@@ -321,9 +333,10 @@ describe('DELETE /community', () => {
     response = await request(app).delete('/community').set('Cookie', cookie).send({ community: community._id });
     expect(response.statusCode).toBe(200);
 
-    // database has no communities and no posts
+    // database has no communities, no posts, no boards
     expect((await Community.find()).length).toBe(0);
     expect((await Post.find()).length).toBe(0);
+    expect((await Board.find()).length).toBe(0);
 
     // user mod_for has 0, no posts, no followed communities
     user = await User.findById(user._id);
