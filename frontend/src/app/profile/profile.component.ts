@@ -55,10 +55,11 @@ export class ProfileComponent {
 
       const options = { withCredentials : true};
       
-      // Get username
+      // Get user info
       this.http.get<any>(this.backend_addr + "/user?id="+this.id, options).subscribe({
         next: get_user_response => {          // On success
           this.username = get_user_response.username;
+          this.followed_communities = get_user_response.followed_communities
         }, 
         error: error => {         // On fail
           console.log(error);
@@ -91,7 +92,6 @@ export class ProfileComponent {
       next: info_response => {          // On success
         this.logged_in = true;
         this.self_id = info_response._id;
-        this.followed_communities = info_response.followed_communities
         console.log(info_response);
       }, 
       error: error => {         // On fail
