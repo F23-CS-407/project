@@ -3,8 +3,8 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "start": "nodemon src/index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "prettier": "npx prettier --write .",
     "prepare": "cd .. && husky install backend/.husky && cd backend"
   },
@@ -17,7 +17,8 @@
     "js-sha256": "^0.10.1",
     "mongoose": "^6.5.0",
     "passport": "^0.6.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "nodemon": "^3.0.1"
   },
   "devDependencies": {
     "husky": "^8.0.3",

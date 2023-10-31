@@ -6,6 +6,10 @@ services:
     build: frontend/
     ports:
       - 4200:4200
+    volumes:
+      - ./frontend/src:/usr/frontend/src
+      - ./frontend/tests:/usr/frontend/tests
+      - ./frontend/test:/usr/frontend/test
 
   backend:
     container_name: hubit_backend
@@ -16,6 +20,10 @@ services:
       - MONGO_URL=${MONGO_URL}
     depends_on:
       - database
+    volumes:
+      - ./backend/src:/usr/backend/src
+      - ./backend/tests:/usr/backend/tests
+      - ./backend/coverage:/usr/backend/coverage
 
   database:
     container_name: hubit_mongo
@@ -38,5 +46,5 @@ services:
     container_name: hubit_backend_test
     build: backend/
     command: npm run test
-
-
+    volumes:
+      - ./backend/:/usr/backend
