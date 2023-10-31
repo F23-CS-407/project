@@ -158,4 +158,8 @@ export class ProfileComponent {
       }
     });
   } 
+
+  toFollowedCommunities() {
+    this.router.navigate(["/followed_communities"], { queryParams: {id: this.id}});
+  }
 }

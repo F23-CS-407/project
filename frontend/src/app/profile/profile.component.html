@@ -38,7 +38,7 @@
         <h3 class="profile_number">{{num_following}}</h3>
         <p class="profile_number_text">Following</p>
     </div>
-    <div class="col">
+    <div class="col" (click)="toFollowedCommunities()">
         <h3 class="profile_number">{{followed_communities.length}}</h3>
         <p class="profile_number_text">Communities</p>
     </div>
