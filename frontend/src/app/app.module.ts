@@ -28,6 +28,7 @@ import { PermadeleteComponent } from './permadelete/permadelete.component';
 import { PostComponent } from './post/post.component';
 import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { NewCommunityComponent } from './new-community/new-community.component';
     PostComponent,
     CommunityComponent,
     NewCommunityComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
