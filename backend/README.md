@@ -366,6 +366,60 @@ Return
 }
 ```
 
+## POST /user/follow_community
+
+Body
+
+```
+{
+    id: string
+}
+```
+
+Returns Community object
+
+Error
+
+```
+400
+404
+401
+409
+```
+
+## POST /user/unfollow_community
+
+Body
+
+```
+{
+    id: string
+}
+```
+
+Returns Community object
+
+Error
+
+```
+400
+404
+401
+409
+```
+
+## GET /user/is_following_community?id={string}
+
+Returns boolean
+
+Error
+
+```
+400
+404
+401
+```
+
 ### POST /create_post
 
 Body

@@ -36,6 +36,11 @@ export async function deleteAllUserData(username, cb) {
     return cb('user not found', false);
   }
 
+  // unfollow all communities
+  for (const community of user.followed_communities) {
+    await user.unfollowCommunity(community);
+  }
+
   // delete user's comments
   for (const comment of user.comments) {
     const com = await Comment.findById(comment);
