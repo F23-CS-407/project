@@ -149,6 +149,23 @@ Errors
 401, 400
 ```
 
+### POST /change_password
+
+Body
+
+```
+    "new_password": string,
+    "old_password": string
+```
+
+Return scrubbed updated User
+
+Errors
+
+```
+401, 400
+```
+
 ### GET /user?id=(string)
 
 Returns User object
@@ -415,6 +432,60 @@ Errors
 404
 ```
 
+## POST /user/follow_community
+
+Body
+
+```
+{
+    id: string
+}
+```
+
+Returns Community object
+
+Error
+
+```
+400
+404
+401
+409
+```
+
+## POST /user/unfollow_community
+
+Body
+
+```
+{
+    id: string
+}
+```
+
+Returns Community object
+
+Error
+
+```
+400
+404
+401
+409
+```
+
+## GET /user/is_following_community?id={string}
+
+Returns boolean
+
+Error
+
+```
+400
+404
+401
+```
+
 ### POST /board/post
 
 Body
@@ -425,6 +496,13 @@ Body
                          "tags" : [string, ...]},
     "board" : string
 }
+```
+
+Error
+
+```
+401
+400
 ```
 
 ### GET /board/posts?id={string}
@@ -443,7 +521,6 @@ Error
 Body
 
 ```
-
 {
 "post" : {"content" : string,
 "tags" : [string, ...]},

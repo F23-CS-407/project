@@ -295,6 +295,9 @@ describe('DELETE /community', () => {
     expect(response.statusCode).toBe(200);
     let board = response.body;
 
+    // user follows community
+    response = await request(app).post('/user/follow_community').set('Cookie', cookie).send({ id: community._id });
+
     // user posts in community
     let post = { content: 'Test' };
     response = await request(app)
@@ -317,12 +320,14 @@ describe('DELETE /community', () => {
     expect(community.boards.length).toBe(1);
     expect(community.boards.includes(board._id)).toBe(true);
 
-    // user mod_for has one and one post
+    // user mod_for has one, one post, one followed community
     user = await User.findById(user._id);
     expect(user.mod_for.length).toBe(1);
     expect(user.mod_for.includes(community._id)).toBe(true);
     expect(user.posts.length).toBe(1);
     expect(user.posts.includes(post._id)).toBe(true);
+    expect(user.followed_communities.length).toBe(1);
+    expect(user.followed_communities.includes(community._id)).toBe(true);
 
     // user deletes the community
     response = await request(app).delete('/community').set('Cookie', cookie).send({ community: community._id });
@@ -333,10 +338,11 @@ describe('DELETE /community', () => {
     expect((await Post.find()).length).toBe(0);
     expect((await Board.find()).length).toBe(0);
 
-    // user mod_for has 0 and no posts
+    // user mod_for has 0, no posts, no followed communities
     user = await User.findById(user._id);
     expect(user.mod_for.length).toBe(0);
     expect(user.posts.length).toBe(0);
+    expect(user.followed_communities.length).toBe(0);
   });
 });
 
