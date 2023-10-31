@@ -50,3 +50,4 @@ services:
       - ./backend/src:/usr/backend/src
       - ./backend/tests:/usr/backend/tests
       - ./backend/coverage:/usr/backend/coverage
+      

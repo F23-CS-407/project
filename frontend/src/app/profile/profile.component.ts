@@ -30,7 +30,7 @@ export class ProfileComponent {
   num_posts: number = 0;
   num_followers: number = 0;
   num_following: number = 0;
-  num_communities: number = 0;
+  followed_communities: Array<string> = [];
   posts: Array<Post> = [];
 
   currently_editting: boolean = false;
@@ -91,6 +91,7 @@ export class ProfileComponent {
       next: info_response => {          // On success
         this.logged_in = true;
         this.self_id = info_response._id;
+        this.followed_communities = info_response.followed_communities
         console.log(info_response);
       }, 
       error: error => {         // On fail
