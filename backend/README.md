@@ -149,6 +149,23 @@ Errors
 401, 400
 ```
 
+### POST /change_password
+
+Body
+
+```
+    "new_password": string,
+    "old_password": string
+```
+
+Return scrubbed updated User
+
+Errors
+
+```
+401, 400
+```
+
 ### GET /user?id=(string)
 
 Returns User object
