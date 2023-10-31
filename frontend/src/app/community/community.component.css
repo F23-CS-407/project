@@ -1,10 +1,19 @@
 .new-post-button {
-    position: fixed;
+    position: absolute;
     top: 14px;
     right: 30px;
-    background-color: #aaaaaa;
+    background-color: #ffffff;
     border-radius: 5px;
-    color: #ffffff;
+    color: #000000;
+}
+
+.follow-button {
+    position: absolute;
+    top: 14px;
+    right: 150px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    color: #000000;
 }
 
 .community {
@@ -44,6 +53,11 @@
     height: 50%;
     overflow-y: auto;
     width: 50%;
+}
+
+a {
+    text-decoration: none;
+    color: black;
 }
 
 .post_list {
