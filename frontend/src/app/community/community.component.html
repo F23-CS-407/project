@@ -7,6 +7,7 @@
     <button mat-button (click)="followCommunityCall()" class="follow-toggle">Follow</button>
 </ng-template>
 <a href="/new_post?community={{community_id}}" class="new-post-button"><button mat-button>New Post</button></a>
+<button mat-button class="follow-button">Follow</button>
 <div class="community">
     <div class="community-background">
         <p class="community-title">{{community_name}}</p>
@@ -14,26 +15,27 @@
     </div>
     <div class="post_list">
         <li *ngFor="let post of community_posts; index as i">
-            <mat-card class="post_card">
-                <mat-card-header>
-                    <mat-card-title>
-                        {{post.created_by_username}}
-                    </mat-card-title>
-                    <mat-card-subtitle>
-                        {{community_name}}
-                    </mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <p>
-                        {{post.content}}
-                    </p>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>DISLIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-            </mat-card>
+            <a href="/post?post={{post.id}}">
+                <mat-card class="post_card">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <a href="/profile?id={{post.created_by.user.id}}">{{post.created_by?post.created_by.community_username:"_null"}}</a>
+                        </mat-card-title>
+                        <mat-card-subtitle>
+                            {{community_name}}
+                        </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>
+                            {{post.content}}
+                        </p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button>LIKE</button>
+                        <button mat-button>SHARE</button>
+                    </mat-card-actions>
+                </mat-card>
+            </a>
         </li>
     </div>
 </div>

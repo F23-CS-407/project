@@ -5,8 +5,8 @@ export class User {
     private static backend_addr : string = "http://localhost:8080/api";
     private static http : HttpClient
 
-    private id: string = "-1";
-    private username?: string = undefined;
+    public id: string = "-1";
+    public username: string = "";
     private email: string = "";
     private profile_pic: string = "";   // This will need to be type upload
     private bio: string = "No Bio Yet";

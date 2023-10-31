@@ -93,12 +93,19 @@ export class CommunityComponent {
           // Get post as object
           let curr_post = get_community_posts_response[i];
 
-          // Get username from user_id
-          let post_username: string = this.get_username(curr_post.created_by);
+          // Get user_id
+          let created_by_id: string = curr_post.created_by;
 
           // Create post object
-          let new_post: Post = new Post(post_username);
+          let new_post: Post = new Post(new Alias(new User(created_by_id), new Community(/* This doesn't need to be set on this page*/)));
+          new_post.id = curr_post._id;
           new_post.content = curr_post.content;
+          
+          // Get username
+          this.http.get<any>(this.backend_addr + "/user?id="+created_by_id, options).subscribe({
+            next: get_user_response => {
+              if (new_post.created_by){new_post.created_by.community_username = get_user_response.username;}
+            }});
           
           // Add post to list for display
           this.community_posts.push(new_post);

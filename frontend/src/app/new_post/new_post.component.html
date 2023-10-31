@@ -2,12 +2,12 @@
     <form class="post_form">
         <mat-form-field class="input-80-width">
             <h1>Description:</h1>
-            <textarea matInput #post_desc class="post-text"></textarea>
-        </mat-form-field>
+            <textarea matInput #post_desc class="post-text" > </textarea>
+         </mat-form-field>
 
         <mat-form-field class="input-80-width">
             <h1>Tags:</h1>
-            <mat-chip-listbox style="width:100%; left: 50%;">
+            <mat-chip-listbox #chipList style="width:100%; left: 50%;">
                 <!-- This changes the color, but it doesn't look very good.
                     style="background-color:{{chip.color}};"   -->
                 <mat-chip-option *ngFor="let chip of chip_options" color="accent" >
@@ -45,7 +45,7 @@
     
         <div class="post-button-area">
                                                             <!-- Couldn't figure out chip values, will fix later -->
-            <button mat-raised-button class="post-button" (click)="create_post(post_desc.value, ['General'])">Post</button>
+            <button mat-raised-button class="post-button" (click)="create_post(post_desc.value, [chipList.value])">Post</button>
         </div>
     </form>
     <div class="spacer"></div>

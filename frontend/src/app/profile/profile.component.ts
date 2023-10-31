@@ -55,30 +55,46 @@ export class ProfileComponent {
 
       const options = { withCredentials : true};
       
-      // Get user info
+      // Get username and bio
       this.http.get<any>(this.backend_addr + "/user?id="+this.id, options).subscribe({
         next: get_user_response => {          // On success
           this.username = get_user_response.username;
           this.followed_communities = get_user_response.followed_communities
+          if (get_user_response.description) {
+            this.bio = get_user_response.description;
+          }
         }, 
         error: error => {         // On fail
           console.log(error);
         }});
   
-        // Get posts
-        this.http.get<any>(this.backend_addr + "/user/posts?user_id="+this.id, options).subscribe({
-          next: get_user_posts_response => {          // On success
-            this.num_posts = get_user_posts_response.length;
-            let i:number = 0;
-            for (i = 0; i < get_user_posts_response.length; i++) {
-              let newPost: Post = new Post(new Alias(new User(this.username as string), new Community()));
-              newPost.content = get_user_posts_response[i].content;
-              this.posts.push(newPost);
-            }
-          }, 
-          error: error => {         // On fail
-            console.log(error);
-          }});
+      // Get posts
+      this.http.get<any>(this.backend_addr + "/user/posts?user_id="+this.id, options).subscribe({
+        next: get_user_posts_response => {          // On success
+          this.num_posts = get_user_posts_response.length;
+
+          let i:number = 0;
+          for (i = 0; i < get_user_posts_response.length; i++) {
+            // Create new post
+            let newPost: Post = new Post(new Alias(new User(this.username as string), new Community()));
+            
+            // Set id and content
+            newPost.id = get_user_posts_response[i]._id;
+            newPost.content = get_user_posts_response[i].content;
+
+            // Get community
+            this.http.get<any>(this.backend_addr + "/search_community_by_post_id?post_id=" + newPost.id, options).subscribe({
+              next: get_community_response => {newPost.created_by.for_community.name = get_community_response.name;
+                                              newPost.created_by.for_community.id = get_community_response._id;},
+                                            error: error => {console.log("profile get commuity error");console.log(error);}});
+            console.log("Com name: "+newPost.created_by.for_community.name);
+            
+            this.posts.push(newPost);
+          }
+        }, 
+        error: error => {         // On fail
+          console.log(error);
+        }});
     } else {
       this.router.navigate(['/']);
     }
