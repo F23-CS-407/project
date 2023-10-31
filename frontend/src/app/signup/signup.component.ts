@@ -37,43 +37,54 @@ export class SignupComponent {
   /* This is just for us to bypass while testing */
   password_checking:boolean = true;
 
-  public create_account(username : string, password : string, passwordc : string) {
+    public getError(username: string, password: string, passwordc: string) {
     // Set variables back to default
     this.username_error_shown = false;
     this.password_error_shown = false;
     this.passwordc_error_shown = false;
 
     if (this.password_checking) {
-    // Logic for checking password
-    if (password === null || password == "") {
-      this.password_error_shown = true;
-      this.password_error_text = "A password is required";
-    
-    } else if (new FormControl(password, Validators.minLength(8)).errors !== null) {
-      this.password_error_shown = true;
-      this.password_error_text = "Must be 8 or more characters";
-    } else if (!SignupComponent.pattern.test(password)) {
-      this.password_error_shown = true;
-      this.password_error_text = "Must contain special character";
+      // Logic for checking password
+      if (password === null || password == "") {
+        this.password_error_shown = true;
+        this.password_error_text = "A password is required";
       
-    } else if (new FormControl(password, Validators.pattern(SignupComponent.uppercaseLetterPattern)).errors !== null) {
-      this.password_error_shown = true;
-      this.password_error_text = "Must contain uppercase letter";
+      } else if (new FormControl(password, Validators.minLength(8)).errors !== null) {
+        this.password_error_shown = true;
+        this.password_error_text = "Must be 8 or more characters";
       return;
-    } else if (new FormControl(password, Validators.pattern(SignupComponent.lowercaseLetterPattern)).errors !== null) {
-      this.password_error_shown = true;
-      this.password_error_text = "Must contain lowercase letter";
-      return;
-    } else if (new FormControl(password, Validators.pattern(SignupComponent.numberPattern)).errors !== null) {
-      this.password_error_shown = true;
-      this.password_error_text = "Must contain a number";
-      return;
-    } else if (!(password === passwordc)) {
-      this.passwordc_error_shown = true;
-      this.passwordc_error_text = "Passwords must match";
-      return;
+    } else if (!SignupComponent.pattern.test(password)) {
+        this.password_error_shown = true;
+        this.password_error_text = "Must contain special character";
+        return;
+      } else if (new FormControl(password, Validators.pattern(SignupComponent.uppercaseLetterPattern)).errors !== null) {
+        this.password_error_shown = true;
+        this.password_error_text = "Must contain uppercase letter";
+        return;
+      } else if (new FormControl(password, Validators.pattern(SignupComponent.lowercaseLetterPattern)).errors !== null) {
+        this.password_error_shown = true;
+        this.password_error_text = "Must contain lowercase letter";
+        return;
+      } else if (new FormControl(password, Validators.pattern(SignupComponent.numberPattern)).errors !== null) {
+        this.password_error_shown = true;
+        this.password_error_text = "Must contain a number";
+        return;
+      } else if (!(password === passwordc)) {
+        this.passwordc_error_shown = true;
+        this.passwordc_error_text = "Passwords must match";
+        return;
     }
-    } // End  of password checking
+      } // End  of password checking
+  }
+
+  public create_account(username : string, password : string, passwordc : string) {
+
+    // check password validation
+    this.getError(username, password, passwordc);
+
+    if (this.username_error_shown || this.password_error_shown || this.passwordc_error_shown) {
+      return
+    }
 
     // Password requirements match, delete this
     console.log("All fields are valid");
