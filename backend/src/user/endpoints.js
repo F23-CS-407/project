@@ -221,3 +221,27 @@ export async function changePassword(req, res, next) {
 
   res.status(401).send({ error: 'not signed in' });
 }
+
+export async function getUploadedFiles(req, res) {
+  const id = req.query.id;
+
+  // must have user id
+  if (!id) {
+    res.status(400).send({ error: 'id missing' });
+    return;
+  }
+
+  // user must be valid
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(404).send({ error: 'user not found' });
+    return;
+  }
+  let user = await User.findById(id).populate('uploads');
+  if (!user) {
+    res.status(404).send({ error: 'user not found' });
+    return;
+  }
+
+  // send an array of UploadReceipts
+  res.send(user.uploads);
+}
