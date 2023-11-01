@@ -45,6 +45,10 @@ import { BoardsTabComponent } from './community/boards-tab/boards-tab.component'
     PostComponent,
     CommunityComponent,
     NewCommunityComponent,
+    MapComponent,
+    MapWrapperComponent,
+    MapCanvasComponent,
+    BoardsTabComponent
   ],
   imports: [
     BrowserModule,
