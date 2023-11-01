@@ -14,14 +14,10 @@
         </mat-form-field>
 
         <mat-form-field class="input-80-width">
-            <h2>Email:</h2>
-            <input matInput [(ngModel)]="user.email" [disabled]="!editingEmail" />
-            <button mat-button (click)="toggleEditing('email')">Save</button>
-        </mat-form-field>
-
-        <mat-form-field class="input-80-width">
-            <h2>Profile Picture:</h2>
-            <input type="file" accept="image/*" (change)="updateProfilePicture($event)" [disabled]="!editingProfilePicture" />
-        </mat-form-field>
+            <h2>Description:</h2>
+            <input matInput [(ngModel)]="user.description" [disabled]="!editingDescription" />
+            <button mat-button (click)="toggleEditing('description')">Save</button>
+          </mat-form-field>
+        
     </form>
 </div>
