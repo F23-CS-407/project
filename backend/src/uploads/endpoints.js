@@ -1,10 +1,27 @@
+import { UploadReceipt } from './schema.js';
 import { upload } from './utils.js';
 
 export async function uploadFile(req, res) {
+  // must be a request type that can send files
+  if (!req.headers['content-type'] || !req.headers['content-type'].includes('multipart/form-data')) {
+    res.status(400).send({ error: 'content-type must be multipart/form-data' });
+    return;
+  }
+
+  // must be logged in
   if (req.isAuthenticated()) {
-    upload.single('file')(req, res, (err) => {
+    // save the file
+    upload.single('file')(req, res, async (err) => {
+      // file couldn't be fetched from request
+      if (err) {
+        res.status(400).send({ error: 'file must be sent in "file" key of form-data' });
+        return;
+      }
+
+      // get the file info and generate a receipt
       const file = req.file;
-      res.send(file.filename);
+      let receipt = new UploadReceipt({ creator: req.user._id, filename: file.filename });
+      res.send(await receipt.save());
       return;
     });
     return;
@@ -14,9 +31,19 @@ export async function uploadFile(req, res) {
 }
 
 export async function getFile(req, res) {
-  (req, res) => {
-    const name = req.query.name;
+  const name = req.params.name;
 
-    res.sendFile(`/usr/backend/uploads/${name}`);
-  };
+  // must have a filename
+  if (!name) {
+    res.status(400).send({ error: 'name missing' });
+  }
+
+  // try to send the file
+  res.sendFile(`/usr/backend/uploads/${name}`, (err) => {
+    // if file not found then 404
+    if (err) {
+      res.status(404).send({ error: 'file not found' });
+      return;
+    }
+  });
 }
