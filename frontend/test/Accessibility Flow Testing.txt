@@ -1,0 +1,4 @@
+1: Navigating to User Profile Page
+    Using a keyboard, after you have esuccessfully logged in, press the Tab key to locate the profile button, and then click on it. 
+    Expected result, The profile button should be clearly labelled, and the pruser profile page should load.
+    
