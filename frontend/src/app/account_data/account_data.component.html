@@ -1,23 +1,20 @@
 <div class="middle_box">
-    <h1 class="page-heading">Account Data</h1> <!-- Add a centered heading -->
-    <form class="account-form">
-        <mat-form-field class="input-80-width">
-            <h2>Name:</h2>
-            <input matInput [(ngModel)]="user.name" [disabled]="!editingName" />
-            <button mat-button (click)="toggleEditing('name')">Save</button>
-        </mat-form-field>
+    <h1 class="page-heading">Account Data</h1>
+    <mat-form-field class="input-80-width" [class.editing]="editingName" (click)="toggleEditing('name')">
+        <h2>Name:</h2>
+        <input matInput [(ngModel)]="user.name" [readonly]="!editingName" />
+        <button mat-button>Save</button>
+    </mat-form-field>
 
-        <mat-form-field class="input-80-width">
-            <h2>Password:</h2>
-            <input matInput [(ngModel)]="user.password" [disabled]="!editingPassword" />
-            <button mat-button (click)="toggleEditing('password')">Save</button>
-        </mat-form-field>
+    <mat-form-field class="input-80-width" [class.editing]="editingPassword" (click)="toggleEditing('password')">
+        <h2>Password:</h2>
+        <input matInput [(ngModel)]="user.password" [readonly]="!editingPassword" />
+        <button mat-button>Save</button>
+    </mat-form-field>
 
-        <mat-form-field class="input-80-width">
-            <h2>Description:</h2>
-            <input matInput [(ngModel)]="user.description" [disabled]="!editingDescription" />
-            <button mat-button (click)="toggleEditing('description')">Save</button>
-          </mat-form-field>
-        
-    </form>
+    <mat-form-field class="input-80-width" [class.editing]="editingDescription" (click)="toggleEditing('description')">
+        <h2>Description:</h2>
+        <input matInput [(ngModel)]="user.description" [readonly]="!editingDescription" />
+        <button mat-button>Save</button>
+    </mat-form-field>
 </div>

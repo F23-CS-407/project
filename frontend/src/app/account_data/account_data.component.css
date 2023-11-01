@@ -25,6 +25,18 @@
   margin-bottom: 10px;
 }
 
+/* Styling for editing state */
+.account-form.mat-form-field.editing input {
+  border: 2px solid blue; /* Example border style for editing state */
+}
+
+.account-form.mat-form-field.editing button {
+  background-color: blue; /* Example background color for buttons in editing state */
+  color: white; /* Example text color for buttons in editing state */
+}
+
+/* Add styling for non-editing state here */
+
 .account-button-area {
   width: 100%;
   text-align: center;

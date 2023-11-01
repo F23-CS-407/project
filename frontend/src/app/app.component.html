@@ -15,15 +15,19 @@
   </div>
 </mat-toolbar>
 
-
-
+<!-- Display Results -->
+<div class="search-results" *ngIf="searchResults.length > 0">
+  <h2>Search Results:</h2>
+  <div *ngFor="let result of searchResults" class="search-result">
+    {{ result.username }} <!-- Replace with the appropriate property in your search result -->
+  </div>
+</div>
 
 <div class="container">
   <div class="content">
     <router-outlet></router-outlet> <!-- Your main content -->
   </div>
 </div>
-
 
 
 <!-- Side Panel feature -->
