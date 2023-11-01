@@ -1,0 +1,10 @@
+<!--TODO: make not ugly-->
+
+<div class="board-container">
+    <div class="board">
+        <button (click)="handleNewBoardClick()">New board</button>
+    </div>
+    <div class="board" *ngFor="let board of boards">
+        <button (click)="handleBoardClick(board.name)">{{board.name}}</button>
+    </div>
+</div>
