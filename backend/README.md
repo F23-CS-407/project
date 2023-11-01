@@ -927,6 +927,45 @@ Error
 
 ```
 
+### POST /upload
+
+form-data
+
+```
+file: File
+```
+
+Returns UploadReceipt
+
+Errors
+
+```
+400
+401
+```
+
+### GET /upload/{name}
+
+Returns file
+
+Errors
+
+```
+400
+404
+```
+
+### GET /user/uploads?id={string}
+
+Returns UploadReceipt array
+
+Errors
+
+```
+400
+404
+```
+
 ## Debug Endpoints (only exposed when testing)
 
 ### GET /test_auth
