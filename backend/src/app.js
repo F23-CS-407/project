@@ -29,9 +29,8 @@ export default async function createApp(options) {
       cb(null, '/usr/backend/uploads');
     },
     filename: function (req, file, cb) {
-      let extArray = file.mimetype.split('/');
-      let extension = extArray[extArray.length - 1];
-      cb(null, file.fieldname + '-' + Date.now() + '.' + extension);
+      let ext = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
+      cb(null, file.fieldname + '-' + Date.now() + ext);
     },
   });
 
