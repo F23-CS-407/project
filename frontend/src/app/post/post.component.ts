@@ -83,9 +83,41 @@ export class PostComponent {
   }
 
   like_button_click() {
-
+    if(!this.logged_in) {
+      return;
+    }
+    if (this.has_liked) {
+      // User wants to unlike the post
+      this.unlikePost();
+    } else {
+      // User wants to like the post
+      this.likePost();
+    }
   }
 
+  unlikePost() {
+    // Send a request to the backend to unlike the post
+    const options = { withCredentials: true };
+    this.http.post(this.backend_addr + "/post/unlike", { post_id: this.post_id }, options)
+      .subscribe((response: any) => {
+        if (response.success) {
+          this.has_liked = false;
+          this.like_count--;
+        }
+      });
+  }
+
+  likePost() {
+    // Send a request to the backend to like the post
+    const options = { withCredentials: true };
+    this.http.post(this.backend_addr + "/post/like", { post_id: this.post_id }, options)
+      .subscribe((response: any) => {
+        if (response.success) {
+          this.has_liked = true;
+          this.like_count++;
+        }
+      });
+  }
 
 
   show_posts() {
@@ -101,3 +133,4 @@ export class PostComponent {
       }});
   }
 }
+
