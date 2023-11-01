@@ -1,3 +1,4 @@
+import { User } from '../authentication/schemas.js';
 import { UploadReceipt } from './schema.js';
 import { upload } from './utils.js';
 
@@ -22,6 +23,12 @@ export async function uploadFile(req, res) {
       const file = req.file;
       let receipt = new UploadReceipt({ creator: req.user._id, filename: file.filename });
       res.send(await receipt.save());
+
+      // put receipt in user profile
+      let user = await User.findById(req.user._id);
+      user.uploads.push(receipt._id);
+      await user.save();
+
       return;
     });
     return;

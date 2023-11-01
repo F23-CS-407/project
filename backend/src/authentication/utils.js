@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import { Community } from '../communities/schemas.js';
 import { Comment } from '../communities/posts/comments/schemas.js';
 import { Post } from '../communities/posts/schemas.js';
+import { UploadReceipt } from '../uploads/schema.js';
 
 /* 
 Takes a username, a password, and a callback function
@@ -34,6 +35,14 @@ export async function deleteAllUserData(username, cb) {
   const user = await User.findOne({ username: username });
   if (!user) {
     return cb('user not found', false);
+  }
+
+  // delete all uploads
+  for (const receipt of user.uploads) {
+    const upload = await UploadReceipt.findById(receipt);
+    if (upload) {
+      upload.deleteRecursive();
+    }
   }
 
   // unfollow all communities
