@@ -28,6 +28,7 @@ import { PermadeleteComponent } from './permadelete/permadelete.component';
 import { PostComponent } from './post/post.component';
 import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
+import { MapComponent } from './map/map.component';
 import { MapWrapperComponent } from './community/maps/map-wrapper/map-wrapper.component';
 import { MapCanvasComponent } from './community/maps/map-canvas/map-canvas.component';
 import { BoardsTabComponent } from './community/boards-tab/boards-tab.component';
@@ -44,9 +45,6 @@ import { BoardsTabComponent } from './community/boards-tab/boards-tab.component'
     PostComponent,
     CommunityComponent,
     NewCommunityComponent,
-    MapWrapperComponent,
-    MapCanvasComponent,
-    BoardsTabComponent,
   ],
   imports: [
     BrowserModule,
