@@ -35,13 +35,12 @@
     <h3 class="title">Users: </h3>
     <div class="user-results-panel">
         <div *ngIf="searchResults && searchResults.length > 0">
-            <ul>
-              <li *ngFor="let result of searchResults">
-                 {{ result.username }} Replace 'username' with the property you want to display
-              </li>
-            </ul>
+          <button *ngFor="let result of searchResults" mat-button (click)="goToUserProfile()">
+            <mat-icon>person</mat-icon>
+            {{ result.username }}
+          </button>
         </div>
-    </div>
+      </div>
     <div class="divider"></div>
     <h3 class="title">Communities: </h3>
     <div class="community-results-panel">

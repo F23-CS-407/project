@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +15,16 @@ export class HomeComponent {
   search: string = '';
   notEmpty: boolean = false;
 
-  constructor(private http: HttpClient, private fb: FormBuilder) { 
+  constructor(private http: HttpClient, private router: Router, private fb: FormBuilder) { 
 
     this.searchForm = this.fb.group({
       search: ['', Validators.required]
     });
+  }
+
+  goToUserProfile() {
+    // TODO navigate to specific profile
+    this.router.navigate(['/hubit/profile']); 
   }
   
   onChange() {
