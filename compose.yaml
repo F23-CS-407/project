@@ -47,4 +47,7 @@ services:
     build: backend/
     command: npm run test
     volumes:
-      - ./backend/:/usr/backend
+      - ./backend/src:/usr/backend/src
+      - ./backend/tests:/usr/backend/tests
+      - ./backend/coverage:/usr/backend/coverage
+   

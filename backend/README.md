@@ -486,6 +486,17 @@ Error
 401
 ```
 
+## GET /user/followed_communities?id={string}
+
+Returns Community object array
+
+Error
+
+```
+400
+404
+```
+
 ### POST /board/post
 
 Body

@@ -28,6 +28,7 @@ import { PermadeleteComponent } from './permadelete/permadelete.component';
 import { PostComponent } from './post/post.component';
 import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
+import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { MapComponent } from './map/map.component';
 
 @NgModule({
@@ -42,6 +43,7 @@ import { MapComponent } from './map/map.component';
     PostComponent,
     CommunityComponent,
     NewCommunityComponent,
+    FollowedCommunitiesComponent,
     MapComponent,
   ],
   imports: [
@@ -56,7 +58,8 @@ import { MapComponent } from './map/map.component';
       {path: 'new_post', component: NewPostComponent},
       {path: 'post', component: PostComponent},
       {path: 'new_community', component: NewCommunityComponent},
-      {path: 'community', component: CommunityComponent}
+      {path: 'community', component: CommunityComponent},
+      {path: 'followed_communities', component: FollowedCommunitiesComponent}
     ]),
     BrowserAnimationsModule,
     MatInputModule,

@@ -38,9 +38,9 @@
         <h3 class="profile_number">{{num_following}}</h3>
         <p class="profile_number_text">Following</p>
     </div>
-    <div class="col">
-        <h3 class="profile_number">{{num_communities}}</h3>
-        <h1 class="profile_number_text">Communities</h1>
+    <div class="col" (click)="toFollowedCommunities()">
+        <h3 class="profile_number">{{followed_communities.length}}</h3>
+        <p class="profile_number_text">Communities</p>
     </div>
 
     <div class="col" *ngIf="viewing_own_profile">
