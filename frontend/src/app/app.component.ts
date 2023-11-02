@@ -32,7 +32,7 @@ performSearch() {
         );
 
       this.http
-        .get<any>(api + `/search_communities?communityName=${this.searchCriteria}`)
+        .get<any>(api + `/search_communities?name=${this.searchCriteria}`)
         .subscribe(
           (communityResponse: any) => {
             // Merge the community results with user results
