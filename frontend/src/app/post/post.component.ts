@@ -24,13 +24,18 @@ export class PostComponent {
   post_community: string = "community_not_set";
   post_content: string = "content_not_set";
   like_count: number = 0;
+  unlike_count: number = 0;
   has_liked: boolean = false;
+  has_unliked: boolean = false;
 
   constructor(private http: HttpClient) {
     this.post_id = this.urlParams.get('post') as string;
     this.getData();
     this.get_post_data();
+    this.initializeLikeStatus(); // Initialize the like status
+    this.initializeUnlikeStatus();
   }
+
 
   async getData() {
     const options = { withCredentials : true};
@@ -83,9 +88,11 @@ export class PostComponent {
   }
 
   like_button_click() {
-    if(!this.logged_in) {
+    if (!this.logged_in) {
+      // Handle the case when the user is not logged in.
       return;
     }
+
     if (this.has_liked) {
       // User wants to unlike the post
       this.unlikePost();
@@ -93,32 +100,75 @@ export class PostComponent {
       // User wants to like the post
       this.likePost();
     }
+    // Debugging statement
+    console.log('has_liked:', this.has_liked);
   }
+
+  unlike_button_click() {
+    if (!this.logged_in) {
+      // Handle the case when the user is not logged in.
+      return;
+    }
+
+    if (this.has_unliked) {
+      // User wants to remove their dislike
+      //this.ununlikedPost();
+    } else {
+      // User wants to dislike the post
+      this.unlikePost();
+    }
+    // Debugging statement
+    console.log('has_unliked:', this.has_unliked);
+  }
+  
+  likePost() {
+    if (!this.logged_in) {
+      // Handle the case when the user is not logged in.
+      return;
+    }
+  
+    const options = { withCredentials: true };
+    this.http
+      .post(this.backend_addr + "/like_post", { post: this.post_id }, options)
+      .subscribe(
+        (response: any) => {
+          if (response) {
+            console.log('Like response:', response);
+            this.has_liked = true;
+            this.like_count++;
+            console.log('Like count:', this.like_count);
+          }
+        },
+        (error: any) => {
+          console.error("Error liking the post:", error);
+        }
+      );
+  }
+  
 
   unlikePost() {
-    // Send a request to the backend to unlike the post
+    if (!this.logged_in) {
+      return;
+    }
+  
     const options = { withCredentials: true };
-    this.http.post(this.backend_addr + "/post/unlike", { post_id: this.post_id }, options)
-      .subscribe((response: any) => {
-        if (response.success) {
-          this.has_liked = false;
-          this.like_count--;
+    this.http
+      .delete(this.backend_addr + `/like_post?post=${this.post_id}`, options)
+      .subscribe(
+        (response: any) => {
+          console.log('Unlike success:', response);
+          if (response) {
+            this.has_liked = false;
+            this.like_count--;
+            console.log('Like count:', this.like_count);
+          }
+        },
+        (error: any) => {
+          console.error("Error unliking the post:", error);
         }
-      });
+      );
   }
-
-  likePost() {
-    // Send a request to the backend to like the post
-    const options = { withCredentials: true };
-    this.http.post(this.backend_addr + "/post/like", { post_id: this.post_id }, options)
-      .subscribe((response: any) => {
-        if (response.success) {
-          this.has_liked = true;
-          this.like_count++;
-        }
-      });
-  }
-
+  
 
   show_posts() {
     if (!this.community_id){return;}
@@ -130,7 +180,48 @@ export class PostComponent {
       }, 
       error: error => {         // On fail
         console.log(error);
-      }});
+      }
+    });
+  }
+
+
+    // Initialize 'has_liked' based on user's interaction with the post
+  initializeLikeStatus() {
+    if (!this.logged_in) {
+      // If the user is not logged in, set 'has_liked' to false.
+      this.has_liked = false;
+    } else {
+      // If the user is logged in, send a request to check if the user has liked the post.
+      const options = { withCredentials: true };
+      this.http.get(this.backend_addr + `/post/user_liked?post=${this.post_id}&user=${this.self_id}`, options)
+        .subscribe((response: any) => {
+          if (response === 1) {
+            this.has_liked = true;
+          } else {
+            this.has_liked = false;
+          }
+        });
+    }
+  }
+
+  // Initialize 'has_liked' based on user's interaction with the post
+  initializeUnlikeStatus() {
+    if (!this.logged_in) {
+      // If the user is not logged in, set 'has_liked' to false.
+      this.has_unliked = false;
+    } else {
+      // If the user is logged in, send a request to check if the user has liked the post.
+      const options = { withCredentials: true };
+      this.http.get(this.backend_addr + `/post/user_disliked?post=${this.post_id}&user=${this.self_id}`, options)
+        .subscribe((response: any) => {
+          if (response === 1) {
+            this.has_unliked = true;
+          } else {
+            this.has_unliked = false;
+          }
+        });
+    }
   }
 }
+
 

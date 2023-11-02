@@ -475,7 +475,7 @@ Error
 "Invalid Community ID"
 ```
 
-### POST /like/post
+### POST /like_post
 
 Body
 
@@ -518,7 +518,7 @@ Error
 "User has already liked this post"
 ```
 
-### DELETE /like/post
+### DELETE /like_post
 
 Body
 
