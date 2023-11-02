@@ -71,6 +71,7 @@ export class NewCommunityDialogComponent {
     const desc = this.newCommunityForm.get('community_desc')?.value;
     this.hasNameLength = name.length >= 4;
     this.hasDescLength = desc.length >= 25;
+    this.errorMessage = '';
   }
 
   // VALIDATOR --> Description Requierement
@@ -240,6 +241,9 @@ public create_community(community_name : string, community_desc : string, mods :
       } else {
         this.errorMessage = 'An unexpected error occurred while creating the community.';
       }
+
+      this.newCommunityForm.get('community_name')?.setValue('');
+
       console.log(this.errorMessage);
     }
   });
