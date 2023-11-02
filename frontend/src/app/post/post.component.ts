@@ -204,13 +204,13 @@ export class PostComponent {
     }
   }
 
-  // Initialize 'has_liked' based on user's interaction with the post
+  // Initialize 'has_unliked' based on user's interaction with the post
   initializeUnlikeStatus() {
     if (!this.logged_in) {
-      // If the user is not logged in, set 'has_liked' to false.
+      // If the user is not logged in, set 'has_unliked' to false.
       this.has_unliked = false;
     } else {
-      // If the user is logged in, send a request to check if the user has liked the post.
+      // If the user is logged in, send a request to check if the user has unliked the post.
       const options = { withCredentials: true };
       this.http.get(this.backend_addr + `/post/user_disliked?post=${this.post_id}&user=${this.self_id}`, options)
         .subscribe((response: any) => {
