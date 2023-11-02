@@ -12,6 +12,7 @@ export class HomeComponent {
 
   searchForm: FormGroup;
   searchResults: any[] = [];
+  communitySearchResults: any[] = [];
   search: string = '';
   notEmpty: boolean = false;
 
@@ -25,6 +26,11 @@ export class HomeComponent {
   goToUserProfile() {
     // TODO navigate to specific profile
     this.router.navigate(['/hubit/profile']); 
+  }
+
+  goToCommunityProfile() {
+    // TODO navigate to specific community profile
+    this.router.navigate(['/hubit/community']); 
   }
   
   onChange() {
@@ -44,18 +50,27 @@ export class HomeComponent {
   }
 
   performSearch(searchCriteria: string) {
-
     if (searchCriteria && searchCriteria.trim() !== '') {
       console.log('Perform search with criteria: ', searchCriteria);
-
       const api = 'http://localhost:8080/api';
+      // Search for users
       this.http.get<any>(`${api}/search_users?username=${searchCriteria}`).subscribe(
         (response: any) => {
           this.searchResults = response;
-          console.log(response);
+          console.log('User search response:', response);
         },
         error => {
-          console.error('Search failed:', error);
+          console.error('User search failed:', error);
+        }
+      );
+      // Search for communities
+      this.http.get<any>(`${api}/search_communities?name=${searchCriteria}`).subscribe(
+        (response: any) => {
+          this.communitySearchResults = response;
+          console.log('Community search response:', response);
+        },
+        error => {
+          console.error('Community search failed:', error);
         }
       );
     } else {

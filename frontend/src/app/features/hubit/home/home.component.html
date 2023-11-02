@@ -44,12 +44,11 @@
     <div class="divider"></div>
     <h3 class="title">Communities: </h3>
     <div class="community-results-panel">
-        <!-- Sample boxes for communities. loop through them using *ngFor once we have data -->
-        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
-        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
-        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
-        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
-        <!-- ... -->
+        <div *ngIf="communitySearchResults && communitySearchResults.length > 0">
+          <button *ngFor="let community of communitySearchResults" mat-button (click)="goToCommunityProfile()">
+            <mat-icon>groups</mat-icon>
+            {{ community.name }}
+          </button>
+        </div>
     </div>
-    <router-outlet></router-outlet>
 </div>

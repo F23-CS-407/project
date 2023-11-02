@@ -50,8 +50,10 @@ mat-form-field.searchfield {
 }
 
 .community-results-panel, .user-results-panel {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
     width: 80%;
 }
