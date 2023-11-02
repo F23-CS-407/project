@@ -1,54 +1,108 @@
-<div class="middle_box">
-    <form class="new_community_form">
-        <mat-form-field class="input-80-width" style="padding-top:20px">
-            <mat-label>Community Name:</mat-label>
-                    <input #community_name matInput>
-        </mat-form-field>
+<!-- TODO: (submit)="onSubmit($event)" -->
+<form [formGroup]="newCommunityForm" (submit)="onSubmit($event)" >
+    <div class="new-community-dialog">
+        <div class="middle_box">
+            <div class="inputs-container">
+                <div class="name-box">
+                    <h3 class="title">Community Name: </h3>
+                    <mat-form-field class="inputfield" appearance="outline">
+                        <input matInput formControlName="community_name" (input)="onChange()">
+                        <button 
+                            mat-icon-button
+                            type="button"
+                            appearance="outlined" 
+                            matSuffix 
+                            *ngIf="newCommunityForm.get('community_name')?.value"
+                            (click)="newCommunityForm.get('community_name')?.setValue('')"
+                        >
+                            <mat-icon>
+                                <span class="material-symbols-outlined">
+                                    cancel
+                                </span>
+                            </mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <div class="criteria" [ngClass]="{'met-criteria': hasNameLength, 'unmet-criteria': !hasNameLength}">
+                        <mat-icon *ngIf="hasNameLength; else noNameIcon">check</mat-icon>
+                        <ng-template #noNameIcon><mat-icon>close</mat-icon></ng-template>
+                        At least 4 characters
+                    </div>
+                </div>
 
-        <mat-form-field class="input-80-width">
-            <h1>Description:</h1>
-            <textarea matInput #community_desc class="description-text"></textarea>
-        </mat-form-field>
-        
-        <mat-form-field class="input-80-width">
-            <mat-label>Choose Moderators</mat-label>
+                <div class="bio-box">
+                    <h3 class="title">Overview: </h3>
+                    <mat-form-field class="inputfield" appearance="outline">
+                        <mat-label>Anything exiting for your community?</mat-label>
+                        <textarea matInput formControlName="community_desc" rows="4" (input)="onChange()"></textarea>
+                        <button 
+                            mat-icon-button
+                            type="button"
+                            appearance="outlined" 
+                            matSuffix 
+                            *ngIf="newCommunityForm.get('community_desc')?.value"
+                            (click)="newCommunityForm.get('community_desc')?.setValue('')"
+                        >
+                            <mat-icon>
+                                <span class="material-symbols-outlined">
+                                    cancel
+                                </span>
+                            </mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <div class="criteria" [ngClass]="{'met-criteria': hasDescLength, 'unmet-criteria': !hasDescLength}">
+                        <mat-icon *ngIf="hasDescLength; else noBioIcon">check</mat-icon>
+                        <ng-template #noBioIcon><mat-icon>close</mat-icon></ng-template>
+                        At least 25 characters
+                    </div>
+                </div>
+                
+                <div class="mods-box">
+                    <mat-form-field class="mod-field" appearance="outline">
+                        <mat-label>Choose Moderators</mat-label>
 
-            <mat-chip-grid [disabled]="hide_chips" #chipGrid>
-                <mat-chip-row *ngFor="let mod of selected_mods" (removed)="remove_mod(mod)">
-                    {{mod.username}}
-                    <button matChipRemove *ngIf="mod.id != this.self_id">
-                        <mat-icon>cancel</mat-icon>
-                    </button>
-                </mat-chip-row>
-            </mat-chip-grid>
-            
-            <input placeholder="New Mod..." #modInput [formControl]="userCtrl"
-            [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
-            (input)="filter_users(modInput.value)"
-            [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
-            (matChipInputTokenEnd)="add_mod($event)"/>
+                        <mat-chip-grid [disabled]="hide_chips" #chipGrid>
+                            <mat-chip-row *ngFor="let mod of selected_mods" (removed)="remove_mod(mod)">
+                                {{mod.username}}
+                                <button matChipRemove *ngIf="mod.id != this.self_id">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip-row>
+                        </mat-chip-grid>
+                        <!-- IDEA: maybe add filter for recomending mods from friends or something like that -->
+                        <input placeholder="New Mod..." #modInput [formControl]="userCtrl"
+                            [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                            (input)="filter_users(modInput.value)"
+                            [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
+                            (matChipInputTokenEnd)="add_mod($event)"/>
 
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select_mod($event)">
-                <mat-option *ngFor="let mod of filtered_mods | async" [value]="mod">
-                    {{mod}}
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
 
-        <mat-form-field class="input-80-width">
-            <input matInput hidden="true">
-            <h1>Add Background Photo:</h1>
-            <div class="image-preview-box">
-                <div class="image-preview-box-text">
-                    This feature is currently not supported
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select_mod($event)">
+                            <mat-option *ngFor="let mod of filtered_mods | async" [value]="mod">
+                                {{mod}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
                 </div>
             </div>
-        </mat-form-field>
-    
-        <div class="create-community-button-area">
-                                                            Couldn't figure out chip values, will fix later
-            <button mat-raised-button class="create-community-button" (click)="create_community(community_name.value, community_desc.value, ['General'])">Create Community</button>
+            
+            <div class="image-box">
+                <h3 class="title">Add Cover Photo: </h3>
+                <div class="image-upload">
+                    <label for="file-input">
+                        <img src="../../../assets/letter-logo.png" class="image-preview">
+                    </label>
+                    <div class="image-upload">
+                        <input id="file-input" type="file">
+                    </div>
+                    <!-- TODO: (change)="onFileSelected($event)" for uploading -->
+                </div>
+            </div>
         </div>
-    </form>
-    <div class="spacer"></div>
-</div>
+
+        <div class="submit">
+            <button mat-raised-button class="button" type="submit">
+                <mat-icon>add</mat-icon> Start Community
+            </button>
+        </div>
+    </div>
+</form>

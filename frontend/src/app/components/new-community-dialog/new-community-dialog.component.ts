@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {FormControl } from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable, map, startWith } from 'rxjs';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -18,14 +18,25 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class NewCommunityDialogComponent {
   private backend_addr : string = "http://localhost:8080/api";
 
+  newCommunityForm: FormGroup;
+
   // Community page data
   community_name: string = "";
   community_desc: string = "";
+  hasNameLength: boolean = false;
+  hasDescLength: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<NewCommunityDialogComponent>, 
     private router : Router, 
-    private http : HttpClient) {
+    private http : HttpClient,
+    private fb: FormBuilder
+  ) {
+
+    this.newCommunityForm = this.fb.group({
+      community_name: ['', Validators.required],
+      community_desc: ['', Validators.required]
+    });
     // For moderator code
     this.filtered_mods = this.userCtrl.valueChanges.pipe(
       startWith(null),
@@ -36,6 +47,43 @@ export class NewCommunityDialogComponent {
   }
   async async_constructor() {
     this.getData();
+  }
+
+  // VALIDATOR --> Name Requierement
+  nameValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value = control.value;
+
+      const hasNameLength = value.length >= 4;
+
+      if (hasNameLength) {
+        return null;
+      }
+
+      return { nameInvalid: true };
+    };
+  }
+
+  onChange() {
+    const name = this.newCommunityForm.get('community_name')?.value;
+    const desc = this.newCommunityForm.get('community_desc')?.value;
+    this.hasNameLength = name.length >= 4;
+    this.hasDescLength = desc.length >= 25;
+  }
+
+  // VALIDATOR --> Description Requierement
+  descValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value = control.value;
+
+      const hasDescLength = value.length >= 25;
+
+      if (hasDescLength) {
+        return null;
+      }
+
+      return { descInvalid: true };
+    };
   }
 
   // Logged in user info
@@ -105,6 +153,7 @@ export class NewCommunityDialogComponent {
     event.chipInput.clear();
     this.userCtrl.setValue(null);
   }
+
   private add_mod_username(mod_name : string) {
     // Add to list
     if (mod_name) {
@@ -123,6 +172,7 @@ export class NewCommunityDialogComponent {
       }
     }
   }
+
   public remove_mod(mod: moderator) {
     const index = this.selected_mods.indexOf(mod);
 
@@ -134,6 +184,7 @@ export class NewCommunityDialogComponent {
       this.userCtrl.setValue(null);
     }
   }
+
   public select_mod(event: MatAutocompleteSelectedEvent): void {
     this.add_mod_username(event.option.viewValue);
     
@@ -142,6 +193,7 @@ export class NewCommunityDialogComponent {
       this.userCtrl.setValue(null);
     }
   }
+
   private filterOnValueChange(mod_name: string | null): String[] {
     let result: String[] = [];
 
@@ -151,6 +203,21 @@ export class NewCommunityDialogComponent {
     result = allModsLessSelected.map((mod)=>mod.username);
     return result;
   }
+
+  onSubmit(event: Event): void {
+    event.preventDefault();
+    if (this.newCommunityForm.valid) {
+        const communityName = this.newCommunityForm.get('community_name')?.value;
+        const communityDesc = this.newCommunityForm.get('community_desc')?.value;
+        const mods = this.selected_mods.map(mod => mod.id);
+        console.log(communityName, communityDesc, mods)
+        this.create_community(communityName, communityDesc, mods);
+    } else {
+        // Handle form validation errors or show a message to the user
+        console.error('Form is invalid');
+    }
+}
+
   public create_community(community_name : string, community_desc : string, mods : string[]) {
     // Call backend /create_community
     const options = { withCredentials : true };

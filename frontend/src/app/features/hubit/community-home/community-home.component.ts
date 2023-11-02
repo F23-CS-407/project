@@ -13,8 +13,8 @@ export class CommunityHomeComponent {
 
   openNewCommunityDialog(): void {
     this.dialog.open(NewCommunityDialogComponent, {
-      width: '80vw', 
-      height: '75vh'
+      width: 'auto', 
+      height: 'auto'
     });
   }
 }
