@@ -6,6 +6,8 @@ import { CommunityComponent } from './community/community.component';
 import { PostComponent } from './post/post.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
+import { CommunityHomeComponent } from './community-home/community-home.component';
+import { NewCommunityComponent } from './new-community/new-community.component';
 
 const routes: Routes = [
   {
@@ -18,7 +20,17 @@ const routes: Routes = [
       },
       {
         path: 'community',
-        component: CommunityComponent
+        component: CommunityHomeComponent,
+        children: [
+          {
+            path: 'community-profile',
+            component: CommunityComponent
+          },
+          {
+            path: 'create-community',
+            component: NewCommunityComponent
+          }
+        ]
       },
       {
         path: 'post',

@@ -7,12 +7,17 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PermadeleteComponent } from './permadelete/permadelete.component';
-
+import { NewCommunityDialogComponent } from './new-community-dialog/new-community-dialog.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [
     MenuBarComponent,
     SettingsDialogComponent,
-    PermadeleteComponent
+    PermadeleteComponent,
+    NewCommunityDialogComponent
   ],
   imports: [
     CommonModule,
@@ -20,10 +25,16 @@ import { PermadeleteComponent } from './permadelete/permadelete.component';
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
   exports: [
     MenuBarComponent,
-    SettingsDialogComponent
+    SettingsDialogComponent,
+    PermadeleteComponent,
+    NewCommunityDialogComponent
   ] 
 })
 export class SharedModule { }

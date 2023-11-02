@@ -19,6 +19,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SettingsComponent } from './settings/settings.component';
+import { CommunityHomeComponent } from './community-home/community-home.component';
 @NgModule({
   declarations: [
     HubitComponent,  // Declare HubitComponent
@@ -27,6 +28,7 @@ import { SettingsComponent } from './settings/settings.component';
     PostComponent,
     ProfileComponent,
     SettingsComponent,
+    CommunityHomeComponent,
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,7 @@ import { SettingsComponent } from './settings/settings.component';
     MatExpansionModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    RouterModule  // Add RouterModule to imports
+    RouterModule 
   ],
   exports: [
     HubitComponent,

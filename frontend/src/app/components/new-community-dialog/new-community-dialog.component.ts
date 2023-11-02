@@ -4,27 +4,28 @@ import { Router } from '@angular/router';
 
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
-import {NgFor} from '@angular/common';
-import {MatSelectModule} from '@angular/material/select';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable, map, startWith } from 'rxjs';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-new-community',
-  templateUrl: './new-community.component.html',
-  styleUrls: ['./new-community.component.css']
+  selector: 'app-new-community-dialog',
+  templateUrl: './new-community-dialog.component.html',
+  styleUrls: ['./new-community-dialog.component.css']
 })
-export class NewCommunityComponent {
+export class NewCommunityDialogComponent {
   private backend_addr : string = "http://localhost:8080/api";
 
   // Community page data
   community_name: string = "";
   community_desc: string = "";
 
-  constructor(private router : Router, private http : HttpClient) {
+  constructor(
+    public dialogRef: MatDialogRef<NewCommunityDialogComponent>, 
+    private router : Router, 
+    private http : HttpClient) {
     // For moderator code
     this.filtered_mods = this.userCtrl.valueChanges.pipe(
       startWith(null),

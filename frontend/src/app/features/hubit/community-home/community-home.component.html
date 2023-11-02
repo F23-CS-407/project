@@ -1,0 +1,26 @@
+<div class="page-content">
+    <div class="top-panel">
+        <button mat-raised-button 
+            class="button" 
+            (click)="openNewCommunityDialog()"
+        >
+            <mat-icon>add</mat-icon> Create New Community
+        </button>
+    </div>
+    <div class="divider"></div>
+    <div class="communities-panel">
+        <!-- Sample boxes for communities. loop through them using *ngFor once we have data -->
+        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
+        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
+        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
+        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
+        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
+        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
+        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
+        <div class="community-box" routerLink="/hubit/community/community-profile"></div>
+        <div class="community-box"></div>
+        <div class="community-box"></div>
+        <!-- ... -->
+    </div>
+    <router-outlet></router-outlet>
+</div>
