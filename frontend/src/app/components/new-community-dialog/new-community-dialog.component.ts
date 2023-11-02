@@ -230,7 +230,7 @@ export class NewCommunityDialogComponent {
       next: async create_community_response => {
         let community_id = create_community_response._id;
 
-        this.router.navigate(['community'], {queryParams:{'community' : community_id}});
+        this.router.navigate(['community', 'community-profile'], {queryParams:{'community' : community_id}});
       },
       error: error => {
         // TODO: Check error statement
