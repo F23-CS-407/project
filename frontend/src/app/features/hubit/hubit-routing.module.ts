@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { CommunityComponent } from './community/community.component';
 import { PostComponent } from './post/post.component';
 import { ProfileComponent } from './profile/profile.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent
       },
       {
         path: '',

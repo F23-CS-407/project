@@ -1,5 +1,6 @@
 .menu-bar {
     display: flex;
+    height: 40px;
     width: 100vw;  /* Full viewport width */
     justify-content: center;
     align-items: center;
@@ -21,4 +22,11 @@
 
 mat-icon {
     color: white;
+}
+
+@media screen and (min-width: 960px) {
+    .menu-bar {
+        width: 60vw;
+        height: 20px;
+    }
 }

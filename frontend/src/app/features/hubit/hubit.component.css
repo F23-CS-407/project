@@ -4,7 +4,8 @@
     justify-content: space-between;
     align-items: center;
     background: linear-gradient(0deg, #DD5241 1.35%, #EFB056 100%);
-    min-height: 100vh; 
+    height: 100vh; 
+    overflow: hidden;
 }
 
 .page-content {
@@ -12,7 +13,6 @@
     flex-direction: column; 
     overflow-y: auto;
     flex-grow: 1;
-    max-height: calc(100vh - 60px);  
 }
 /* Logo Styling */
 .logo-container {
@@ -30,9 +30,10 @@
     height: auto;
 }
 
-
-app-menu-bar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+.footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
 }
