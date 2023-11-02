@@ -6,10 +6,10 @@
 }
 
 .search-result {
-  padding: 10px;
-  border: 1px solid #ccc;
+  padding: 5px;
+  border: 1px solid black;
   margin-bottom: 5px;
-  color: #fff; 
+  color: black 
 }
 /* Style for the toolbar */
 .toolbar {

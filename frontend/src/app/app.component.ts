@@ -27,7 +27,7 @@ performSearch() {
         this.searchResults = response;
         console.log(response);
       },
-      // TODO: Make HTTP request to backend
+      
     );
         
   
