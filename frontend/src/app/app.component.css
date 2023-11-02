@@ -2,15 +2,21 @@
 .search-results {
   max-width: 300px;
   overflow-y: auto;
-  margin-top: 10px; /* Add space between search input and results */
+  margin-top: 10px;
+  background-color: #fff; /* Add a background color */
+  border: 1px solid #ccc; /* Add a border for styling */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  border-radius: 4px; /* Add border radius */
+  padding: 10px;
 }
 
 .search-result {
   padding: 5px;
   border: 1px solid black;
-  margin-bottom: 5px;
-  color: black 
+  color: black;
 }
+
+
 /* Style for the toolbar */
 .toolbar {
   background-color: rgb(33, 33, 33);
