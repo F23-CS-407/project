@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NewCommunityDialogComponent } from '../../../components/new-community-dialog/new-community-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-community-home',
@@ -9,7 +10,7 @@ import { NewCommunityDialogComponent } from '../../../components/new-community-d
 })
 export class CommunityHomeComponent {
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private router: Router) {}
 
   openNewCommunityDialog(): void {
     const dialogRef = this.dialog.open(NewCommunityDialogComponent, {
@@ -18,8 +19,7 @@ export class CommunityHomeComponent {
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      //TODO Reload the component or fetch the updated data here
-      
+      this.router.navigate(['/hubit/community']);
     });
   }
   

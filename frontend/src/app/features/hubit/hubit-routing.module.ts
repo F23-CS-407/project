@@ -18,14 +18,12 @@ const routes: Routes = [
         component: HomeComponent
       },
       {
-        path: 'community',
+        path: 'community-dashboard',
         component: CommunityHomeComponent,
-        children: [
-          {
-            path: 'community-profile',
-            component: CommunityComponent
-          }
-        ]
+      },
+      {
+        path: 'community',
+        component: CommunityComponent
       },
       {
         path: 'post',
