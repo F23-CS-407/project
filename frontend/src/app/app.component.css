@@ -3,19 +3,26 @@
   max-width: 300px;
   overflow-y: auto;
   margin-top: 10px;
-  background-color: #fff; /* Add a background color */
-  border: 1px solid #ccc; /* Add a border for styling */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  border-radius: 4px; /* Add border radius */
+  background-color: black; /* Set a black background for the container */
+  border: 1px solid black;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   padding: 10px;
 }
 
 .search-result {
   padding: 5px;
   border: 1px solid black;
+  margin: 0;
   color: black;
+  background-color: #FFA500; /* Set an orange background for individual results */
 }
 
+/* Style for hover effect on search results */
+.search-result:hover {
+  background-color: white;
+  color: black; /* Change text color to black on hover */
+}
 
 /* Style for the toolbar */
 .toolbar {
