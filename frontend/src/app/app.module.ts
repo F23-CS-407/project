@@ -29,6 +29,7 @@ import { PostComponent } from './post/post.component';
 import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { FollowedCommunitiesComponent } from './followed-communities/followed-co
     PostComponent,
     CommunityComponent,
     NewCommunityComponent,
-    FollowedCommunitiesComponent
+    FollowedCommunitiesComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
