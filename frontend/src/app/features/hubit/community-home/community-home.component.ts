@@ -12,9 +12,15 @@ export class CommunityHomeComponent {
   constructor(private dialog: MatDialog) {}
 
   openNewCommunityDialog(): void {
-    this.dialog.open(NewCommunityDialogComponent, {
+    const dialogRef = this.dialog.open(NewCommunityDialogComponent, {
       width: 'auto', 
       height: 'auto'
     });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      //TODO Reload the component or fetch the updated data here
+      
+    });
   }
+  
 }

@@ -54,6 +54,15 @@ mat-form-field.inputfield {
     font-size: 16px;
 }
 
+.error-message {
+    color: #F1580C;
+    text-align: center;
+    font-family: 'Source Sans 3';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+}
+
 .criteria {
     display: flex;
     flex-direction: row;

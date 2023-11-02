@@ -26,6 +26,8 @@ export class NewCommunityDialogComponent {
   hasNameLength: boolean = false;
   hasDescLength: boolean = false;
 
+  errorMessage: string = "";
+
   constructor(
     public dialogRef: MatDialogRef<NewCommunityDialogComponent>, 
     private router : Router, 
@@ -218,25 +220,31 @@ export class NewCommunityDialogComponent {
     }
 }
 
-  public create_community(community_name : string, community_desc : string, mods : string[]) {
-    // Call backend /create_community
-    const options = { withCredentials : true };
-    const body = {
-      "name" : community_name,
-      "description" : community_desc,
-      "mods" : this.selected_mods.map((mod)=>mod.id),
-    };
-    this.http.post<any>(this.backend_addr + "/create_community", body, options).subscribe({
-      next: async create_community_response => {
-        let community_id = create_community_response._id;
+public create_community(community_name : string, community_desc : string, mods : string[]) {
+  // Call backend /create_community
+  const options = { withCredentials : true };
+  const body = {
+    "name" : community_name,
+    "description" : community_desc,
+    "mods" : this.selected_mods.map((mod)=>mod.id),
+  };
+  this.http.post<any>(this.backend_addr + "/create_community", body, options).subscribe({
+    next: async create_community_response => {
+      let community_id = create_community_response._id;
+      this.dialogRef.close();
+    },
+    error: error => {
+      // Check if the error response has the 'error' key and set the errorMessage accordingly
+      if (error && error.error && error.error.error) {
+        this.errorMessage = error.error.error;
+      } else {
+        this.errorMessage = 'An unexpected error occurred while creating the community.';
+      }
+      console.log(this.errorMessage);
+    }
+  });
+}
 
-        this.router.navigate(['community', 'community-profile'], {queryParams:{'community' : community_id}});
-      },
-      error: error => {
-        // TODO: Check error statement
-        console.log('Could not make community');
-      }});
-  }
 }
 
 class moderator {
