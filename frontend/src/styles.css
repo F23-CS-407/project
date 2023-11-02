@@ -13,3 +13,11 @@ app-root {
 mat-label {
     font-family: 'Source Sans 3' !important;
 }
+
+.mat-mdc-fab {
+    background-color: white !important;
+}
+
+.mat-icon.search {
+    color: black !important;
+}

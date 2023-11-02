@@ -213,41 +213,40 @@ export class NewCommunityDialogComponent {
         const communityName = this.newCommunityForm.get('community_name')?.value;
         const communityDesc = this.newCommunityForm.get('community_desc')?.value;
         const mods = this.selected_mods.map(mod => mod.id);
-        console.log(communityName, communityDesc, mods)
         this.create_community(communityName, communityDesc, mods);
     } else {
         // Handle form validation errors or show a message to the user
         console.error('Form is invalid');
     }
-}
+  }
 
-public create_community(community_name : string, community_desc : string, mods : string[]) {
-  // Call backend /create_community
-  const options = { withCredentials : true };
-  const body = {
-    "name" : community_name,
-    "description" : community_desc,
-    "mods" : this.selected_mods.map((mod)=>mod.id),
-  };
-  this.http.post<any>(this.backend_addr + "/create_community", body, options).subscribe({
-    next: async create_community_response => {
-      let community_id = create_community_response._id;
-      this.dialogRef.close();
-    },
-    error: error => {
-      // Check if the error response has the 'error' key and set the errorMessage accordingly
-      if (error && error.error && error.error.error) {
-        this.errorMessage = error.error.error;
-      } else {
-        this.errorMessage = 'An unexpected error occurred while creating the community.';
+  public create_community(community_name : string, community_desc : string, mods : string[]) {
+    // Call backend /create_community
+    const options = { withCredentials : true };
+    const body = {
+      "name" : community_name,
+      "description" : community_desc,
+      "mods" : this.selected_mods.map((mod)=>mod.id),
+    };
+    this.http.post<any>(this.backend_addr + "/create_community", body, options).subscribe({
+      next: async create_community_response => {
+        let community_id = create_community_response._id;
+        this.dialogRef.close();
+      },
+      error: error => {
+        // Check if the error response has the 'error' key and set the errorMessage accordingly
+        if (error && error.error && error.error.error) {
+          this.errorMessage = error.error.error;
+        } else {
+          this.errorMessage = 'An unexpected error occurred while creating the community.';
+        }
+
+        this.newCommunityForm.get('community_name')?.setValue('');
+
+        console.log(this.errorMessage);
       }
-
-      this.newCommunityForm.get('community_name')?.setValue('');
-
-      console.log(this.errorMessage);
-    }
-  });
-}
+    });
+  }
 
 }
 

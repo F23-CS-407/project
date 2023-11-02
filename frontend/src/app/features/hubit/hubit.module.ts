@@ -17,9 +17,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SettingsComponent } from './settings/settings.component';
 import { CommunityHomeComponent } from './community-home/community-home.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 @NgModule({
   declarations: [
     HubitComponent,  // Declare HubitComponent
@@ -43,7 +45,10 @@ import { CommunityHomeComponent } from './community-home/community-home.componen
     MatChipsModule,
     MatExpansionModule,
     MatAutocompleteModule,
+    MatButtonModule,
+    FormsModule,
     ReactiveFormsModule,
+    MatInputModule,
     RouterModule 
   ],
   exports: [
