@@ -49,13 +49,56 @@ h1 {
     font-weight: 700;
 }
 
-mat-form-field {
-    width: 200px; 
+mat-form-field.inputfield {
+    width: 300px; 
+    margin-bottom: -15px;
 }
 
-/* Button Styling */
-button {
-    margin-top: 10px; /* Space between input and button */
+.error-message {
+    color: #F1580C;
+    text-align: center;
+    font-family: 'Source Sans 3';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+/* Input Validation */
+
+.password-criteria {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 35px;
+}
+
+.criteria {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px
+}
+
+.criteria.mat-icon.material-icons {
+    font-size: 16px;
+    height: 16px;
+    width:16px;
+}
+
+.met-criteria {
+    color: rgb(84, 173, 84);
+}
+
+.met-criteria mat-icon {
+    color: rgb(84, 173, 84);
+}
+
+.unmet-criteria {
+    color: #F1580C;
+}
+
+.unmet-criteria mat-icon {
+    color: #F1580C;
 }
 
 /* Message Styling */
@@ -78,12 +121,11 @@ h5 {
 
     color: #F1580C;
     text-align: center;
-    font-family: Source Sans 3;
+    font-family: 'Source Sans 3';
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
 }
 .link-button:hover {
-    color: #00C;
     text-decoration: underline;
 }

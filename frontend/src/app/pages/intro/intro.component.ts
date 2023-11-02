@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { User } from "../../../models/User";
-
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.component.html',
@@ -11,54 +10,96 @@ import { User } from "../../../models/User";
 export class IntroComponent {
   private backend_addr: string = "http://localhost:8080/api";
 
-  username!: string;
-  password!: string;
-  email!: string;
+  loginForm: FormGroup;
+  registerForm: FormGroup;
+
+  visible: boolean = false;
+  hasUpper = false;
+  hasLower = false;
+  hasNumber = false;
+  hasMinLength = false;
+  match = false;
+
+
   showLoginForm = true;
   errorMessage: string = '';  // To hold error messages
   self_id: string = "";
   self_username?: string = undefined;
   logged_in: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router) {
-    this.getData();
+  constructor(private http: HttpClient, private router: Router, private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      login: ['', Validators.required],
+      loginKey: ['', Validators.required]
+    });
+
+    this.registerForm = this.fb.group({
+      newUser: ['', Validators.required],
+      newKey: ['', [Validators.required, this.keyValidator()]],
+      keyMatch: ['', Validators.required]
+    }, { validators: this.keyMatchValidator() });
+    
   }
 
-  private async async_constructor() {
-    let current_user : User = await User.get_current_user_data();
+  // VALIDATOR --> key requirements
+  keyValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value = control.value;
+      const hasUppercase = /[A-Z]/.test(value);
+      const hasLowercase = /[a-z]/.test(value);
+      const hasNumber = /\d/.test(value);
+      const hasMinLength = value.length >= 8;
 
-    this.self_id = current_user.get_id();
-    if (this.self_id !== "-1" && this.self_id !== "-2") {
-      this.logged_in = true;
-    }
-    this.self_username = current_user.get_username();
+      if (hasUppercase && hasLowercase && hasNumber && hasMinLength) {
+        return null;
+      }
+
+      return { passwordInvalid: true };
+    };
   }
+
+  // VALIDATOR --> key match
+  keyMatchValidator(): ValidatorFn {
+    return (group: AbstractControl): { [key: string]: any } | null => {
+      const password = group.get('newKey')?.value;
+      const confirmPassword = group.get('keyMatch')?.value;
+  
+      if (password && confirmPassword && password !== confirmPassword) {
+        return { passwordsMismatch: true };
+      }
+      return null;
+    };
+  }
+  
+
+  onPasswordChange() {
+    const value = this.registerForm.get('newKey')?.value;
+    this.hasUpper = /[A-Z]/.test(value);
+    this.hasLower = /[a-z]/.test(value);
+    this.hasNumber = /\d/.test(value);
+    this.hasMinLength = value.length >= 8;
+    this.match = this.registerForm.get('newKey')?.value === this.registerForm.get('keyMatch')?.value;
+  }
+
+  toggleVisibile() {
+    this.visible = !this.visible;
+  }
+  
 
   showRegistrationForm() {
     this.showLoginForm = false;
   }
-
+  
   showLoginFormAgain() {
     this.showLoginForm = true;
   }
 
-  getData() {
-    const options = { withCredentials : true};
-    this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
-      next: login_response => {          // On success
-        this.logged_in = true;
-        console.log(login_response.username);
-      }, 
-      error: error => {         // On fail
-        console.log("No session: ");
-        console.log(error);
-      }});
-
-  }
-
   loginUser(event: Event) {
     event.preventDefault();
-    const user = { username: this.username, password: this.password };
+    const user = { 
+      username: this.loginForm.get('login')?.value, 
+      password: this.loginForm.get('loginKey')?.value 
+    };
     const options = { withCredentials: true };
 
     this.http.post(this.backend_addr + '/login', user, options).subscribe(
@@ -76,15 +117,19 @@ export class IntroComponent {
 
   registerUser(event: Event) {
     event.preventDefault();
-    const body = { "username" : this.username, "password" : this.password};
+
+    const user = { 
+      username: this.registerForm.get('newUser')?.value, 
+      password: this.registerForm.get('newKey')?.value 
+    };
     const options = { withCredentials : true };
 
-    this.http.post<any>(this.backend_addr + "/create_user", body, options).subscribe({
+    this.http.post<any>(this.backend_addr + "/create_user", user, options).subscribe({
       next: create_response => {
         console.log(create_response);
 
         // Log the user in
-        this.http.post<any>(this.backend_addr + "/login", body, options).subscribe(
+        this.http.post<any>(this.backend_addr + "/login", user, options).subscribe(
           {next: login_response => {
             console.log("login successful");
             console.log(login_response);

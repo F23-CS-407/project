@@ -7,40 +7,163 @@
         <h1 class="title" *ngIf="showLoginForm"> Sign In</h1>
         <h1 class="title" *ngIf="!showLoginForm"> Register</h1>
 
-        <!-- ng form to track input validation on the two forms (login/resgister) -->
-        <form #loginForm="ngForm" *ngIf="showLoginForm" (submit)="loginUser($event)">
-
-            <mat-form-field appearance="outline">
+        <!-- LOGIN FORM:  -->
+        <form [formGroup]="loginForm" *ngIf="showLoginForm" (submit)="loginUser($event)">
+            <mat-form-field class="inputfield" appearance="outline">
                 <mat-label>Username</mat-label>
-                <input matInput type="text" name="username" required [(ngModel)]="username">
+                <input matInput formControlName="login">
+                <button 
+                    mat-icon-button
+                    type="button"
+                    appearance="outlined" 
+                    matSuffix 
+                    *ngIf="loginForm.get('login')?.value"
+                    (click)="loginForm.get('login')?.setValue('')"
+                >
+                    <mat-icon>
+                        <span class="material-symbols-outlined">
+                            cancel
+                        </span>
+                    </mat-icon>
+                </button>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+
+            <mat-form-field class="inputfield" appearance="outline">
                 <mat-label>Password</mat-label>
-                <input matInput type="password" name="password" required [(ngModel)]="password">
+                <input matInput [type]="visible ? 'text' : 'password'" formControlName="loginKey">
+                <button 
+                    mat-icon-button
+                    type="button"
+                    appearance="outlined" 
+                    matSuffix 
+                    *ngIf="loginForm.get('loginKey')?.value"
+                    (click)="loginForm.get('loginKey')?.setValue('')"
+                >
+                    <mat-icon>
+                        <span class="material-symbols-outlined">
+                            cancel
+                        </span>
+                    </mat-icon>
+                </button>
+                <button mat-icon-button type="button" matSuffix (click)="toggleVisibile()">
+                    <mat-icon>{{ visible ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>                  
             </mat-form-field>
+
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+
             <button mat-icon-button type="submit" [disabled]="!loginForm.valid">
-                <mat-icon>login</mat-icon>
-            </button>
+                <mat-icon>login-icon</mat-icon>
+            </button>            
+
         </form>
 
-        <form #registrationForm="ngForm" *ngIf="!showLoginForm" (submit)="registerUser($event)">
-
-            <mat-form-field appearance="outline">
+        <!-- REGISTRATION FORM:  -->
+        <form [formGroup]="registerForm" *ngIf="!showLoginForm" (submit)="registerUser($event)">
+            <mat-form-field class="inputfield" appearance="outline">
                 <mat-label>Username</mat-label>
-                <input matInput type="text" name="username" required [(ngModel)]="username">
+                <input matInput formControlName="newUser">
+                <button
+                    mat-icon-button
+                    type="button"
+                    matSuffix
+                    *ngIf="registerForm.get('newUser')?.value"
+                    (click)="registerForm.get('newUser')?.setValue('')"
+                >
+                    <mat-icon>
+                        <span class="material-symbols-outlined">
+                            cancel
+                        </span>
+                    </mat-icon>
+                </button>
             </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Password</mat-label>
-                <input matInput type="password" name="password" required [(ngModel)]="password">
-            </mat-form-field>
-            <button mat-icon-button type="submit" [disabled]="!registrationForm.valid">
+            <div class="password-box"> 
+                <mat-form-field class="inputfield" appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="visible ? 'text' : 'password'" formControlName="newKey" (input)="onPasswordChange()">
+                    <button 
+                        mat-icon-button
+                        type="button"
+                        matSuffix 
+                        *ngIf="registerForm.get('newKey')?.value" 
+                        (click)="registerForm.get('newKey')?.setValue('')"
+                    >
+                        <mat-icon>
+                            <span class="material-symbols-outlined">
+                                cancel
+                            </span>
+                        </mat-icon>
+                    </button>
+                    <button mat-icon-button type="button" matSuffix (click)="toggleVisibile()">
+                        <mat-icon>{{ visible ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>     
+                </mat-form-field>
+
+                <div class="password-criteria" *ngIf="!showLoginForm">
+                    <div class="criteria" [ngClass]="{'met-criteria': hasUpper, 'unmet-criteria': !hasUpper}">
+                        <mat-icon *ngIf="hasUpper; else noUppercaseIcon">check</mat-icon>
+                        <ng-template #noUppercaseIcon><mat-icon>close</mat-icon></ng-template>
+                        At least one uppercase letter
+                    </div>
+                    
+                    <div class="criteria" [ngClass]="{'met-criteria': hasLower, 'unmet-criteria': !hasLower}">
+                        <mat-icon *ngIf="hasLower; else noLowercaseIcon">check</mat-icon>
+                        <ng-template #noLowercaseIcon><mat-icon>close</mat-icon></ng-template>
+                        At least one lowercase letter
+                    </div>
+                    
+                    <div class="criteria" [ngClass]="{'met-criteria': hasNumber, 'unmet-criteria': !hasNumber}">
+                        <mat-icon *ngIf="hasNumber; else noNumberIcon">check</mat-icon>
+                        <ng-template #noNumberIcon><mat-icon>close</mat-icon></ng-template>
+                        At least one number
+                    </div>
+                    
+                    <div class="criteria" [ngClass]="{'met-criteria': hasMinLength, 'unmet-criteria': !hasMinLength}">
+                        <mat-icon *ngIf="hasMinLength; else noMinLengthIcon">check</mat-icon>
+                        <ng-template #noMinLengthIcon><mat-icon>close</mat-icon></ng-template>
+                        At least 8 characters
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="password-box">
+                <mat-form-field class="inputfield" appearance="outline">
+                    <mat-label>Confirm Password</mat-label>
+                    <input matInput [type]="visible ? 'text' : 'password'" formControlName="keyMatch">
+                    <button 
+                        mat-icon-button
+                        type="button"
+                        matSuffix 
+                        *ngIf="registerForm.get('keyMatch')?.value" 
+                        (click)="registerForm.get('keyMatch')?.setValue('')">
+                        <mat-icon>
+                            <span class="material-symbols-outlined">
+                                cancel
+                            </span>
+                        </mat-icon>
+                    </button>
+                </mat-form-field>
+                <div class="password-criteria" *ngIf="!showLoginForm">
+                    <div class="criteria" [ngClass]="{'met-criteria': match, 'unmet-criteria': !match}">
+                        <mat-icon *ngIf="hasLower; else noLowercaseIcon">check</mat-icon>
+                        <ng-template #noLowercaseIcon><mat-icon>close</mat-icon></ng-template>
+                        Passwords must match
+                    </div>
+                </div>
+
+            </div>
+
+            <button 
+                mat-icon-button 
+                type="submit" 
+                [disabled]="!registerForm.valid"
+            >
                 <mat-icon>person_add</mat-icon>
             </button>
         </form>
-
-        <div *ngIf="errorMessage" class="error-message">
-            {{ errorMessage }}
-        </div>
 
         <!-- messages if login/registration fail -->
         <h5 *ngIf="showLoginForm">

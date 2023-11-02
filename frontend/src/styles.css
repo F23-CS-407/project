@@ -1,10 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
-
 html,
 body, 
 app-root {
     height: 100%;
     margin: 0;
-    font-family: 'Inter', 'Source Sans 3', Roboto, 'Helvetica Neue', sans-serif;
+    font-family: 'Inter', 'Source Sans 3', 'Helvetica Neue', sans-serif;
     overflow: hidden;
+}
+
+/* MATERIAL STYLE OVERRIDES */
+
+mat-label {
+    font-family: 'Source Sans 3' !important;
 }
