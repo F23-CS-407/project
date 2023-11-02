@@ -132,7 +132,7 @@
             <div class="password-box">
                 <mat-form-field class="inputfield" appearance="outline">
                     <mat-label>Confirm Password</mat-label>
-                    <input matInput [type]="visible ? 'text' : 'password'" formControlName="keyMatch">
+                    <input matInput [type]="visible ? 'text' : 'password'" formControlName="keyMatch" (input)="onPasswordChange()">
                     <button 
                         mat-icon-button
                         type="button"
