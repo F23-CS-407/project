@@ -8,6 +8,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from
   styleUrls: ['./intro.component.css'],
 })
 export class IntroComponent {
+  // Declaraions
   private backend_addr: string = "http://localhost:8080/api";
 
   loginForm: FormGroup;
@@ -71,7 +72,7 @@ export class IntroComponent {
     };
   }
   
-
+  // PASSWORD VALIDATION
   onPasswordChange() {
     const value = this.registerForm.get('newKey')?.value;
     this.hasUpper = /[A-Z]/.test(value);
@@ -84,8 +85,9 @@ export class IntroComponent {
   toggleVisibile() {
     this.visible = !this.visible;
   }
-  
 
+  // FORMS DISPLAY
+  
   showRegistrationForm() {
     this.showLoginForm = false;
   }
@@ -93,6 +95,9 @@ export class IntroComponent {
   showLoginFormAgain() {
     this.showLoginForm = true;
   }
+
+
+  // Backend Integration
 
   loginUser(event: Event) {
     event.preventDefault();
