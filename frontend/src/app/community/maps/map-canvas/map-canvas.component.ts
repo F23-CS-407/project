@@ -1,4 +1,4 @@
-import { Input, Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Input, Component, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 
 
 @Component({
@@ -82,4 +82,9 @@ export class MapCanvasComponent implements AfterViewInit {
     const gridY = Math.floor(offsetY / this.gridSizeY);
     return {gridX, gridY};
   }
+
+changeKeyboardPosition(event: KeyboardEvent)  {
+@HostListener('document:keydown.arrowUp', ['$event'])
+y = y + 1;  
+}
 }
