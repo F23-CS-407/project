@@ -21,6 +21,8 @@ export class CommunityComponent {
   community_desc : string = "N/A";
   community_post_ids : string[] = [];
   community_posts : Post[] = [];
+  community_board : number = 0;
+
   constructor(private http: HttpClient, private router: Router) {
     // Get community query
     this.community_id = this.urlParams.get('community') as string;

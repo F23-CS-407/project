@@ -1,10 +1,13 @@
 <!--TODO: make not ugly-->
 
 <div class="board-container">
-    <div class="board">
-        <button (click)="handleNewBoardClick()">New board</button>
+    <div class="board" *ngIf="boards.length > 0">
+        <button (click)="handleHomeClick()">Home</button>
     </div>
     <div class="board" *ngFor="let board of boards">
-        <button (click)="handleBoardClick(board.name)">{{board.name}}</button>
+        <button (click)="handleBoardClick(board._id)">{{board.name}}</button>
+    </div>
+    <div class="board">
+        <button (click)="handleNewBoardClick()">New board</button>
     </div>
 </div>

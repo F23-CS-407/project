@@ -31,6 +31,7 @@ import { NewCommunityComponent } from './new-community/new-community.component';
 import { MapWrapperComponent } from './community/maps/map-wrapper/map-wrapper.component';
 import { MapCanvasComponent } from './community/maps/map-canvas/map-canvas.component';
 import { BoardsTabComponent } from './community/boards-tab/boards-tab.component';
+import { BoardWrapperComponent } from './community/boards/board-wrapper/board-wrapper.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { BoardsTabComponent } from './community/boards-tab/boards-tab.component'
     MapWrapperComponent,
     MapCanvasComponent,
     BoardsTabComponent,
+    BoardWrapperComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +62,8 @@ import { BoardsTabComponent } from './community/boards-tab/boards-tab.component'
       {path: 'new_post', component: NewPostComponent},
       {path: 'post', component: PostComponent},
       {path: 'new_community', component: NewCommunityComponent},
-      {path: 'community', component: CommunityComponent}
+      {path: 'community', component: CommunityComponent},
+      {path: 'board', component: BoardWrapperComponent}
     ]),
     BrowserAnimationsModule,
     MatInputModule,

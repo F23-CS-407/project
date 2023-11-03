@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-boards-tab',
@@ -11,12 +12,10 @@ export class BoardsTabComponent {
   private backend_url : string = "http://localhost:8080/api";
   boards : any;
 
-  constructor(private http: HttpClient){ }
+  constructor(private http: HttpClient, private router: Router){ }
 
   ngOnInit(){
-    this.getCommunityBoards().subscribe((data: any) => {
-      this.boards = data;
-    });
+    this.updateBoards();
   }
 
   getCommunityBoards(){
@@ -27,19 +26,31 @@ export class BoardsTabComponent {
     console.log("Redirect to new board page? Make one???");
 
     //Uncomment below to add a test board.
-    /*
+    
     const test_comm = {
-      name: "Test name",
+      name: "Map",
       community: `${this.comm_id}`
     }
 
     this.http.post<any>(this.backend_url + "/board", test_comm).subscribe((res) => {
       console.log(res);
     });
-    */
   }
 
-  handleBoardClick(board_name : string){
-    console.log(`Redirect to board ${board_name}`);
+  handleBoardClick(board_id : string){
+    this.router.navigate(['board'], {queryParams:{'community' : this.comm_id, 'board' : board_id},});
+  }
+
+  handleHomeClick(){
+    console.log("Home click detected");
+    this.router.navigate(['community'], {queryParams:{'community' : this.comm_id},});
+  }
+
+  updateBoards(){
+    this.getCommunityBoards().subscribe((data: any) => {
+      this.boards = data;
+
+      console.log(this.boards);
+    });
   }
 }

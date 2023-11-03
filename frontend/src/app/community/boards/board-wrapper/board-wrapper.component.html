@@ -1,0 +1,8 @@
+<div class="tab">
+    <app-boards-tab [comm_id]="community_id"></app-boards-tab>
+</div>
+
+<div class="board">
+    <app-map-wrapper *ngIf="board_type==1" [board_id]="board_id"></app-map-wrapper>
+</div>
+
