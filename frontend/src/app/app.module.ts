@@ -34,8 +34,6 @@ import { PostComponent } from './post/post.component';
 import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
 import { CommentComponent } from './comment/comment.component';
-import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
-import { MapComponent } from './map/map.component';
 import { BoardsComponent } from './boards/boards.component';
 import { NewBoardComponent } from './new-board/new-board.component';
 import { MapWrapperComponent } from './community/maps/map-wrapper/map-wrapper.component';
@@ -85,7 +83,6 @@ import { MapComponent } from './map/map.component';
       {path: 'board', component: BoardWrapperComponent},
       { path: 'community/:id/boards', component: BoardsComponent },
       {path: 'followed_communities', component: FollowedCommunitiesComponent}
-      P
     ]),
     BrowserAnimationsModule,
     MatInputModule,
