@@ -27,6 +27,7 @@
 }
 
 .search-link {
+  padding-left: 10px;
   text-decoration: none;
   color: black;
 }

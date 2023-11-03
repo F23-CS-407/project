@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 
 // For Angular Material Library - https://material.angular.io/components/categories
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +18,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { HomeComponent } from './home/home.component';
@@ -30,6 +33,7 @@ import { AccountDataComponent } from './account_data/account_data.component';
 import { PostComponent } from './post/post.component';
 import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
+import { CommentComponent } from './comment/comment.component';
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { MapComponent } from './map/map.component';
 import { BoardsComponent } from './boards/boards.component';
@@ -48,6 +52,7 @@ import { NewBoardComponent } from './new-board/new-board.component';
     PostComponent,
     CommunityComponent,
     NewCommunityComponent,
+    CommentComponent,
     FollowedCommunitiesComponent,
     MapComponent,
     BoardsComponent,
@@ -82,6 +87,8 @@ import { NewBoardComponent } from './new-board/new-board.component';
     MatDialogModule,
     FormsModule, ReactiveFormsModule,
     MatAutocompleteModule,
+    MatDividerModule,
+    MatListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
