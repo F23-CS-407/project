@@ -81,7 +81,7 @@ export class PostComponent {
           next: get_likes_response => {this.like_count = get_likes_response.length;}});
 
         // Get if user has liked
-        this.http.get<any>("/post/user_liked?post=" + this.post_id + "&user="+this.self_id, options).subscribe({
+        this.http.get<any>("api/post/user_liked?post=" + this.post_id + "&user="+this.self_id, options).subscribe({
           next: get_has_liked_response => {
             this.has_liked = get_has_liked_response==1?true:false;
           },
@@ -185,6 +185,9 @@ export class PostComponent {
         }
       },
       error: error=> {
+        if(error.status == 409) {
+          this.has_liked = true
+        }
         console.error("Error liking the post:", error);
       }});
   }
@@ -208,6 +211,10 @@ export class PostComponent {
           }
         },
         (error: any) => {
+          console.log("HERE" + error)
+          if (error.status == 409) {
+            this.has_liked = false
+          }
           console.error("Error unliking the post:", error);
         });
   }
