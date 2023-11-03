@@ -41,3 +41,8 @@ a {
 .post-box .like-container .like-button-icon {
     margin-left: -2px;
 }
+
+.like-button-icon.liked {
+    color: blue; /* Change the color to indicate liked state */
+    font-weight: bold; /* Add other styles as needed */
+  }

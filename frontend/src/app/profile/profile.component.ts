@@ -145,35 +145,13 @@ export class ProfileComponent {
     this.clipboard.copy(domain_name + this.router.url);
   }
   settings_action() {
+    this.router.navigate(['/account_data'])
     // Idk what to put here?
-  }
-
-  deleteAction() {
-    this.router.navigate(['/permadelete']);
   }
 
   create_community_action() {
     this.router.navigate(['/new_community']);
   }
-
-  signOut() {
-    const options = { withCredentials : true };
-    this.http.delete<any>(this.backend_addr + "/logout", options).subscribe({
-      next: logout_response => {          // On success
-        console.log(logout_response);
-        
-        // Redirect to login page
-        this.router.navigate(['/login']);
-      },
-      error: error_response => {
-        if (error_response.error.text == "Logged out successfully") {   // Success
-          // Redirect to login page
-          this.router.navigate(['/login']);
-        }
-        console.log(error_response);
-      }
-    });
-  } 
 
   toFollowedCommunities() {
     this.router.navigate(["/followed_communities"], { queryParams: {id: this.id}});

@@ -1,12 +1,18 @@
 <div class="post-box">
     <div class="post-field">
-        <h1 class="username"><a href="/profile?id={{post_user_id}}" style="text-decoration:none">{{post_username}}</a></h1>
+        <h1 class="username">
+            <a href="/profile?id={{post_user_id}}" style="text-decoration:none">{{post_username}}</a>
+        </h1>
     </div>
     <div class="post-field">
         <p><a href="/community?community={{post_community_id}}">{{post_community_name}}</a></p>
     </div>
-    <div class="post-field"><p class="post-content">{{post_content}}</p></div>
+    <div class="post-field">
+        <p class="post-content">{{post_content}}</p>
+    </div>
     <div class="like-container post-field">
-        <button mat-icon-button style="width:auto" (click)="like_button_click()">{{like_count}} <mat-icon class="like-button-icon">thumb_up</mat-icon></button>
+        <button mat-icon-button style="width:auto" (click)="like_button_click()">
+            {{like_count}} <mat-icon class="like-button-icon">{{has_liked ? 'thumb_up' : 'thumb_up_off'}}</mat-icon>
+        </button>
     </div>
 </div>

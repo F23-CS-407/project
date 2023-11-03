@@ -1,9 +1,4 @@
-<!-- Signout button -->
-<button mat-raised-button class="sign-out-button" (click)="signOut()">Sign Out</button>
-
-<!-- Delete button -->
-<button mat-raised-button class="delete-button" (click)="deleteAction()">Delete</button>
-
+<div class="center-flex">
 <div class="profile_grid">
     <div class="col">
         <mat-icon class="person_icon">account_circle</mat-icon>
@@ -42,21 +37,14 @@
         <h3 class="profile_number">{{followed_communities.length}}</h3>
         <p class="profile_number_text">Communities</p>
     </div>
-
-    <div class="col" *ngIf="viewing_own_profile">
-        <button mat-raised-button class="create_new_community" (click)="create_community_action()" disabled="{{currently_editting}}">Create New Community</button>
     </div>
 
     <!-- If viewing own profile -->
-    <div class="col" *ngIf="viewing_own_profile">
-        <button mat-raised-button class="edit_button" (click)="change_edit()" disabled="{{currently_editting}}">Edit Profile</button>
+    <div>
+        <div class="col" *ngIf="viewing_own_profile">
+        <button mat-raised-button class="settings_button" (click)="settings_action()"><mat-icon class="settings_icon">settings</mat-icon> Settings  </button>
     </div>
-    <div class="col" *ngIf="viewing_own_profile">
-        <button mat-raised-button class="share_button" (click)="share_action()"><mat-icon class="share_icon">share</mat-icon> Share </button>
-    </div>
-    <div class="col" *ngIf="viewing_own_profile">
-    <button mat-raised-button class="settings_button" (click)="settings_action()"><mat-icon class="settings_icon">settings</mat-icon> Settings  </button>
-    </div>
+</div>
 </div>
 <div class="post_list">
     <!-- Use material cards: https://material.angular.io/components/card/overview -->
@@ -76,10 +64,6 @@
                         {{post.content}}
                     </p>
                 </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
             </mat-card>
         </a>
     </li>

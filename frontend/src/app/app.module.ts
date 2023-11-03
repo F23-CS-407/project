@@ -26,6 +26,7 @@ import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NewPostComponent } from './new_post/new_post.component';
 import { PermadeleteComponent } from './permadelete/permadelete.component';
+import { AccountDataComponent } from './account_data/account_data.component';
 import { PostComponent } from './post/post.component';
 import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
@@ -43,6 +44,7 @@ import { NewBoardComponent } from './new-board/new-board.component';
     ProfileComponent,
     NewPostComponent,
     PermadeleteComponent,
+    AccountDataComponent,
     PostComponent,
     CommunityComponent,
     NewCommunityComponent,
@@ -60,8 +62,9 @@ import { NewBoardComponent } from './new-board/new-board.component';
       {path: 'login', component: LoginComponent},                  // This is a new path. Can be found at localhost:port/login
       {path: 'signup', component: SignupComponent},
       {path: 'profile', component: ProfileComponent},
-      {path: 'new_post', component: NewPostComponent},
       {path: 'post', component: PostComponent},
+      {path: 'account_data', component: AccountDataComponent },
+      {path: 'new_post', component: NewPostComponent},
       {path: 'new_community', component: NewCommunityComponent},
       {path: 'community', component: CommunityComponent},
       { path: 'community/:id/boards', component: BoardsComponent },
