@@ -60,8 +60,8 @@ export class ProfileComponent {
         next: get_user_response => {          // On success
           this.username = get_user_response.username;
           this.followed_communities = get_user_response.followed_communities
-          if (get_user_response.description) {
-            this.bio = get_user_response.description;
+          if (get_user_response.bio) {
+            this.bio = get_user_response.bio;
           }
         }, 
         error: error => {         // On fail

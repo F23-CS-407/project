@@ -13,7 +13,7 @@ export class AccountDataComponent implements OnInit {
   user = {
     name: '', // Initialize as empty string
     password: '', // Initialize as empty string
-    description: '', // Initialize as empty string
+    bio: '', // Initialize as empty string
     old_password: '',
   };
 
@@ -34,7 +34,7 @@ export class AccountDataComponent implements OnInit {
       next: userData => {
         // Populate the user object with the fetched data
         this.user.name = userData.username;
-        this.user.description = userData.description;
+        this.user.bio = userData.description;
         // Password should not be fetched
       },
       error: error => {
@@ -52,7 +52,7 @@ export class AccountDataComponent implements OnInit {
   }
 
   saveDescription() {
-    this.saveField('description', this.user.description);
+    this.saveField('description', this.user.bio);
   }
 
 
