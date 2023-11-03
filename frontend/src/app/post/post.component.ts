@@ -175,7 +175,7 @@ export class PostComponent {
     }
   
     const options = { withCredentials: true };
-    this.http.post<any>("/like_post", { post: this.post_id }, options).subscribe({
+    this.http.post<any>("api/like_post", { post: this.post_id }, options).subscribe({
       next: response => {
         if (response) {
           console.log('Like response:', response);
@@ -197,7 +197,7 @@ export class PostComponent {
   
     const options = { withCredentials: true };
     this.http
-      .delete(`/like_post`, {...options, body: {post: this.post_id}})
+      .delete(`api/like_post`, {...options, body: {post: this.post_id}})
       .subscribe(
         (response: any) => {
           console.log('Unlike success:', response);

@@ -16,11 +16,11 @@
 <div class="search-results" *ngIf="searchResults.length > 0">
   <div *ngFor="let result of searchResults" class="search-result">
     <div *ngIf="result.username">
-      <a href="/community?community={{result._id}}" class="search-link"><strong>User:</strong> {{ result.username }}</a>
+      <a href="/profile?id={{result._id}}" class="search-link"><strong>User:</strong> {{ result.username }}</a>
       <hr class="result-divider">
     </div>
     <div *ngIf="result.name">
-      <a href="/user?id={{result._id}}" class="search-link"><strong>Community:</strong> {{ result.name }}</a>
+      <a href="/community?community={{result._id}}" class="search-link"><strong>Community:</strong> {{ result.name }}</a>
       <hr class="result-divider">
     </div>
   </div>
