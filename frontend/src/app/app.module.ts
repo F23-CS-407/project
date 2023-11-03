@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 
 // For Angular Material Library - https://material.angular.io/components/categories
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +18,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';         // Here is the component being imported
@@ -28,6 +31,7 @@ import { PermadeleteComponent } from './permadelete/permadelete.component';
 import { PostComponent } from './post/post.component';
 import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
+import { CommentComponent } from './comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +45,7 @@ import { NewCommunityComponent } from './new-community/new-community.component';
     PostComponent,
     CommunityComponent,
     NewCommunityComponent,
+    CommentComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +72,8 @@ import { NewCommunityComponent } from './new-community/new-community.component';
     MatSelectModule,
     FormsModule, ReactiveFormsModule,
     MatAutocompleteModule,
+    MatDividerModule,
+    MatListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

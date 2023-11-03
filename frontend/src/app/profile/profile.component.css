@@ -45,7 +45,6 @@
   background-color:rgba(0,0,0,0);
   width: 100%;
 
-
   font-size: 2em;
   font-weight: bolder;
   height:fit-content;
@@ -139,7 +138,6 @@
 }
 .col:nth-child(9) {
   grid-column: 8 / span 1;
-
 }
 .settings_button {
   border-radius: 20px;

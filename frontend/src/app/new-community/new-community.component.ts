@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
-import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
