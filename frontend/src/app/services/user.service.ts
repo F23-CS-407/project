@@ -64,11 +64,14 @@ export class UserService {
   }
 
  
-changeDescription(newDescription: string): Observable<UserInterface> {
-  return this.http.post<UserInterface>(`${this.backend_addr}/change_description`, { new_description: newDescription }).pipe(
-    catchError(this.handleError)
-  );
-}
+  changeDescription(newDescription: string): void {
+    this.http.post<UserInterface>(`${this.backend_addr}/change_description`, { new_description: newDescription }).pipe(
+      catchError(this.handleError)
+    ).subscribe({
+      next: (updatedUser) => this.updateUser(updatedUser),
+      error: (error) => console.error('Change description failed:', error)
+    });
+  }
 
   changePassword(newPassword: string, oldPassword: string): void {
     this.http.post<UserInterface>(`${this.backend_addr}/change_password`, { new_password: newPassword, old_password: oldPassword }).pipe(
@@ -91,19 +94,18 @@ changeDescription(newDescription: string): Observable<UserInterface> {
     });
   }
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    // User-facing error message
-    let errorMessage = 'An unknown error occurred!';
+  private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
-      // Client-side errors
-      errorMessage = `An error occurred: ${error.error.message}`;
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
     } else {
-      // Server-side errors
-      errorMessage = `Server returned code: ${error.status}, error message is: ${error.message}`;
+      // The backend returned an unsuccessful response code.
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
     }
-    // Log to console instead
-    console.error(errorMessage);
-    // Return an observable with a user-facing error message
-    return throwError(errorMessage);
+    // Return an observable with a user-facing error message.
+    return throwError(
+      'Something bad happened; please try again later.');
   }
 }
