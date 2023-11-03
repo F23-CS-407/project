@@ -1,1 +1,54 @@
-<p>settings works!</p>
+<div class="settings-container">
+    <!-- Settings Form -->
+    <form [formGroup]="settingsForm" (submit)="updateSettings($event)">
+        <div class="settings-container">
+            <!-- Username Field -->
+            <div class="settings-item">
+                <h1>Username:</h1>
+                <mat-form-field class="inputfield" appearance="outline">
+                <mat-label>Username</mat-label><!--  TODO replace with backend current username  -->
+                <input matInput formControlName="username">
+                <button mat-icon-button type="button" matSuffix *ngIf="settingsForm.get('username')?.value" (click)="settingsForm.get('username')?.setValue('')">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+                </mat-form-field>
+            </div>
+
+            <!-- Password Field -->
+            <div class="settings-item">
+                <h1>Password:</h1>
+                <mat-form-field class="inputfield" appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput [type]="visible ? 'text' : 'password'" formControlName="password">
+                <button mat-icon-button type="button" matSuffix *ngIf="settingsForm.get('password')?.value" (click)="settingsForm.get('password')?.setValue('')">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+                <button mat-icon-button type="button" matSuffix (click)="toggleVisible()">
+                    <mat-icon>{{ visible ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                </mat-form-field>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="settings-item">
+                <button mat-raised-button type="submit" [disabled]="!settingsForm.valid">Update</button>
+            </div>
+        </div>
+    </form>
+  
+    <!-- Description/Bio -->
+    <mat-form-field class="inputfield" appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" [disabled]="!settingsForm.enabled"></textarea>
+    </mat-form-field>
+  
+  
+    <!-- Buttons -->
+    <div class="settings-actions">
+        <button mat-raised-button type="button" (click)="editProfile()" *ngIf="!settingsForm.enabled">Edit</button>
+        <button mat-raised-button type="submit" *ngIf="settingsForm.enabled">Save</button>
+        <button mat-raised-button type="button" (click)="signOut()">Sign Out</button>
+        <button mat-raised-button type="button" (click)="deleteAccount()">Delete Account</button>
+    </div>
+</div>
+  

@@ -1,6 +1,7 @@
 export interface UserInterface {
     _id: string;
     username: string;
+    bio: string;
     mod_for: string[];
     comments: any[]; 
     posts: any[];
