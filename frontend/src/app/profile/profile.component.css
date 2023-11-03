@@ -152,6 +152,11 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 .post_list {
   /* https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
   display: flex;
@@ -173,12 +178,12 @@
 
 .sign-out-button {
   position: absolute;
-  top: 10px; /* Adjust the top position as needed */
+  top: 14px; /* Adjust the top position as needed */
   right: 30px; /* Adjust the right position as needed */
 }
 
 .delete-button {
   position: absolute;
-  top: 10px; /* Adjust the top position as needed */
+  top: 14px; /* Adjust the top position as needed */
   right: 160px; /* Adjust the right position as needed */
 }

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+// TODO: Link to community
+
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -15,14 +17,14 @@ export class PostComponent {
   self_id: string = "not logged in";
   self_username: string = "no username";
 
-  community_id?: string;
-  community_posts: string = "";
-
+  // Post Info
   post_id: string = "post_id_not_set";
   post_username: string = "username_not_set";
   post_user_id: string = "";
-  post_community: string = "community_not_set";
+  post_community_name: string = "community_not_set";
+  post_community_id: string = "commmunity_id_not_set";
   post_content: string = "content_not_set";
+  
   like_count: number = 0;
   unlike_count: number = 0;
   has_liked: boolean = false;
@@ -67,7 +69,8 @@ export class PostComponent {
 
         // Get community
         this.http.get<any>(this.backend_addr + "/search_community_by_post_id?post_id=" + this.post_id, options).subscribe({
-          next: get_community_response => {this.post_community = get_community_response.name;}});
+          next: get_community_response => {this.post_community_name = get_community_response.name;
+                                           this.post_community_id = get_community_response._id;}});
 
         // Get likes
         this.http.get<any>(this.backend_addr + "/post/likes?post=" + this.post_id, options).subscribe({
@@ -167,23 +170,7 @@ export class PostComponent {
           console.error("Error unliking the post:", error);
         }
       );
-  }
-  
-
-  show_posts() {
-    if (!this.community_id){return;}
-
-    const options = { withCredentials : true};
-    this.http.get<any>(this.backend_addr + "/community/posts?community="+this.community_id, options).subscribe({
-      next: info_response => {          // On success
-        this.community_posts = JSON.stringify(info_response);
-      }, 
-      error: error => {         // On fail
-        console.log(error);
       }
-    });
-  }
-
 
     // Initialize 'has_liked' based on user's interaction with the post
   initializeLikeStatus() {
@@ -223,5 +210,3 @@ export class PostComponent {
     }
   }
 }
-
-

@@ -29,6 +29,8 @@ import { AccountDataComponent } from './account_data/account_data.component';
 import { PostComponent } from './post/post.component';
 import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
+import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { NewCommunityComponent } from './new-community/new-community.component';
     PostComponent,
     CommunityComponent,
     NewCommunityComponent,
+    FollowedCommunitiesComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,7 +61,8 @@ import { NewCommunityComponent } from './new-community/new-community.component';
       {path: 'account_data', component: AccountDataComponent },
       {path: 'new_post', component: NewPostComponent},
       {path: 'new_community', component: NewCommunityComponent},
-      {path: 'community', component: CommunityComponent}
+      {path: 'community', component: CommunityComponent},
+      {path: 'followed_communities', component: FollowedCommunitiesComponent}
     ]),
     BrowserAnimationsModule,
     MatInputModule,

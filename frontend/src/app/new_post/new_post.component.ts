@@ -80,6 +80,11 @@ export class NewPostComponent {
   }
 
   create_post(description : string, chips : string[]) {
+    // If no value selected, default to General
+    if (chips[0] == undefined){
+      chips[0] = 'General';
+    }
+
     const body = {post: {content : description,
                          tags : chips}, 
                   community: this.community_id, 

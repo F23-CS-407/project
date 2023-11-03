@@ -7,6 +7,8 @@ import { Alias } from "../../models/Alias";
 import { Post } from "../../models/Post";
 import { Community } from "../../models/Community";
 
+const options = { withCredentials : true };
+
 @Component({
   selector: 'app-community',
   templateUrl: './community.component.html',
@@ -21,6 +23,46 @@ export class CommunityComponent {
   community_desc : string = "N/A";
   community_post_ids : string[] = [];
   community_posts : Post[] = [];
+
+  user_following : boolean = false;
+  show_follow_button : boolean = false;
+
+  followCommunityCall = () => {
+    this.show_follow_button = false;
+    this.http.post(this.backend_addr + "/user/follow_community", {id: this.community_id}, options).subscribe({
+      next: response => {
+        this.user_following = true
+        this.show_follow_button = true
+      },
+      error: error => {
+        console.log(error)
+        if (error.status == 409) {
+          this.user_following = true
+        }
+        this.user_following = false
+        this.show_follow_button = true
+      }
+    })
+  }
+
+  unfollowCommunityCall = () => {
+    this.show_follow_button = false;
+    this.http.post(this.backend_addr + "/user/unfollow_community", {id: this.community_id}, options).subscribe({
+      next: response => {
+        this.user_following = false
+        this.show_follow_button = true
+      },
+      error: error => {
+        console.log(error)
+        if (error.status == 409) {
+          this.user_following = false
+        }
+        this.user_following = true
+        this.show_follow_button = true
+      }
+    })
+  }
+
   constructor(private http: HttpClient, private router: Router) {
     // Get community query
     this.community_id = this.urlParams.get('community') as string;
@@ -30,7 +72,6 @@ export class CommunityComponent {
     }
   
     // Get community data
-    const options = { withCredentials : true };
     this.http.get<any>(this.backend_addr + "/community?id="+this.community_id, options).subscribe({
       next: get_community_response => {          // On success
         this.community_name = get_community_response.name;
@@ -52,12 +93,19 @@ export class CommunityComponent {
           // Get post as object
           let curr_post = get_community_posts_response[i];
 
-          // Get username from user_id
-          let post_username: string = this.get_username(curr_post.created_by);
+          // Get user_id
+          let created_by_id: string = curr_post.created_by;
 
           // Create post object
-          let new_post: Post = new Post(post_username);
+          let new_post: Post = new Post(new Alias(new User(created_by_id), new Community(/* This doesn't need to be set on this page*/)));
+          new_post.id = curr_post._id;
           new_post.content = curr_post.content;
+          
+          // Get username
+          this.http.get<any>(this.backend_addr + "/user?id="+created_by_id, options).subscribe({
+            next: get_user_response => {
+              if (new_post.created_by){new_post.created_by.community_username = get_user_response.username;}
+            }});
           
           // Add post to list for display
           this.community_posts.push(new_post);
@@ -66,6 +114,18 @@ export class CommunityComponent {
       error: error => {         // On fail
         console.log(error);
       }});
+
+    // Get community follow status
+    this.http.get<any>(this.backend_addr + `/user/is_following_community?id=${this.community_id}`, options).subscribe({
+      next: is_following_response => {
+        this.user_following = is_following_response
+        this.show_follow_button = true
+      },
+      error: error => {
+        this.show_follow_button = false
+        console.log(error)
+      }
+    })
   }
 
   /** 

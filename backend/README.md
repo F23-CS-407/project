@@ -149,6 +149,23 @@ Errors
 401, 400
 ```
 
+### POST /change_password
+
+Body
+
+```
+    "new_password": string,
+    "old_password": string
+```
+
+Return scrubbed updated User
+
+Errors
+
+```
+401, 400
+```
+
 ### GET /user?id=(string)
 
 Returns User object
@@ -349,7 +366,138 @@ Return
 }
 ```
 
-### POST /create_post
+### POST /board
+
+Body
+
+```
+{
+    "name": string,
+    "community": string
+}
+```
+
+Returns Board object
+
+Errors
+
+```
+400
+404
+401
+403
+409
+```
+
+### DELETE /board
+
+Body
+
+```
+{
+    "board": string
+}
+```
+
+Returns "Deleted"
+
+Errors
+
+```
+400
+404
+401
+403
+```
+
+### GET /board?id={string}
+
+Returns Board object
+
+Errors
+
+```
+400
+404
+```
+
+### GET /community/boards?id={string}
+
+Returns Board object array
+
+Errors
+
+```
+400
+404
+```
+
+## POST /user/follow_community
+
+Body
+
+```
+{
+    id: string
+}
+```
+
+Returns Community object
+
+Error
+
+```
+400
+404
+401
+409
+```
+
+## POST /user/unfollow_community
+
+Body
+
+```
+{
+    id: string
+}
+```
+
+Returns Community object
+
+Error
+
+```
+400
+404
+401
+409
+```
+
+## GET /user/is_following_community?id={string}
+
+Returns boolean
+
+Error
+
+```
+400
+404
+401
+```
+
+## GET /user/followed_communities?id={string}
+
+Returns Community object array
+
+Error
+
+```
+400
+404
+```
+
+### POST /board/post
 
 Body
 
@@ -357,36 +505,71 @@ Body
 {
     "post" : {"content" : string,
                          "tags" : [string, ...]},
-    "community" : string
-}
-```
-
-Return
-
-```
-{
-    "content": string,
-    "created_by": string,
-    "created_date": Date,
-    "tags": [string,
-        ...
-    ],
-    "liked_by": [],
-    "comments": [],
-    "_id": string,
-    "__v": number
+    "board" : string
 }
 ```
 
 Error
 
 ```
+401
+400
+```
+
+### GET /board/posts?id={string}
+
+Returns Post object array
+
+Error
+
+```
+400
+404
+```
+
+### POST /create_post
+
+Body
+
+```
+{
+"post" : {"content" : string,
+"tags" : [string, ...]},
+"community" : string
+}
+
+```
+
+Return
+
+```
+
+{
+"content": string,
+"created_by": string,
+"created_date": Date,
+"tags": [string,
+...
+],
+"liked_by": [],
+"comments": [],
+"\_id": string,
+"\_\_v": number
+}
+
+```
+
+Error
+
+```
+
 "No post data",
 "There is no content in the post",
 "A post must exist in a community",
 "Invalid community ID",
 "A user must make a post",
 "Not logged in"
+
 ```
 
 ### DELETE /post
@@ -394,18 +577,22 @@ Error
 Body
 
 ```
+
 {
-    post: string
+post: string
 }
+
 ```
 
 Error
 
 ```
+
 Post missing
 Post not found
 Not logged in
 Not creator of post
+
 ```
 
 ### GET /post?id=(string)
@@ -415,7 +602,9 @@ Returns Post object
 Errors
 
 ```
+
 400, 404
+
 ```
 
 ### GET /community/posts?community=(string)
@@ -423,28 +612,32 @@ Errors
 Return
 
 ```
+
 [
-    {
-        "_id": string,
-        "content": string,
-        "created_by": string,
-        "created_date": Date,
-        "tags": [
-            String, ...
-        ],
-        "liked_by": [ (string)UserId, ...],
-        "comments": [ (string)CommentId, ... ],
-        "__v": number
-    },
-    ...
+{
+"\_id": string,
+"content": string,
+"created_by": string,
+"created_date": Date,
+"tags": [
+String, ...
+],
+"liked_by": [ (string)UserId, ...],
+"comments": [ (string)CommentId, ... ],
+"\_\_v": number
+},
+...
 ]
+
 ```
 
 Error
 
 ```
+
 "A community is required",
 "Invalid Community ID"
+
 ```
 
 ### GET /user/posts?user_id=(string)
@@ -452,27 +645,31 @@ Error
 Return
 
 ```
+
 [
-    {
-        "_id": string,
-        "content": string,
-        "created_by": string,
-        "created_date": Date,
-        "tags": [
-            String, ...
-        ],
-        "liked_by": [ (string)UserId, ...],
-        "comments": [ (string)CommentId, ...],
-        "__v": number
-    }
+{
+"\_id": string,
+"content": string,
+"created_by": string,
+"created_date": Date,
+"tags": [
+String, ...
+],
+"liked_by": [ (string)UserId, ...],
+"comments": [ (string)CommentId, ...],
+"\_\_v": number
+}
 ]
+
 ```
 
 Error
 
 ```
+
 "A user is required",
 "Invalid Community ID"
+
 ```
 
 ### POST /like_post
@@ -480,42 +677,48 @@ Error
 Body
 
 ```
+
 {
-    "post" : string
+"post" : string
 }
+
 ```
 
 Return
 
 ```
+
 {
-    "_id": string,
-    "content": string,
-    "created_by": string,
-    "created_date": Date,
-    "tags": [
-        string, ...
-    ],
-    "liked_by": [
-        (string)UserId,
-        ...
-    ],
-    "comments": [
-        (string)CommentId,
-        ...
-    ],
-    "__v": number
+"\_id": string,
+"content": string,
+"created_by": string,
+"created_date": Date,
+"tags": [
+string, ...
+],
+"liked_by": [
+(string)UserId,
+...
+],
+"comments": [
+(string)CommentId,
+...
+],
+"\_\_v": number
 }
+
 ```
 
 Error
 
 ```
+
 "No post ID provided",
 "Invalid post ID",
 "Not logged in",
 "Post not found",
 "User has already liked this post"
+
 ```
 
 ### DELETE /like_post
@@ -523,42 +726,48 @@ Error
 Body
 
 ```
+
 {
-    "post" : string
+"post" : string
 }
+
 ```
 
 Return
 
 ```
+
 {
-    "_id": string,
-    "content": string,
-    "created_by": string,
-    "created_date": Date,
-    "tags": [
-        string, ...
-    ],
-    "liked_by": [
-        (string)UserId,
-        ...
-    ],
-    "comments": [
-        (string)CommentId,
-        ...
-    ],
-    "__v": number
+"\_id": string,
+"content": string,
+"created_by": string,
+"created_date": Date,
+"tags": [
+string, ...
+],
+"liked_by": [
+(string)UserId,
+...
+],
+"comments": [
+(string)CommentId,
+...
+],
+"\_\_v": number
 }
+
 ```
 
 Error
 
 ```
+
 "No post ID provided",
 "Invalid post ID",
 "Not logged in",
 "Post not found, or internal server error",
 "User did not already like this post"
+
 ```
 
 ### GET /post/likes?post=(string)
@@ -566,23 +775,27 @@ Error
 Return
 
 ```
+
 [
-    {
-        "_id": string,
-        "username": string,
-        "password_hash": string,
-        "salt": string,
-        "__v": number
-    },
-    ...
+{
+"_id": string,
+"username": string,
+"password_hash": string,
+"salt": string,
+"__v": number
+},
+...
 ]
+
 ```
 
 Error
 
 ```
+
 "No post ID provided",
 "Invalid post ID"
+
 ```
 
 ### GET /post/user_liked?post=(string)&user=(string)
@@ -592,23 +805,29 @@ Return
 if user liked
 
 ```
+
 1
+
 ```
 
 if user not liked
 
 ```
+
 0
+
 ```
 
 Error
 
 ```
+
 "No post ID provided",
 "No user ID provided",
 "Invalid post ID",
 "Invalid user ID",
 "Post not found"
+
 ```
 
 ### POST /create_comment
@@ -616,35 +835,41 @@ Error
 Body
 
 ```
+
 {
-    "comment" : {
-        "content" : string
-    },
-    "post" : string
+"comment" : {
+"content" : string
+},
+"post" : string
 }
+
 ```
 
 Return
 
 ```
+
 {
-    "content": string,
-    "children_comments": [],
-    "created_by": string,
-    "created_date": string,
-    "_id": string,
-    "__v": number
+"content": string,
+"children_comments": [],
+"created_by": string,
+"created_date": string,
+"\_id": string,
+"\_\_v": number
 }
+
 ```
 
 Error
 
 ```
+
 "No comment data",
 "There is no content in this comment",
 "A new top level comment requires a post ID",
 "Invalid post id",
 "Not logged in"
+
 ```
 
 ### DELETE /comment
@@ -652,18 +877,22 @@ Error
 Body
 
 ```
+
 {
-    comment: string
+comment: string
 }
+
 ```
 
 Error
 
 ```
+
 Comment missing
 Comment not found
 Not logged in
 Not creator of comment
+
 ```
 
 ### GET /comment?id=(string)
@@ -673,7 +902,9 @@ Returns Comment object
 Errors
 
 ```
+
 400, 404
+
 ```
 
 ### GET /post/comments
@@ -681,26 +912,30 @@ Errors
 Return
 
 ```
+
 [
-    {
-        "_id": string,
-        "content": string,
-        "children_comments": [
-            (string)CommentId, ...
-        ],
-        "created_by": string,
-        "created_date": Date,
-        "__v": number
-    },
-    ...
+{
+"\_id": string,
+"content": string,
+"children_comments": [
+(string)CommentId, ...
+],
+"created_by": string,
+"created_date": Date,
+"\_\_v": number
+},
+...
 ]
+
 ```
 
 Error
 
 ```
+
 "A post ID is required",
 "Invalid post ID"
+
 ```
 
 ## Debug Endpoints (only exposed when testing)
@@ -708,3 +943,7 @@ Error
 ### GET /test_auth
 
 Returns a message to test your auth status
+
+```
+
+```
