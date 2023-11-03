@@ -59,6 +59,8 @@ export class MapWrapperComponent {
 
   uploadImage(){
     console.log("Upload " + this.image);
+    
+    /*
     if(this.selectedFile){
       const localData = new FormData();
       localData.append("file", this.selectedFile);
@@ -77,5 +79,6 @@ export class MapWrapperComponent {
         }
       });
     }
+    */
   }
 }
