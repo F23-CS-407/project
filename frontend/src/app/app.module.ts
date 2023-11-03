@@ -30,6 +30,7 @@ import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { MapComponent } from './map/map.component';
+import { BoardsComponent } from './boards/boards.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MapComponent } from './map/map.component';
     NewCommunityComponent,
     FollowedCommunitiesComponent,
     MapComponent,
+    BoardsComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +61,7 @@ import { MapComponent } from './map/map.component';
       {path: 'post', component: PostComponent},
       {path: 'new_community', component: NewCommunityComponent},
       {path: 'community', component: CommunityComponent},
+      { path: 'community/:id/boards', component: BoardsComponent },
       {path: 'followed_communities', component: FollowedCommunitiesComponent}
     ]),
     BrowserAnimationsModule,
