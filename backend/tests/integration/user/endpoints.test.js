@@ -465,6 +465,56 @@ describe('GET /user/is_following_community', () => {
   });
 });
 
+describe('GET /user/followed_communities', () => {
+  useMongoTestWrapper();
+
+  it('should 400 when id not provided', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get('/user/followed_communities');
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should 404 when id not real', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).get('/user/followed_communities?id=fake');
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('should return community object array object', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const id = response.body._id;
+    const cookie = response.headers['set-cookie'];
+
+    response = await request(app).get(`/user/followed_communities?id=${id}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBe(0);
+
+    const name = 'name';
+    const description = 'description';
+    response = await request(app)
+      .post('/create_community')
+      .set('Cookie', cookie)
+      .send({ name, description, mods: [id] });
+    expect(response.statusCode).toBe(200);
+    let community = response.body;
+
+    response = await request(app).post('/user/follow_community').set('Cookie', cookie).send({ id: community._id });
+    expect(response.statusCode).toBe(200);
+
+    response = await request(app).get(`/user/followed_communities?id=${id}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBe(1);
+    expect(response.body[0]._id).toBe(community._id);
+  });
+});
+
 describe('POST /change_password', () => {
   useMongoTestWrapper();
 

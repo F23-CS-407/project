@@ -179,6 +179,31 @@ export async function isFollowingCommunity(req, res, next) {
   res.status(200).send(isFollowing);
 }
 
+export async function getFollowedCommunities(req, res, next) {
+  let user_id = req.query.id;
+
+  // must have user id
+  if (!user_id) {
+    res.status(400).send({ error: 'missing user id' });
+    return;
+  }
+
+  // must be valid
+  if (!mongoose.Types.ObjectId.isValid(user_id)) {
+    res.status(404).send({ error: 'user not found' });
+    return;
+  }
+  let user = await User.findById(user_id).populate('followed_communities');
+  if (!user) {
+    res.status(404).send({ error: 'user not found' });
+    return;
+  }
+
+  // return community objects
+  res.status(200).send(user.followed_communities);
+  return;
+}
+
 export async function changePassword(req, res, next) {
   const old_password = req.body.old_password;
   const new_password = req.body.new_password;

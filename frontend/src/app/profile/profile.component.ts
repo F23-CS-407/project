@@ -30,7 +30,7 @@ export class ProfileComponent {
   num_posts: number = 0;
   num_followers: number = 0;
   num_following: number = 0;
-  num_communities: number = 0;
+  followed_communities: Array<string> = [];
   posts: Array<Post> = [];
 
   currently_editting: boolean = false;
@@ -59,6 +59,7 @@ export class ProfileComponent {
       this.http.get<any>(this.backend_addr + "/user?id="+this.id, options).subscribe({
         next: get_user_response => {          // On success
           this.username = get_user_response.username;
+          this.followed_communities = get_user_response.followed_communities
           if (get_user_response.description) {
             this.bio = get_user_response.description;
           }
@@ -173,4 +174,8 @@ export class ProfileComponent {
       }
     });
   } 
+
+  toFollowedCommunities() {
+    this.router.navigate(["/followed_communities"], { queryParams: {id: this.id}});
+  }
 }

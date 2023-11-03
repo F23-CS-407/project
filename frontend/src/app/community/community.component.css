@@ -7,10 +7,11 @@
     color: #000000;
 }
 
-.follow-button {
-    position: absolute;
+.follow-toggle {
+    position: fixed;
     top: 14px;
     right: 150px;
+    width: 80px;
     background-color: #ffffff;
     border-radius: 5px;
     color: #000000;
