@@ -23,7 +23,7 @@
 </div>
 <mat-list *ngFor="let comment of comments; index as i">
     <div class="existing-comment">
-        <app-comment [comment]="comment" [viewing_user_id]="self_id" [deleteComment]="delete_comment"></app-comment>
+        <app-comment [comment]="comment" [viewing_user_id]="self_id" [http]="http" [deleteComment]="delete_comment"></app-comment>
     </div>
     <mat-divider style="margin-top: 15px" *ngIf="i !== (comments.length-1)"></mat-divider>
 </mat-list>

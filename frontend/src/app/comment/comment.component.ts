@@ -11,4 +11,5 @@ export class CommentComponent {
   @Input({required: true}) comment!: Comment;
   @Input() viewing_user_id: string = "";
   @Input({required: true}) deleteComment!: (id: string) => void;
+  @Input({required: true}) http!: HttpClient;
 }
