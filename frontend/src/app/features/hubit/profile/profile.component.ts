@@ -34,9 +34,9 @@ export class ProfileComponent implements OnInit {
         this.num_posts = userData.posts.length;
         this.num_following = userData.followed_communities.length + userData.mod_for.length;
         this.num_communities = userData.followed_communities.length;
+        this.bio = userData.bio;
 
         //temporary (creating user does not create this entries)
-        this.bio = 'Go to settings to set up your bio!';
         this.num_followers = 0;
         
         

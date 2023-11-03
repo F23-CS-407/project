@@ -22,6 +22,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { CommunityHomeComponent } from './community-home/community-home.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     HubitComponent,  // Declare HubitComponent
@@ -46,6 +47,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatExpansionModule,
     MatAutocompleteModule,
     MatButtonModule,
+    MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { UserInterface } from 'src/app/interfaces/user';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
 
 @Component({
@@ -23,6 +24,7 @@ export class SettingsComponent implements OnInit {
 
   hasDescLength: boolean = false;
   errorMessage: string = '';
+  successMessage: string = '';
 
   visible: boolean = false;
   hasUpper = false;
@@ -34,17 +36,21 @@ export class SettingsComponent implements OnInit {
   current_user?: UserInterface;
   loading: boolean = true;
 
-  constructor(private userService: UserService, private fb: FormBuilder) {
+  constructor(private userService: UserService, private fb: FormBuilder, private snackBar: MatSnackBar) {
     this.usernameForm = this.fb.group({
       username: ['', Validators.required]
     });
     this.descriptionForm = this.fb.group({
-      description: ['', Validators.required]
+      description: ['', Validators.required, Validators.minLength(25)]
     });
     this.passwordForm = this.fb.group({
-      password: ['', [Validators.required, this.keyValidator()]],
+      currentPassword: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       newPassword: ['', Validators.required]
-    }, { validators: this.keyMatchValidator() });
+    }, {
+      validator: this.keyMatchValidator()
+    });
+    
   }
 
   // VALIDATOR --> key requirements
@@ -118,13 +124,21 @@ export class SettingsComponent implements OnInit {
   toggleVisible() {
     this.visible = !this.visible;
   }
+
   updateUsername() {
     const username = this.usernameForm.get('username')?.value;
-    if (username && typeof username === 'string' && username !== this.current_user?.username) {
-      console.log(username);
-      this.userService.changeUsername(username);
+    if (username && typeof username === 'string') {
+      if (this.current_user && username !== this.current_user.username) {
+        // Assuming changeUsername is a synchronous function
+        this.userService.changeUsername(username);
+        this.successMessage = 'Change successful';
+        this.current_user.username = username; // Update the current user's username
+        this.usernameForm.reset(); // Reset the form
+        this.snackBar.open(this.successMessage, 'Close', { duration: 3000 });
+      }
     }
   }
+  
   
   updateDescription() {
     const description = this.descriptionForm.get('description')?.value;
@@ -135,7 +149,7 @@ export class SettingsComponent implements OnInit {
   
   updatePassword() {
     const newPassword = this.passwordForm.get('newPassword')?.value;
-    const password = this.passwordForm.get('password')?.value;
+    const password = this.passwordForm.get('currentPassword')?.value;
     if (newPassword && typeof newPassword === 'string' && password && typeof password === 'string') {
       this.userService.changePassword(newPassword, password);
     }

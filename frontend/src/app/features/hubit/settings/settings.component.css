@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 30px;
     height: 100%;
     width: 100%;
 }
@@ -15,6 +16,23 @@
     gap: 30px;
     width: 100%;
     margin: 20px 0;
+}
+
+.password {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 h1 {
@@ -76,12 +94,20 @@ mat-form-field.inputfield {
     color: black;
 }
 
+
+.image-upload, .image-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .settings-actions {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 100px;
     width: 60%;
 }
 
