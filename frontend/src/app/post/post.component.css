@@ -10,6 +10,14 @@
     box-shadow: 1px 1px 3px rgb(50,50,50);
 }
 
+.comments-text {
+    margin-left: 50px;
+    margin-right: 0px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
 .post-field {
     width: 100%;
     margin-top: 10px;
@@ -53,7 +61,6 @@ a {
 .new-comment {
     width: 100%;
     min-height: 30px;
-    padding-top: 15px;
     height: 90px;
 }
 
