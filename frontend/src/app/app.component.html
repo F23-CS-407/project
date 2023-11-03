@@ -1,48 +1,46 @@
-<mat-toolbar class="toolbar" (click)="toggleSidePanel()">
-  <button mat-icon-button class="icon_button" aria-label="toolbar menu icon">
-    <mat-icon>menu</mat-icon>
-  </button>
+<mat-toolbar class="toolbar">
+  <div (click)="toggleSidePanel()">
+    <button mat-icon-button class="icon_button" aria-label="toolbar menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
   <!-- Search input and button container -->
-<div class="search-container">
-  <mat-form-field class="search-field">
-    <input matInput placeholder="Search..." class="search-input" [(ngModel)]="searchCriteria">
-  </mat-form-field>
-  <button mat-icon-button (click)="performSearch()" class="search-button" aria-label = "Search">
-    <mat-icon>search</mat-icon>
-   </button>
-</div>
-<div *ngIf="searchResults && searchResults.length > 0">
-  <h2>Search Results:</h2>
-  <ul>
-    <li *ngFor="let result of searchResults">
-      {{ result.username }} <!-- Replace 'name' with the property you want to display -->
-    </li>
-  </ul>
-</div>
-  <div class="text">
-    <!-- Toolbar if you want to use it -->
+  <div class="search-container">
+    <mat-form-field class="search-field">
+      <input matInput placeholder="Search..." class="search-input" (ngModelChange)="performSearch($event)" [(ngModel)]="searchCriteria">
+    </mat-form-field>
   </div>
 </mat-toolbar>
 
-<div class="container">
-  <div class="content">
-    <router-outlet></router-outlet> <!-- Your main content -->
+<!-- Display Search Results -->
+<div class="search-results" *ngIf="searchResults.length > 0">
+  <div *ngFor="let result of searchResults" class="search-result">
+    <div *ngIf="result.username">
+      <a href="/community?community={{result._id}}" class="search-link"><strong>User:</strong> {{ result.username }}</a>
+      <hr class="result-divider">
+    </div>
+    <div *ngIf="result.name">
+      <a href="/user?id={{result._id}}" class="search-link"><strong>Community:</strong> {{ result.name }}</a>
+      <hr class="result-divider">
+    </div>
   </div>
 </div>
 
 
-
-<!-- Side Panel feature -->
-<div class="side_panel" [class.show]="sidePanelVisible">
-  <!-- Side Panel Content Here -->
-  <!-- Move your buttons here -->
-  <button mat-raised-button class="viewFollowedContent">View Followed Content</button>
-  <button mat-raised-button class="viewCommunityPosts">View Community Posts</button>
-  <button mat-raised-button class="createNewPost">Create New Post</button>
-</div>
-
 <div class="container">
   <div class="content">
-    <router-outlet></router-outlet> <!-- Your main content -->
+    <!-- Your main content -->
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<!-- Side Panel feature -->
+<div tabindex="0" class="side_panel" [class.show]="sidePanelVisible">
+  <div *ngIf="sidePanelVisible">
+
+    <!-- Side Panel Content Here -->
+    <!-- Move your buttons here -->
+    <button (click)="toProfile()" mat-raised-button  class="newCommunity">Profile</button>
+    <button (click)="toCreateCommunity()" mat-raised-button class="newCommunity">Create New Community</button>
   </div>
 </div>

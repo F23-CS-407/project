@@ -24,6 +24,7 @@ services:
       - ./backend/src:/usr/backend/src
       - ./backend/tests:/usr/backend/tests
       - ./backend/coverage:/usr/backend/coverage
+      - ./database/uploads:/usr/backend/uploads
 
   database:
     container_name: hubit_mongo
@@ -47,4 +48,7 @@ services:
     build: backend/
     command: npm run test
     volumes:
-      - ./backend/:/usr/backend
+      - ./backend/src:/usr/backend/src
+      - ./backend/tests:/usr/backend/tests
+      - ./backend/coverage:/usr/backend/coverage
+   

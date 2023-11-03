@@ -30,7 +30,7 @@ export class ProfileComponent {
   num_posts: number = 0;
   num_followers: number = 0;
   num_following: number = 0;
-  num_communities: number = 0;
+  followed_communities: Array<string> = [];
   posts: Array<Post> = [];
 
   currently_editting: boolean = false;
@@ -59,6 +59,7 @@ export class ProfileComponent {
       this.http.get<any>(this.backend_addr + "/user?id="+this.id, options).subscribe({
         next: get_user_response => {          // On success
           this.username = get_user_response.username;
+          this.followed_communities = get_user_response.followed_communities
           if (get_user_response.description) {
             this.bio = get_user_response.description;
           }
@@ -143,33 +144,15 @@ export class ProfileComponent {
     this.clipboard.copy(domain_name + this.router.url);
   }
   settings_action() {
+    this.router.navigate(['/account_data'])
     // Idk what to put here?
-  }
-
-  deleteAction() {
-    this.router.navigate(['/permadelete']);
   }
 
   create_community_action() {
     this.router.navigate(['/new_community']);
   }
 
-  signOut() {
-    const options = { withCredentials : true };
-    this.http.delete<any>(this.backend_addr + "/logout", options).subscribe({
-      next: logout_response => {          // On success
-        console.log(logout_response);
-        
-        // Redirect to login page
-        this.router.navigate(['/login']);
-      },
-      error: error_response => {
-        if (error_response.error.text == "Logged out successfully") {   // Success
-          // Redirect to login page
-          this.router.navigate(['/login']);
-        }
-        console.log(error_response);
-      }
-    });
-  } 
+  toFollowedCommunities() {
+    this.router.navigate(["/followed_communities"], { queryParams: {id: this.id}});
+  }
 }

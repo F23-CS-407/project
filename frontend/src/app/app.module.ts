@@ -21,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';         // Here is the component being imported
@@ -28,10 +29,15 @@ import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NewPostComponent } from './new_post/new_post.component';
 import { PermadeleteComponent } from './permadelete/permadelete.component';
+import { AccountDataComponent } from './account_data/account_data.component';
 import { PostComponent } from './post/post.component';
 import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
 import { CommentComponent } from './comment/comment.component';
+import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
+import { MapComponent } from './map/map.component';
+import { BoardsComponent } from './boards/boards.component';
+import { NewBoardComponent } from './new-board/new-board.component';
 
 @NgModule({
   declarations: [
@@ -42,10 +48,15 @@ import { CommentComponent } from './comment/comment.component';
     ProfileComponent,
     NewPostComponent,
     PermadeleteComponent,
+    AccountDataComponent,
     PostComponent,
     CommunityComponent,
     NewCommunityComponent,
     CommentComponent,
+    FollowedCommunitiesComponent,
+    MapComponent,
+    BoardsComponent,
+    NewBoardComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,10 +67,13 @@ import { CommentComponent } from './comment/comment.component';
       {path: 'login', component: LoginComponent},                  // This is a new path. Can be found at localhost:port/login
       {path: 'signup', component: SignupComponent},
       {path: 'profile', component: ProfileComponent},
-      {path: 'new_post', component: NewPostComponent},
       {path: 'post', component: PostComponent},
+      {path: 'account_data', component: AccountDataComponent },
+      {path: 'new_post', component: NewPostComponent},
       {path: 'new_community', component: NewCommunityComponent},
-      {path: 'community', component: CommunityComponent}
+      {path: 'community', component: CommunityComponent},
+      { path: 'community/:id/boards', component: BoardsComponent },
+      {path: 'followed_communities', component: FollowedCommunitiesComponent}
     ]),
     BrowserAnimationsModule,
     MatInputModule,
@@ -70,6 +84,7 @@ import { CommentComponent } from './comment/comment.component';
     MatChipsModule,
     MatExpansionModule,
     MatSelectModule,
+    MatDialogModule,
     FormsModule, ReactiveFormsModule,
     MatAutocompleteModule,
     MatDividerModule,

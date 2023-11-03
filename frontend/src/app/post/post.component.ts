@@ -40,16 +40,18 @@ export class PostComponent {
     this.get_comment_data();
   }
 
+
   async getData() {
     const options = { withCredentials : true};
     await this.http.get<any>("api/user_info", options).subscribe({
-      next: info_response => {          // On success
+      next: info_response => {
         this.logged_in = true;
         this.self_id = info_response._id;
         this.self_username = info_response.username;
         console.log(info_response);
+        this.get_post_data();
       }, 
-      error: error => {         // On fail
+      error: error => {
         console.log("No session: ");
         console.log(error);
       }});
@@ -59,10 +61,11 @@ export class PostComponent {
     // Query backend for data on post id
     const options = { withCredentials : true };
     this.http.get<any>("api/post?id="+this.post_id, options).subscribe({
-      next: get_post_response => {          // On success
+      next: get_post_response => {
         console.log(get_post_response);
         this.post_user_id = get_post_response.created_by;
         this.post_content = get_post_response.content;
+        this.like_count = get_post_response.liked_by.length;
         
         // Get username
         this.http.get<any>("api/user?id="+this.post_user_id, options).subscribe({
@@ -78,24 +81,24 @@ export class PostComponent {
           next: get_likes_response => {this.like_count = get_likes_response.length;}});
 
         // Get if user has liked
-        this.http.get<any>("api/post/user_liked?post=" + this.post_id + "&user="+this.self_id, options).subscribe({
-          next: get_has_liked_response => {this.has_liked = get_has_liked_response==1?true:false;console.log(this.has_liked);}, 
+        this.http.get<any>("/post/user_liked?post=" + this.post_id + "&user="+this.self_id, options).subscribe({
+          next: get_has_liked_response => {
+            this.has_liked = get_has_liked_response==1?true:false;
+          },
           error: error => {
             console.log(error);
           }});
       }, 
-      error: error => {         // On fail
+      error: error => {
         console.log(error);
       }});
-
-      
   }
 
   get_comment_data() {
     // Query backend for data on post id
     const options = { withCredentials : true };
     this.http.get<any>("api/post/comments?post="+this.post_id, options).subscribe({
-      next: get_comments_response => {          // On success
+      next: get_comments_response => {
         let length = get_comments_response.length;
         for (let i = 0; i < length; i++) {
           let comment = get_comments_response[i];
@@ -113,13 +116,26 @@ export class PostComponent {
           this.comments.push(new_comment);
         }
       }, 
-      error: error => {         // On fail
+      error: error => {
         console.log(error);
       }});
   }
 
   like_button_click() {
+    if (!this.logged_in) {
+      // Handle the case when the user is not logged in.
+      return;
+    }
 
+    if (this.has_liked) {
+      // User wants to unlike the post
+      this.unlikePost();
+    } else {
+      // User wants to like the post
+      this.likePost();
+    }
+    // Debugging statement
+    console.log('has_liked:', this.has_liked);
   }
 
   create_comment(content: string) {
@@ -150,5 +166,49 @@ export class PostComponent {
         }
         console.log(error);
       }});
+  }
+  
+  likePost() {
+    if (!this.logged_in) {
+      // Handle the case when the user is not logged in.
+      return;
+    }
+  
+    const options = { withCredentials: true };
+    this.http.post<any>("/like_post", { post: this.post_id }, options).subscribe({
+      next: response => {
+        if (response) {
+          console.log('Like response:', response);
+          this.has_liked = true;
+          this.like_count = response.liked_by.length;
+          console.log('Like count:', this.like_count);
+        }
+      },
+      error: error=> {
+        console.error("Error liking the post:", error);
+      }});
+  }
+  
+
+  unlikePost() {
+    if (!this.logged_in) {
+      return;
+    }
+  
+    const options = { withCredentials: true };
+    this.http
+      .delete(`/like_post`, {...options, body: {post: this.post_id}})
+      .subscribe(
+        (response: any) => {
+          console.log('Unlike success:', response);
+          if (response) {
+            this.has_liked = false;
+            this.like_count = response.liked_by.length;
+            console.log('Like count:', this.like_count);
+          }
+        },
+        (error: any) => {
+          console.error("Error unliking the post:", error);
+        });
   }
 }

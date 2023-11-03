@@ -88,3 +88,8 @@ a {
     width: 80%;
     margin-left: 50px;
 }
+
+.like-button-icon.liked {
+    color: blue; /* Change the color to indicate liked state */
+    font-weight: bold; /* Add other styles as needed */
+  }

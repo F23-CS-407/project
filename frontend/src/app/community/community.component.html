@@ -1,9 +1,21 @@
+<div *ngIf="show_follow_button">
+    <div *ngIf="user_following; else followCommunity">
+        <button mat-button (click)="unfollowCommunityCall()" class="follow-toggle">Unfollow</button>
+    </div>
+</div>
+<ng-template #followCommunity>
+    <button mat-button (click)="followCommunityCall()" class="follow-toggle">Follow</button>
+</ng-template>
 <a href="/new_post?community={{community_id}}" class="new-post-button"><button mat-button>New Post</button></a>
-<button mat-button class="follow-button">Follow</button>
 <div class="community">
     <div class="community-background">
         <p class="community-title">{{community_name}}</p>
         <p class="community-description">{{community_desc}}</p>
+    </div>
+    <div class="boards-button">
+        <a [routerLink]="['/community', community_id, 'boards']" class="boards-button">
+            <button mat-button>Boards</button>
+        </a>
     </div>
     <div class="post_list">
         <li *ngFor="let post of community_posts; index as i">
