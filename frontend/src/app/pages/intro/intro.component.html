@@ -148,8 +148,8 @@
                 </mat-form-field>
                 <div class="password-criteria" *ngIf="!showLoginForm">
                     <div class="criteria" [ngClass]="{'met-criteria': match, 'unmet-criteria': !match}">
-                        <mat-icon *ngIf="hasLower; else noLowercaseIcon">check</mat-icon>
-                        <ng-template #noLowercaseIcon><mat-icon>close</mat-icon></ng-template>
+                        <mat-icon *ngIf="match; else noMatch">check</mat-icon>
+                        <ng-template #noMatch><mat-icon>close</mat-icon></ng-template>
                         Passwords must match
                     </div>
                 </div>

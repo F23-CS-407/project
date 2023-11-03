@@ -10,13 +10,13 @@ const routes: Routes = [
             ),
     },
     {
-        path: 'intro',
-        component: IntroComponent,
-    },
-    {
         path: '',
         redirectTo: 'intro',
         pathMatch: 'full',
+    },
+    {
+        path: 'intro',
+        component: IntroComponent,
     },
 ];
 

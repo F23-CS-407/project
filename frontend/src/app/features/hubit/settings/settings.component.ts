@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { UserInterface } from 'src/app/interfaces/user';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -31,6 +32,7 @@ export class SettingsComponent implements OnInit {
   match = false;
 
   current_user?: UserInterface;
+  loading: boolean = true;
 
   constructor(private userService: UserService, private fb: FormBuilder) {
     this.usernameForm = this.fb.group({
@@ -90,11 +92,16 @@ export class SettingsComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    this.fetchUserProfile();
+    this.userService.loading.subscribe(isLoading => {
+      this.loading = isLoading;
+      if (!isLoading) {
+        this.fetchUserProfile();
+      }
+    });
   }
 
   fetchUserProfile() {
-    this.userService.user.subscribe(
+    this.userService.user.pipe(take(1)).subscribe(
       userData => {
         if (userData) {
           this.current_user = userData;
@@ -103,9 +110,6 @@ export class SettingsComponent implements OnInit {
       },
       error => {
         console.error('Error fetching user profile:', error);
-      },
-      () => {
-        console.log('User profile stream completed');
       }
     );
   }
@@ -117,6 +121,7 @@ export class SettingsComponent implements OnInit {
   updateUsername() {
     const username = this.usernameForm.get('username')?.value;
     if (username && typeof username === 'string' && username !== this.current_user?.username) {
+      console.log(username);
       this.userService.changeUsername(username);
     }
   }

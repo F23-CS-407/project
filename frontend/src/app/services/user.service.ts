@@ -11,16 +11,26 @@ export class UserService {
   private userSubject = new BehaviorSubject<UserInterface>({} as UserInterface);
   public user = this.userSubject.asObservable();
   private backend_addr: string = "http://localhost:8080/api";
+  private loadingSubject = new BehaviorSubject<boolean>(true);
+  public loading = this.loadingSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
   fetchUserProfile(): void {
-    this.http.get<UserInterface>('api/user_info').subscribe({
+    this.loadingSubject.next(true); // Indicate that loading has started
+    this.http.get<UserInterface>(`${this.backend_addr}/user_info`, { withCredentials: true }).subscribe({
       next: (userData) => {
-        this.updateUser(userData);
+        if (userData) {
+          this.updateUser(userData);
+        } else {
+          this.userSubject.next({} as UserInterface);
+        }
+        this.loadingSubject.next(false); // Indicate that loading has finished
       },
       error: (error) => {
         console.error('Error fetching user profile:', error);
+        this.userSubject.next({} as UserInterface);
+        this.loadingSubject.next(false); // Indicate that loading has finished
       }
     });
   }
@@ -44,6 +54,7 @@ export class UserService {
   }
 
   changeUsername(newUsername: string): void {
+    console.log(newUsername);
     this.http.post<UserInterface>(`${this.backend_addr}/change_username`, { new_username: newUsername }).pipe(
       catchError(this.handleError)
     ).subscribe({
