@@ -18,6 +18,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';         // Here is the component being imported
@@ -30,6 +31,8 @@ import { CommunityComponent } from './community/community.component';
 import { NewCommunityComponent } from './new-community/new-community.component';
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { MapComponent } from './map/map.component';
+import { BoardsComponent } from './boards/boards.component';
+import { NewBoardComponent } from './new-board/new-board.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,8 @@ import { MapComponent } from './map/map.component';
     NewCommunityComponent,
     FollowedCommunitiesComponent,
     MapComponent,
+    BoardsComponent,
+    NewBoardComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +64,7 @@ import { MapComponent } from './map/map.component';
       {path: 'post', component: PostComponent},
       {path: 'new_community', component: NewCommunityComponent},
       {path: 'community', component: CommunityComponent},
+      { path: 'community/:id/boards', component: BoardsComponent },
       {path: 'followed_communities', component: FollowedCommunitiesComponent}
     ]),
     BrowserAnimationsModule,
@@ -70,6 +76,7 @@ import { MapComponent } from './map/map.component';
     MatChipsModule,
     MatExpansionModule,
     MatSelectModule,
+    MatDialogModule,
     FormsModule, ReactiveFormsModule,
     MatAutocompleteModule,
   ],
