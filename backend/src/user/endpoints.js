@@ -57,7 +57,7 @@ export async function changeUsername(req, res, next) {
       return;
     }
 
-    const thisUser = await User.findOne({ username: req.user.username });
+    const thisUser = await User.findById(req.user._id);
     if (!thisUser) {
       res.status(404).send({ error: 'User not found' });
       return;
