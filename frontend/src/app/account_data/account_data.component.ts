@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-data',
@@ -13,13 +14,14 @@ export class AccountDataComponent implements OnInit {
     name: '', // Initialize as empty string
     password: '', // Initialize as empty string
     description: '', // Initialize as empty string
+    old_password: '',
   };
 
   editingName = false;
   editingPassword = false;
   editingDescription = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
     // Fetch user data from the backend during component initialization
@@ -42,23 +44,26 @@ export class AccountDataComponent implements OnInit {
   }
 
   saveUsername() {
-    this.saveField('new_name', this.user.name);
+    this.saveField('username', this.user.name);
   }
 
   savePassword() {
-    this.saveField('new_password', this.user.password);
+    this.saveField('password', this.user.password);
   }
 
   saveDescription() {
-    this.saveField('new_description', this.user.description);
+    this.saveField('description', this.user.description);
   }
 
 
   private saveField(field: string, value: string) {
     const options = { withCredentials: true };
-    const body: Record<string, string> = {};
 
-    body[field] = value;
+    const body = {["new_" + field]: value}
+    if (field == "password") {
+      body["old_password"] = this.user.old_password
+    }
+
 
     this.http.post<any>(`${this.backend_addr}/change_${field}`, body, options)
       .subscribe(
@@ -69,5 +74,28 @@ export class AccountDataComponent implements OnInit {
           console.error(`Failed to update ${field}:`, error);
         }
       );
+  }
+
+  signOut() {
+    const options = { withCredentials : true };
+    this.http.delete<any>(this.backend_addr + "/logout", options).subscribe({
+      next: logout_response => {          // On success
+        console.log(logout_response);
+        
+        // Redirect to login page
+        this.router.navigate(['/login']);
+      },
+      error: error_response => {
+        if (error_response.error.text == "Logged out successfully") {   // Success
+          // Redirect to login page
+          this.router.navigate(['/login']);
+        }
+        console.log(error_response);
+      }
+    });
+  } 
+
+  deleteAction() {
+    this.router.navigate(['/permadelete']);
   }
 }

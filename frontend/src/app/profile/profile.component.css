@@ -2,9 +2,8 @@
 
 .profile_grid {
     display: grid;
-    /*grid-template-columns: [col1-start] 40% [col1-end col2-start] 60% [col2-end];*/
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: [row1-start] 50vh [row1-end row2-start] 12vh [row2-end row3-start] 10vh [row3-end];
+    grid-template-rows: [row1-start] 50vh [row1-end row2-start] 10vh [row2-end];
     justify-items: start;
 
     /* Can also use grid-template-area for defined areas of grid */
@@ -150,6 +149,8 @@
 
 .col {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  width: 100%;
+  justify-items: center;
 }
 
 a {
@@ -176,14 +177,9 @@ a {
   margin-left: 50px; 
 } */
 
-.sign-out-button {
-  position: absolute;
-  top: 14px; /* Adjust the top position as needed */
-  right: 30px; /* Adjust the right position as needed */
-}
-
-.delete-button {
-  position: absolute;
-  top: 14px; /* Adjust the top position as needed */
-  right: 160px; /* Adjust the right position as needed */
+.center-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
 }

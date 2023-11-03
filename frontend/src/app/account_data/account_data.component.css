@@ -55,3 +55,28 @@
   margin: 0 0 -5vh 0;
   background: transparent;
 }
+
+.column-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-box {
+  display: flex;
+  flex-direction: row;
+}
+
+.sign-out {
+  margin-right: 30px;
+  margin-bottom: 20px;
+}
+
+.delete-account {
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+.input-box {
+  padding-left: 20px;
+  padding-right: 20px;
+}
