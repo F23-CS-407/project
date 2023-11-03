@@ -1,54 +1,150 @@
 <div class="settings-container">
     <!-- Settings Form -->
-    <form [formGroup]="settingsForm" (submit)="updateSettings($event)">
-        <div class="settings-container">
-            <!-- Username Field -->
+    <div class="settings-container">
+        <!-- Username Field -->
+        <form [formGroup]="usernameForm" (submit)="updateUsername()">
             <div class="settings-item">
                 <h1>Username:</h1>
                 <mat-form-field class="inputfield" appearance="outline">
-                <mat-label>Username</mat-label><!--  TODO replace with backend current username  -->
-                <input matInput formControlName="username">
-                <button mat-icon-button type="button" matSuffix *ngIf="settingsForm.get('username')?.value" (click)="settingsForm.get('username')?.setValue('')">
-                    <mat-icon>cancel</mat-icon>
-                </button>
+                    <mat-label>{{ current_user?.username }}</mat-label>
+                    <input matInput formControlName="username" placeholder="Enter new username">
+                    <button 
+                        mat-icon-button 
+                        type="button" 
+                        matSuffix 
+                        *ngIf="usernameForm.get('username')?.value" 
+                        (click)="usernameForm.get('username')?.setValue('')"
+                    >
+                        <mat-icon>cancel</mat-icon>
+                    </button>
                 </mat-form-field>
+                <button mat-raised-button type="submit" (click)="updateUsername()" [disabled]="usernameForm.invalid">Update</button>
             </div>
+        </form>
 
-            <!-- Password Field -->
+        <!-- Password Field -->
+        <form [formGroup]="passwordForm" (submit)="updatePassword()">
             <div class="settings-item">
                 <h1>Password:</h1>
-                <mat-form-field class="inputfield" appearance="outline">
-                <mat-label>Password</mat-label>
-                <input matInput [type]="visible ? 'text' : 'password'" formControlName="password">
-                <button mat-icon-button type="button" matSuffix *ngIf="settingsForm.get('password')?.value" (click)="settingsForm.get('password')?.setValue('')">
-                    <mat-icon>cancel</mat-icon>
-                </button>
-                <button mat-icon-button type="button" matSuffix (click)="toggleVisible()">
-                    <mat-icon>{{ visible ? 'visibility_off' : 'visibility' }}</mat-icon>
-                </button>
-                </mat-form-field>
+                <div class="password-box"> 
+                    <mat-form-field class="inputfield" appearance="outline">
+                        <mat-label>New Password</mat-label>
+                        <input matInput [type]="visible ? 'text' : 'password'" formControlName="newKey" (input)="onChange()">
+                        <button 
+                            mat-icon-button
+                            type="button"
+                            matSuffix 
+                            *ngIf="passwordForm.get('password')?.value" 
+                            (click)="passwordForm.get('password')?.setValue('')"
+                        >
+                            <mat-icon>
+                                <span class="material-symbols-outlined">
+                                    cancel
+                                </span>
+                            </mat-icon>
+                        </button>
+                        <button mat-icon-button type="button" matSuffix (click)="toggleVisible()">
+                            <mat-icon>{{ visible ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>     
+                    </mat-form-field>
+    
+                    <div class="password-criteria">
+                        <div class="criteria" [ngClass]="{'met-criteria': hasUpper, 'unmet-criteria': !hasUpper}">
+                            <mat-icon *ngIf="hasUpper; else noUppercaseIcon">check</mat-icon>
+                            <ng-template #noUppercaseIcon><mat-icon>close</mat-icon></ng-template>
+                            At least one uppercase letter
+                        </div>
+                        
+                        <div class="criteria" [ngClass]="{'met-criteria': hasLower, 'unmet-criteria': !hasLower}">
+                            <mat-icon *ngIf="hasLower; else noLowercaseIcon">check</mat-icon>
+                            <ng-template #noLowercaseIcon><mat-icon>close</mat-icon></ng-template>
+                            At least one lowercase letter
+                        </div>
+                        
+                        <div class="criteria" [ngClass]="{'met-criteria': hasNumber, 'unmet-criteria': !hasNumber}">
+                            <mat-icon *ngIf="hasNumber; else noNumberIcon">check</mat-icon>
+                            <ng-template #noNumberIcon><mat-icon>close</mat-icon></ng-template>
+                            At least one number
+                        </div>
+                        
+                        <div class="criteria" [ngClass]="{'met-criteria': hasMinLength, 'unmet-criteria': !hasMinLength}">
+                            <mat-icon *ngIf="hasMinLength; else noMinLengthIcon">check</mat-icon>
+                            <ng-template #noMinLengthIcon><mat-icon>close</mat-icon></ng-template>
+                            At least 8 characters
+                        </div>
+                    </div>
+    
+                </div>
+                
+                <div class="password-box">
+                    <mat-form-field class="inputfield" appearance="outline">
+                        <mat-label>Confirm Password</mat-label>
+                        <input matInput [type]="visible ? 'text' : 'password'" formControlName="keyMatch" (input)="onChange()">
+                        <button 
+                            mat-icon-button
+                            type="button"
+                            matSuffix 
+                            *ngIf="passwordForm.get('newPassword')?.value" 
+                            (click)="passwordForm.get('newPassword')?.setValue('')">
+                            <mat-icon>
+                                <span class="material-symbols-outlined">
+                                    cancel
+                                </span>
+                            </mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <div class="password-criteria">
+                        <div class="criteria" [ngClass]="{'met-criteria': match, 'unmet-criteria': !match}">
+                            <mat-icon *ngIf="hasLower; else noLowercaseIcon">check</mat-icon>
+                            <ng-template #noLowercaseIcon><mat-icon>close</mat-icon></ng-template>
+                            Passwords must match
+                        </div>
+                    </div>
+    
+                </div>
+                <button mat-raised-button type="submit" (click)="updatePassword()" [disabled]="passwordForm.invalid">Update</button>
             </div>
+        </form>
 
-            <!-- Submit Button -->
+       <!-- Description/Bio -->
+        <form [formGroup]="descriptionForm" (ngSubmit)="updateDescription()">
             <div class="settings-item">
-                <button mat-raised-button type="submit" [disabled]="!settingsForm.valid">Update</button>
+            <h1>Bio:</h1>
+            <div class="bio-box">
+                <h3 class="title">Overview: </h3>
+                <mat-form-field class="inputfield" appearance="outline">
+                    <mat-label>Anything exiting for your community?</mat-label>
+                    <textarea matInput formControlName="description" rows="4" (input)="onChange()"></textarea>
+                    <button 
+                        mat-icon-button
+                        type="button"
+                        appearance="outlined" 
+                        matSuffix 
+                        *ngIf="descriptionForm.get('community_desc')?.value"
+                        (click)="descriptionForm.get('community_desc')?.setValue('')"
+                    >
+                        <mat-icon>
+                            <span class="material-symbols-outlined">
+                                cancel
+                            </span>
+                        </mat-icon>
+                    </button>
+                </mat-form-field>
+                <div class="criteria" [ngClass]="{'met-criteria': hasDescLength, 'unmet-criteria': !hasDescLength}">
+                    <mat-icon *ngIf="hasDescLength; else noBioIcon">check</mat-icon>
+                    <ng-template #noBioIcon><mat-icon>close</mat-icon></ng-template>
+                    At least 25 characters
+                </div>
             </div>
-        </div>
-    </form>
+            <button mat-raised-button type="submit" [disabled]="descriptionForm.invalid">Update</button>
+            </div>
+        </form>
   
-    <!-- Description/Bio -->
-    <mat-form-field class="inputfield" appearance="outline">
-    <mat-label>Description</mat-label>
-    <textarea matInput formControlName="description" [disabled]="!settingsForm.enabled"></textarea>
-    </mat-form-field>
-  
-  
+
+    </div>
     <!-- Buttons -->
     <div class="settings-actions">
-        <button mat-raised-button type="button" (click)="editProfile()" *ngIf="!settingsForm.enabled">Edit</button>
-        <button mat-raised-button type="submit" *ngIf="settingsForm.enabled">Save</button>
         <button mat-raised-button type="button" (click)="signOut()">Sign Out</button>
         <button mat-raised-button type="button" (click)="deleteAccount()">Delete Account</button>
     </div>
 </div>
-  

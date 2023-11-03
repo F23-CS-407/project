@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { UserInterface } from 'src/app/interfaces/user';
 
@@ -9,56 +9,146 @@ import { UserInterface } from 'src/app/interfaces/user';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  settingsForm: FormGroup;
+
+  usernameForm: FormGroup;
+  descriptionForm: FormGroup;
+  passwordForm: FormGroup;
+  
+
+  username: string = '';
+  description: string = '';
+  password: string = '';
+  newPassword: string = '';
+
+  hasDescLength: boolean = false;
+  errorMessage: string = '';
+
   visible: boolean = false;
+  hasUpper = false;
+  hasLower = false;
+  hasNumber = false;
+  hasMinLength = false;
+  match = false;
+
   current_user?: UserInterface;
 
   constructor(private userService: UserService, private fb: FormBuilder) {
-    this.fetchUserProfile();
-    this.settingsForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+    this.usernameForm = this.fb.group({
+      username: ['', Validators.required]
     });
+    this.descriptionForm = this.fb.group({
+      description: ['', Validators.required]
+    });
+    this.passwordForm = this.fb.group({
+      password: ['', [Validators.required, this.keyValidator()]],
+      newPassword: ['', Validators.required]
+    }, { validators: this.keyMatchValidator() });
   }
 
+  // VALIDATOR --> key requirements
+  keyValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value = control.value;
+      const hasUppercase = /[A-Z]/.test(value);
+      const hasLowercase = /[a-z]/.test(value);
+      const hasNumber = /\d/.test(value);
+      const hasMinLength = value.length >= 8;
+
+      if (hasUppercase && hasLowercase && hasNumber && hasMinLength) {
+        return null;
+      }
+
+      return { passwordInvalid: true };
+    };
+  }
+
+  // VALIDATOR --> key match
+  keyMatchValidator(): ValidatorFn {
+    return (group: AbstractControl): { [key: string]: any } | null => {
+      const password = group.get('password')?.value;
+      const confirmPassword = group.get('newPassword')?.value;
+  
+      if (password && confirmPassword && password !== confirmPassword) {
+        return { passwordsMismatch: true };
+      }
+      return null;
+    };
+  }
+
+  onChange() {
+    const desc = this.descriptionForm.get('description')?.value;
+    this.hasDescLength = desc.length >= 25;
+
+    const value = this.passwordForm.get('password')?.value;
+    this.hasUpper = /[A-Z]/.test(value);
+    this.hasLower = /[a-z]/.test(value);
+    this.hasNumber = /\d/.test(value);
+    this.hasMinLength = value.length >= 8;
+    this.match = this.passwordForm.get('password')?.value === this.passwordForm.get('newPassword')?.value;
+
+    this.errorMessage = '';
+  }
+  
   ngOnInit(): void {
     this.fetchUserProfile();
   }
 
   fetchUserProfile() {
-    this.userService.user.subscribe(userData => {
-      this.current_user = userData;
-      this.settingsForm.patchValue({
-        username: userData.username,
-        description: userData.bio ,
-      });
-    });
+    this.userService.user.subscribe(
+      userData => {
+        if (userData) {
+          this.current_user = userData;
+          this.username = userData.username;
+        }
+      },
+      error => {
+        console.error('Error fetching user profile:', error);
+      },
+      () => {
+        console.log('User profile stream completed');
+      }
+    );
   }
+  
 
   toggleVisible() {
     this.visible = !this.visible;
   }
-
-  updateSettings(event: Event) {
-    event.preventDefault();
-    if (this.settingsForm.valid) {
-      // ... logic to update settings ...
+  updateUsername() {
+    const username = this.usernameForm.get('username')?.value;
+    if (username && typeof username === 'string' && username !== this.current_user?.username) {
+      this.userService.changeUsername(username);
     }
   }
-
-  editProfile() {
-    this.settingsForm.enable();
+  
+  updateDescription() {
+    const description = this.descriptionForm.get('description')?.value;
+    if (description && typeof description === 'string' && description !== this.current_user?.bio) {
+      this.userService.changeDescription(description);
+    }
   }
-
-  saveProfile() {
-    // Logic to save the updated profile information
+  
+  updatePassword() {
+    const newPassword = this.passwordForm.get('newPassword')?.value;
+    const password = this.passwordForm.get('password')?.value;
+    if (newPassword && typeof newPassword === 'string' && password && typeof password === 'string') {
+      this.userService.changePassword(newPassword, password);
+    }
   }
+  
 
   signOut() {
-    // Logic to call the logout endpoint
+    this.userService.logoutUser();
   }
 
+
   deleteAccount() {
-    // Logic to call the delete_user endpoint
+    const password = this.passwordForm.get('password')?.value;
+    if (password && typeof password === 'string') {
+      this.userService.deleteUser(password);
+    } else {
+      // Handle error - password required
+      console.error('Password is required to delete account');
+    }
   }
 }
