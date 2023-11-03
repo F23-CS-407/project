@@ -1,0 +1,33 @@
+.page-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 50px;
+    width: 100%;
+}
+
+.boards-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 5px;
+    color: #000000;
+}
+
+.divider {
+    width: 70%;
+    height: 1px;
+    background-color: #000000;
+}
+
+.board-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}

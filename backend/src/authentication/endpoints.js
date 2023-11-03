@@ -25,6 +25,7 @@ export const createUser = async (req, res, next) => {
   const salt = saltGen();
   const new_user = new User({
     username: requested_username,
+    bio: 'Go to settings to change your bio!',
     password_hash: hash(requested_password + salt),
     salt,
   });
@@ -105,7 +106,7 @@ export async function deleteUser(req, res, next) {
 
 export async function get_user(req, res, next) {
   if (req.isAuthenticated()) {
-    res.send((await User.findOne({ username: req.user.username })).scrub());
+    res.send((await User.findById(req.user._id)).scrub());
   } else {
     res.status(401).send({ error: 'Not logged in' });
   }

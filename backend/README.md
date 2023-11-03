@@ -672,7 +672,7 @@ Error
 
 ```
 
-### POST /like/post
+### POST /like_post
 
 Body
 
@@ -721,7 +721,7 @@ Error
 
 ```
 
-### DELETE /like/post
+### DELETE /like_post
 
 Body
 

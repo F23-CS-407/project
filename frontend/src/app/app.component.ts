@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,33 +14,61 @@ export class AppComponent {
   searchResults: any[] = []; // Array to store search results
   sidePanelVisible: boolean = false; // Initialize as hidden
 
-constructor(private http: HttpClient) { }
+constructor(private router: Router, private http: HttpClient) { }
   
-performSearch() { 
-  if (this.searchCriteria.trim() != '') {
-    console.log('Perform search with criteria: ', this.searchCriteria);
+performSearch(event: any) {
+  this.sidePanelVisible = false
+  this.searchResults = []
+  this.searchCriteria = event;
+    if (this.searchCriteria.trim()) {
+      console.log('Perform search with criteria: ', this.searchCriteria);
 
-     const api = 'http://localhost:8080/api';
+      const api = 'http://localhost:8080/api';
 
-      this.http.get<any>(api + `/search_users?username=${this.searchCriteria}`).subscribe(
-      (response: any) => {
-        // Handle the response from the backend
-        this.searchResults = response;
-        console.log(response);
-      },
-      // TODO: Make HTTP request to backend
-    );
-        
-  
-      } else {
-        console.error('Invalid search criteria:', this.searchCriteria);
-      }
-      
-    } 
-  
-    toggleSidePanel() {
-      this.sidePanelVisible = !this.sidePanelVisible;
+      // Perform both user and community searches
+      this.http
+        .get<any>(api + `/search_users?username=${this.searchCriteria}`)
+        .subscribe(
+          (userResponse: any) => {
+            userResponse.forEach((r: any) => {
+              if (!this.searchResults.includes(r)) {
+                this.searchResults.push(r)
+              }
+            });
+            console.log('User search results:', userResponse);
+          }
+        );
+
+      this.http
+        .get<any>(api + `/search_communities?name=${this.searchCriteria}`)
+        .subscribe(
+          (communityResponse: any) => {
+            // Merge the community results with user results
+            communityResponse.forEach((r: any) => {
+              if (!this.searchResults.includes(r)) {
+                this.searchResults.push(r)
+                }
+              })
+              console.log('Community search results:', communityResponse);
+          }
+        );
+    } else {
+      console.error('Invalid search criteria:', this.searchCriteria);
     }
+  }
 
+  toProfile() {
+    this.sidePanelVisible = false;
+    this.router.navigateByUrl(`/`)
+  }
 
+  toCreateCommunity() {
+    this.sidePanelVisible = false;
+    this.router.navigateByUrl('/new_community')
+  }
+
+  toggleSidePanel() {
+    this.sidePanelVisible = !this.sidePanelVisible;
+    this.searchResults = [];
+  }
 }

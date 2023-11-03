@@ -7,6 +7,15 @@
     color: #000000;
 }
 
+.boards-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 5px;
+    color: #000000;
+}
+
 .follow-toggle {
     position: fixed;
     top: 14px;
@@ -18,6 +27,11 @@
 }
 
 .community {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
     width: 100%;
 }
 

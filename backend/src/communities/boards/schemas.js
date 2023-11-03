@@ -7,7 +7,6 @@ const boardSchema = new Schema(
   {
     name: {
       type: String,
-      unique: true,
       required: true,
     },
     posts: [
