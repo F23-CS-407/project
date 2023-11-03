@@ -41,28 +41,49 @@ export async function changeDescription(req, res, next) {
 
 export async function changeUsername(req, res, next) {
   const new_username = req.body.new_username;
-  // must be logged in
   if (req.isAuthenticated()) {
-    // must have new_username
     if (!new_username) {
       res.status(400).send({ error: 'new_username missing' });
       return;
     }
 
-    // check if username is taken
     if (await User.findOne({ username: new_username })) {
       res.status(409).send({ error: 'username taken' });
       return;
     }
 
-    // save and return new user object
-    const thisUser = await User.findOne({ username: req.user.username });
-    thisUser.username = new_username;
-    res.send((await thisUser.save()).scrub());
-    return;
-  }
+    if (!req.user || !req.user.username) {
+      res.status(400).send({ error: 'Current username not found in session' });
+      return;
+    }
 
-  res.status(401).send({ error: 'not signed in' });
+    const thisUser = await User.findOne({ username: req.user.username });
+    if (!thisUser) {
+      res.status(404).send({ error: 'User not found' });
+      return;
+    }
+
+    thisUser.username = new_username;
+    try {
+      const updatedUser = await thisUser.save();
+
+      // Update the username in the session and save the session
+      req.user.username = new_username;
+      req.session.save((err) => {
+        if (err) {
+          console.error('Session save error:', err);
+          res.status(500).send({ error: 'Error updating session' });
+          return;
+        }
+        res.send(updatedUser.scrub());
+      });
+    } catch (error) {
+      console.error('Error updating username:', error);
+      res.status(500).send({ error: 'Error updating username' });
+    }
+  } else {
+    res.status(401).send({ error: 'not signed in' });
+  }
 }
 
 export async function followCommunity(req, res, next) {
