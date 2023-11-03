@@ -7,11 +7,8 @@
   <!-- Search input and button container -->
   <div class="search-container">
     <mat-form-field class="search-field">
-      <input matInput placeholder="Search..." class="search-input" [(ngModel)]="searchCriteria">
+      <input matInput placeholder="Search..." class="search-input" (ngModelChange)="performSearch($event)" [(ngModel)]="searchCriteria">
     </mat-form-field>
-    <button mat-icon-button (click)="performSearch()" class="search-button" aria-label="Search">
-      <mat-icon>search</mat-icon>
-    </button>
   </div>
 </mat-toolbar>
 
@@ -19,10 +16,12 @@
 <div class="search-results" *ngIf="searchResults.length > 0">
   <div *ngFor="let result of searchResults" class="search-result">
     <div *ngIf="result.username">
-      <p><strong>User:</strong> {{ result.username }}</p>
+      <a href="/community?community={{result._id}}" class="search-link"><strong>User:</strong> {{ result.username }}</a>
+      <hr class="result-divider">
     </div>
     <div *ngIf="result.name">
-      <p><strong>Community:</strong> {{ result.name }}</p>
+      <a href="/user?id={{result._id}}" class="search-link"><strong>Community:</strong> {{ result.name }}</a>
+      <hr class="result-divider">
     </div>
   </div>
 </div>

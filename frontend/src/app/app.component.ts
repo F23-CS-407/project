@@ -15,8 +15,10 @@ export class AppComponent {
 
 constructor(private http: HttpClient) { }
   
-performSearch() {
-    if (this.searchCriteria.trim() !== '') {
+performSearch(event: any) {
+  this.searchResults = []
+  this.searchCriteria = event;
+    if (this.searchCriteria.trim()) {
       console.log('Perform search with criteria: ', this.searchCriteria);
 
       const api = 'http://localhost:8080/api';
@@ -26,7 +28,11 @@ performSearch() {
         .get<any>(api + `/search_users?username=${this.searchCriteria}`)
         .subscribe(
           (userResponse: any) => {
-            this.searchResults = userResponse;
+            userResponse.forEach((r: any) => {
+              if (!this.searchResults.includes(r)) {
+                this.searchResults.push(r)
+              }
+            });
             console.log('User search results:', userResponse);
           }
         );
@@ -36,8 +42,12 @@ performSearch() {
         .subscribe(
           (communityResponse: any) => {
             // Merge the community results with user results
-            this.searchResults = this.searchResults.concat(communityResponse);
-            console.log('Community search results:', communityResponse);
+            communityResponse.forEach((r: any) => {
+              if (!this.searchResults.includes(r)) {
+                this.searchResults.push(r)
+                }
+              })
+              console.log('Community search results:', communityResponse);
           }
         );
     } else {
