@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +14,10 @@ export class AppComponent {
   searchResults: any[] = []; // Array to store search results
   sidePanelVisible: boolean = false; // Initialize as hidden
 
-constructor(private http: HttpClient) { }
+constructor(private router: Router, private http: HttpClient) { }
   
 performSearch(event: any) {
+  this.sidePanelVisible = false
   this.searchResults = []
   this.searchCriteria = event;
     if (this.searchCriteria.trim()) {
@@ -55,7 +57,18 @@ performSearch(event: any) {
     }
   }
 
+  toProfile() {
+    this.sidePanelVisible = false;
+    this.router.navigateByUrl(`/`)
+  }
+
+  toCreateCommunity() {
+    this.sidePanelVisible = false;
+    this.router.navigateByUrl('/new_community')
+  }
+
   toggleSidePanel() {
     this.sidePanelVisible = !this.sidePanelVisible;
+    this.searchResults = [];
   }
 }

@@ -36,8 +36,11 @@
 
 <!-- Side Panel feature -->
 <div tabindex="0" class="side_panel" [class.show]="sidePanelVisible">
-  <!-- Side Panel Content Here -->
-  <!-- Move your buttons here -->
-  <button mat-raised-button [routerLink]="['/']" class="newCommunity">Profile</button>
-  <button mat-raised-button [routerLink]="['/new_community']" class="newCommunity">Create New Community</button>
+  <div *ngIf="sidePanelVisible">
+
+    <!-- Side Panel Content Here -->
+    <!-- Move your buttons here -->
+    <button (click)="toProfile()" mat-raised-button  class="newCommunity">Profile</button>
+    <button (click)="toCreateCommunity()" mat-raised-button class="newCommunity">Create New Community</button>
+  </div>
 </div>
