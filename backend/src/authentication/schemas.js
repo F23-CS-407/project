@@ -7,6 +7,7 @@ const userSchema = new Schema(
   {
     username: String,
     password_hash: String,
+    bio: String,
     salt: String,
     description: String,
     mod_for: [

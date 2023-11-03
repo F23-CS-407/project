@@ -25,6 +25,7 @@ export const createUser = async (req, res, next) => {
   const salt = saltGen();
   const new_user = new User({
     username: requested_username,
+    bio: 'Go to settings to change your bio!',
     password_hash: hash(requested_password + salt),
     salt,
   });

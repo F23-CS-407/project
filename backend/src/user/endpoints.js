@@ -31,7 +31,7 @@ export async function changeDescription(req, res, next) {
 
     // save and return new user object
     const thisUser = await User.findOne({ username: req.user.username });
-    thisUser.description = new_description;
+    thisUser.bio = new_description;
     res.send((await thisUser.save()).scrub());
     return;
   }
