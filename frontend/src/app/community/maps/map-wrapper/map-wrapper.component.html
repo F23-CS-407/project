@@ -1,1 +1,12 @@
-<app-map-canvas></app-map-canvas>
+<div><app-map-canvas *ngIf="image && previewimage==false;else missing" [image]="image"></app-map-canvas></div>
+<ng-template #missing>
+    <div>
+        <p *ngIf="previewimage==false;else preview">This board is missing an image for the map.</p>
+        <ng-template #preview>
+            <p>This is a preview of what the map will look like. Hit upload to confirm selection.</p>
+            <div><app-map-canvas [image]="image"></app-map-canvas></div>
+        </ng-template>
+        <input type="file" (change)="onFileSelected($event)"> <!--TODO: add selection type to image types -->
+        <button (click)="uploadImage()">Upload</button>
+    </div>
+</ng-template>

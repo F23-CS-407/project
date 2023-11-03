@@ -1,4 +1,4 @@
-import { Input, Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Input, Component, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 
 
 @Component({
@@ -9,8 +9,10 @@ import { Input, Component, ViewChild, ElementRef, AfterViewInit } from '@angular
 
 export class MapCanvasComponent implements AfterViewInit {
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+  @HostListener('window:keydown.enter', ['$event'])
+
   @Input() edit : boolean = false;
-  @Input() image! : HTMLImageElement | undefined;
+  @Input() image! : HTMLImageElement;
 
   //Unnecessary this sprint, but including for the purposes of testing.
   @Input() gridSizeX : number = 0;
@@ -19,14 +21,23 @@ export class MapCanvasComponent implements AfterViewInit {
   //ViewChild depends on this
   ngAfterViewInit() {
     if(this.image) this.loadImage();
+    else console.log("No image to load, need upload!");
+  }
+
+  test(){
+    console.log("Edit called");
+  }
+
+  changeKeyboardPosition(event: KeyboardEvent)  {
+    this.test(); // Call the test function
   }
 
   loadImage() {
   
     const canvas = this.canvasRef.nativeElement;
     const context = canvas.getContext('2d');
-    const image = new Image();
-    image.src = '../../assets/indiana.png'; //Update for image.
+
+    const image = this.image;
 
     image.onload = () => {
       // Set canvas size to match image dimensions
@@ -52,6 +63,8 @@ export class MapCanvasComponent implements AfterViewInit {
           });
         }
       }
+
+      canvas.focus();
     };
   }
 

@@ -26,5 +26,5 @@ export class BoardWrapperComponent {
     }
   }
 
-  //Get board data (mostly type)
+  //For now, assume board is of map type.
 }
