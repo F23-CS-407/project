@@ -11,7 +11,10 @@
         <p class="post-content">{{post_content}}</p>
     </div>
     <div class="like-container post-field">
-        <button mat-icon-button style="width:auto" (click)="like_button_click()">{{like_count}} <mat-icon class="like-button-icon">thumb_up</mat-icon></button>
+        <button mat-icon-button style="width:auto" (click)="like_button_click()">
+            {{like_count}}
+            <mat-icon class="like-button-icon">thumb_up</mat-icon>
+        </button>
     </div>
 </div>
 <div class="new-comment">
@@ -20,7 +23,7 @@
 </div>
 <mat-list *ngFor="let comment of comments; index as i">
     <div class="existing-comment">
-        <app-comment [comment]="comment"></app-comment>
+        <app-comment [comment]="comment" [viewing_user_id]="self_id" [deleteComment]="delete_comment"></app-comment>
     </div>
     <mat-divider style="margin-top: 15px" *ngIf="i !== (comments.length-1)"></mat-divider>
 </mat-list>

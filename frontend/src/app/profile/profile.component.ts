@@ -86,7 +86,6 @@ export class ProfileComponent {
               next: get_community_response => {newPost.created_by.for_community.name = get_community_response.name;
                                               newPost.created_by.for_community.id = get_community_response._id;},
                                             error: error => {console.log("profile get commuity error");console.log(error);}});
-            console.log("Com name: "+newPost.created_by.for_community.name);
             
             this.posts.push(newPost);
           }

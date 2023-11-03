@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Comment } from '../../models/Comment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-comment',
@@ -8,4 +9,6 @@ import { Comment } from '../../models/Comment';
 })
 export class CommentComponent {
   @Input({required: true}) comment!: Comment;
+  @Input() viewing_user_id: string = "";
+  @Input({required: true}) deleteComment!: (id: string) => void;
 }

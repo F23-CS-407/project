@@ -33,7 +33,7 @@ export class PostComponent {
 
   comments: Comment[] = [];
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(public http: HttpClient, private router: Router) {
     this.post_id = this.urlParams.get('post') as string;
     this.getData();
     this.get_post_data();
@@ -131,6 +131,23 @@ export class PostComponent {
         window.location.reload();
       },
       error: error => {
+        console.log(error);
+      }});
+  }
+
+  delete_comment(id: string) {
+    const body = {"comment" : id};
+    const options = { withCredentials : true, body: body };
+    this.http.delete<any>("api/comment", options).subscribe({
+      next: delete_comment_response => {
+        // Reload the page
+        window.location.reload();
+      },
+      error: error => {
+        if (error.status == 200){
+          // Reload the page
+          window.location.reload();
+        }
         console.log(error);
       }});
   }
