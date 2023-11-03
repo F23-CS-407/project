@@ -24,6 +24,7 @@ services:
       - ./backend/src:/usr/backend/src
       - ./backend/tests:/usr/backend/tests
       - ./backend/coverage:/usr/backend/coverage
+      - ./database/uploads:/usr/backend/uploads
 
   database:
     container_name: hubit_mongo
