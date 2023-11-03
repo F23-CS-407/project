@@ -41,58 +41,33 @@ export class AccountDataComponent implements OnInit {
     });
   }
 
-  toggleEditing(field: string) {
-    if (field === 'name') {
-      this.editingName = !this.editingName;
-    } else if (field === 'password') {
-      this.editingPassword = !this.editingPassword;
-    } else if (field === 'description') {
-      this.editingDescription = !this.editingDescription;
-    }
+  saveUsername() {
+    this.saveField('new_name', this.user.name);
   }
 
-  saveChanges() {
+  savePassword() {
+    this.saveField('new_password', this.user.password);
+  }
+
+  saveDescription() {
+    this.saveField('new_description', this.user.description);
+  }
+
+
+  private saveField(field: string, value: string) {
     const options = { withCredentials: true };
-    if (this.editingName) {
-      // Send a request to update the name
-      const body = { new_username: this.user.name };
-      this.http.post<any>(this.backend_addr + "/change_username", body, options).subscribe({
-        next: response => {
-          console.log('Name updated successfully:', response);
-          this.editingName = false; // Disable editing mode after success
-        },
-        error: error => {
-          console.error('Failed to update name:', error) // Show an error message
-        }
-      });
-    }
+    const body: Record<string, string> = {};
 
-    if (this.editingPassword) { // Password
-      // Send a request to update the password
-      const body = { new_password: this.user.password };
-      this.http.post<any>(this.backend_addr + "/change_password", body, options).subscribe({
-        next: response => {
-          console.log('Password updated successfully:', response);
-          this.editingPassword = false; // Disable editing mode after success
-        },
-        error: error => {
-          console.error('Failed to update password:', error);
-        }
-      });
-    }
+    body[field] = value;
 
-    if (this.editingDescription) {
-      // Send request to update the description
-      const body = { new_description: this.user.description };
-      this.http.post<any>(this.backend_addr + "/change_description", body, options).subscribe({
-        next: response => {
-          console.log('Description updated successfully:', response);
-          this.editingDescription = false; // Disable editing mode after success
+    this.http.post<any>(`${this.backend_addr}/change_${field}`, body, options)
+      .subscribe(
+        (response) => {
+          console.log(`${field} updated successfully:`, response);
         },
-        error: error => {
-          console.error('Failed to update description:', error); // Display error message 
+        (error) => {
+          console.error(`Failed to update ${field}:`, error);
         }
-      });
-    }
+      );
   }
 }

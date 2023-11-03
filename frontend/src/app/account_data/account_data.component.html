@@ -1,20 +1,20 @@
 <div class="middle_box">
     <h1 class="page-heading">Account Data</h1>
-    <mat-form-field class="input-80-width" [class.editing]="editingName" (click)="toggleEditing('name')">
+    <mat-form-field class="input-80-width">
         <h2>Name:</h2>
-        <input matInput [(ngModel)]="user.name" [readonly]="!editingName" />
-        <button mat-button>Save</button>
+        <input matInput [(ngModel)]="user.name" />
+        <button mat-button (click)="saveUsername()">Save</button>
     </mat-form-field>
 
-    <mat-form-field class="input-80-width" [class.editing]="editingPassword" (click)="toggleEditing('password')">
+    <mat-form-field class="input-80-width">
         <h2>Password:</h2>
-        <input matInput [(ngModel)]="user.password" [readonly]="!editingPassword" />
-        <button mat-button>Save</button>
+        <input matInput [(ngModel)]="user.password" />
+        <button mat-button (click)="savePassword()">Save</button>
     </mat-form-field>
 
-    <mat-form-field class="input-80-width" [class.editing]="editingDescription" (click)="toggleEditing('description')">
+    <mat-form-field class="input-80-width">
         <h2>Description:</h2>
-        <input matInput [(ngModel)]="user.description" [readonly]="!editingDescription" />
-        <button mat-button>Save</button>
+        <input matInput [(ngModel)]="user.description" />
+        <button mat-button (click)="saveDescription()">Save</button>
     </mat-form-field>
 </div>
