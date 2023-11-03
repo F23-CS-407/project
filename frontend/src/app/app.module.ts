@@ -18,6 +18,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';         // Here is the component being imported
@@ -31,6 +32,7 @@ import { NewCommunityComponent } from './new-community/new-community.component';
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { MapComponent } from './map/map.component';
 import { BoardsComponent } from './boards/boards.component';
+import { NewBoardComponent } from './new-board/new-board.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { BoardsComponent } from './boards/boards.component';
     FollowedCommunitiesComponent,
     MapComponent,
     BoardsComponent,
+    NewBoardComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,6 +76,7 @@ import { BoardsComponent } from './boards/boards.component';
     MatChipsModule,
     MatExpansionModule,
     MatSelectModule,
+    MatDialogModule,
     FormsModule, ReactiveFormsModule,
     MatAutocompleteModule,
   ],

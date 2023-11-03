@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { NewBoardComponent } from '../new-board/new-board.component';
 
 @Component({
   selector: 'app-boards',
@@ -8,22 +10,35 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./boards.component.css']
 })
 export class BoardsComponent implements OnInit {
-  community_id: string = ''; // Initialized as an empty string
-  boards: any[] = []; // Initialized as an empty array
+  community_id: string = '';
+  boards: any[] = []; 
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient // Inject HttpClient
+    private http: HttpClient,
+    public dialog: MatDialog
   ) {}
 
+
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('community_id');
-      if (id) {
-        this.community_id = id;
-        this.getBoards();
-      } else {
-        // todo: Handle the case where community_id is not in the route
+    this.community_id = this.route.snapshot.paramMap.get('id') || '';
+    if (this.community_id) {
+      this.getBoards();
+    } else {
+      // Handle the case where community_id is not in the route
+    }
+  }
+
+
+  openCreateBoardDialog(): void {
+    const dialogRef = this.dialog.open(NewBoardComponent, {
+      width: '250px',
+      data: { communityId: this.community_id }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.boards.push(result); 
       }
     });
   }
