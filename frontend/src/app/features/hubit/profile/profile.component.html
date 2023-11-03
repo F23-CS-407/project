@@ -1,80 +1,39 @@
-id={{id}}
-
 <div class="profile-container">
-    <div class="info-container">
 
+    <div class="info-container">
         <div class="profile-picture">
             <mat-icon class="person_icon">account_circle</mat-icon>
         </div>
 
         <div class="details">
-            <h1 class="username" *ngIf="!currently_editting">
+            <h1 class="username">
                 {{username}}
             </h1>
-            <p class="bio" *ngIf="!currently_editting">{{bio}}</p>
-    
-            <form *ngIf="currently_editting">
-                <input #new_username class="username_edit no-outline" value="{{username}}" placeholder="Add your name here">
-                <br>
-                <textarea #new_bio class="bio_edit" rows=10 value="{{bio}}" placeholder="Add something interesting about yourself"></textarea>
-            
-                <div>
-                    <button mat-raised-button class="cancel_button" (click)="edit_action()">Cancel</button>
-                    <button mat-raised-button class="confirm_button" (click)="change_bio(new_username.value, new_bio.value)">Confirm</button>
+            <p class="bio">{{bio}}</p>
+            <div class="stats-container">
+                <div class="stat">
+                    <h3 class="profile_number">{{num_posts}}</h3>
+                    <p class="profile_number_text">Posts</p>
                 </div>
-            </form>
+                <div class="stat">
+                    <h3 class="profile_number">{{num_followers}}</h3>
+                    <p class="profile_number_text">Followers</p>
+                </div>
+                <div class="stat">
+                    <h3 class="profile_number">{{num_following}}</h3>
+                    <p class="profile_number_text">Following</p>
+                </div>
+                <div class="stat">
+                    <h3 class="profile_number">{{num_communities}}</h3>
+                    <p class="profile_number_text">Communities</p>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <div class="stats-container">
-        <div class="stat">
-            <h3 class="profile_number">{{num_posts}}</h3>
-            <p class="profile_number_text">Posts</p>
-        </div>
-        <div class="stat">
-            <h3 class="profile_number">{{num_followers}}</h3>
-            <p class="profile_number_text">Followers</p>
-        </div>
-        <div class="stat">
-            <h3 class="profile_number">{{num_following}}</h3>
-            <p class="profile_number_text">Following</p>
-        </div>
-        <div class="stat">
-            <h3 class="profile_number">{{num_communities}}</h3>
-            <p class="profile_number_text">Communities</p>
-        </div>
-    </div>
+    <div class="divider"></div>
 
-    <div class="button-container">
-        <!-- <div class="button" *ngIf="viewing_own_profile">
-            <button mat-raised-button class="create_new_community" (click)="create_community_action()" disabled="{{currently_editting}}">Create New Community</button>
-        </div> -->
-        
-        <!-- If viewing own profile -->
-        <button mat-raised-button 
-            class="button" 
-            (click)="edit_action()" 
-            [disabled]="currently_editting"
-            *ngIf="viewing_own_profile"
-        >
-            Edit
-        </button>
-        <button mat-raised-button 
-            class="button" 
-            (click)="share_action()" 
-            *ngIf="viewing_own_profile"
-        >
-            Share
-        </button>
-        <button mat-icon-button 
-            class="settings_button" 
-            (click)="settings_action()"
-            *ngIf="viewing_own_profile"
-        >
-            <mat-icon>settings</mat-icon>
-        </button>
-    </div>
     <div class="post_list">
         <!-- Use material cards: https://material.angular.io/components/card/overview -->
         <li *ngFor="let post of posts; index as i">
