@@ -1,1 +1,14 @@
-<p>boards works!</p>
+<div class="page-content">
+    <div class="boards-button">
+        <a [routerLink]="['/community', community_id, 'new-board']" class="new-board-button">
+            <button mat-button>Create New Board</button>
+        </a>
+    </div>
+    <div class="divider"></div>
+    <div class="board-list">
+        <h1>Boards:</h1>
+        <div *ngFor="let board of boards">
+            <a [routerLink]="['/board', board.id]">{{ board.name }}</a>
+        </div>
+    </div>
+</div>
