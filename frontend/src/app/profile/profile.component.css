@@ -1,3 +1,12 @@
+.direct-message-button {
+  position: absolute;
+  top: 14px;
+  right: 30px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  color: #000000;
+}
+
 /* https://css-tricks.com/snippets/css/complete-guide-grid/ */
 
 .profile_grid {
@@ -75,16 +84,6 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   resize: none;
 }
-.col .cancel_button {
-  margin-left: 2.5vw;
-  background-color: crimson;
-  color: white;
-}
-.col .confirm_button {
-  margin-left: 2.5vw;
-  background-color: #17B169;
-  color: white;
-}
 
 
 /* For # posts, followers, following, and communities */
@@ -111,6 +110,7 @@
   text-align: center;
 }
 .profile_number_text {
+  text-align: center;
   font-size: large;
 }
 

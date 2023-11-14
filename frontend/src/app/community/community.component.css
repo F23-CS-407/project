@@ -17,7 +17,7 @@
 }
 
 .follow-toggle {
-    position: fixed;
+    position: absolute;
     top: 14px;
     right: 150px;
     width: 80px;
