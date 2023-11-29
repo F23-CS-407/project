@@ -15,7 +15,7 @@ if password matches: return cb(null, user object)
 */
 export async function verify(username, password, cb) {
   // if username not found, verify fail
-  const users = await User.find({ username: username });
+  const users = await User.find({ username: username }).populate('profile_pic');
   if (users.length != 1) {
     return cb(null, false);
   }

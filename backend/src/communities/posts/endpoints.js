@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { Community } from '../schemas.js';
 import { Post } from './schemas.js';
 import { User } from '../../authentication/schemas.js';
+import { UploadReceipt } from '../../uploads/schema.js';
 
 //Needs to be given post content, tags (if there are any), and the Object IDs for the community and user.
 export async function post_in_community(req, res) {
@@ -53,8 +54,17 @@ export async function post_in_community(req, res) {
     parent_ref: 'Community',
   });
 
+  // if photo id given, add it
+  if (post.photo) {
+    if (!mongoose.Types.ObjectId.isValid(post.photo) || !(await UploadReceipt.findById(post.photo))) {
+      res.status(400).send({ error: 'photo must be a valid upload id' });
+    }
+    new_post.photo = post.photo;
+  }
+
   //Creates new post in database
-  const posted = await new_post.save();
+  let posted = await new_post.save();
+  posted = await Post.findById(posted._id).populate('photo');
 
   //Updates the community with the new post ID.
   const community = await Community.findOne({ _id: post_comm });
@@ -111,7 +121,7 @@ export async function getPost(req, res, next) {
     return;
   }
 
-  const thisPost = await Post.findById(id);
+  const thisPost = await Post.findById(id).populate('photo');
   res.status(200).json(thisPost);
 }
 
@@ -132,6 +142,9 @@ export async function get_posts_by_community(req, res) {
   Community.findById(comm)
     .populate({
       path: 'posts',
+      populate: {
+        path: 'photo',
+      },
       options: { sort: { created_date: -1 } },
     })
     .exec((err, community) => {
