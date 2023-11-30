@@ -36,6 +36,10 @@ const communitySchema = new Schema(
         ref: 'User',
       },
     ],
+    banner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'UploadReceipt',
+    },
   },
   {
     methods: {

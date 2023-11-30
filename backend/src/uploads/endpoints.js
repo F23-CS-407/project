@@ -100,3 +100,56 @@ export async function getFile(req, res) {
     }
   });
 }
+
+export async function setCommunityBanner(req, res) {
+  // must be a request type that can send files
+  if (!req.headers['content-type'] || !req.headers['content-type'].includes('multipart/form-data')) {
+    res.status(400).send({ error: 'content-type must be multipart/form-data' });
+    return;
+  }
+
+  // must be logged in
+  if (req.isAuthenticated()) {
+    // community must be valid and user must be mod
+    let community = req.body.community;
+    communty = await Community.findById(community);
+    if (community && community.mods.includes(req.user._id)) {
+      // save the file
+      upload.single('file')(req, res, async (err) => {
+        // file couldn't be fetched from request
+        if (err) {
+          res.status(400).send({ error: 'file must be sent in "file" key of form-data' });
+          return;
+        }
+
+        // get the file info and generate a receipt
+        const file = req.file;
+        let receipt = new UploadReceipt({ creator: req.user._id, filename: file.filename });
+        receipt = await receipt.save();
+
+        // delete current profile pic if there is one
+        let user = await User.findById(req.user._id).populate('profile_pic');
+        if (user.profile_pic) {
+          console.log('REACHED');
+          await user.profile_pic.deleteRecursive();
+        }
+        user = await User.findById(req.user._id).populate('profile_pic');
+
+        // put receipt in user profile and community banner
+        user.uploads.push(receipt._id);
+        community.banner = receipt._id;
+
+        // send new community object
+        res.send(await community.save());
+
+        return;
+      });
+      return;
+    } else {
+      res.status(403).send({ error: 'not mod in community' });
+      return;
+    }
+  }
+  res.status(401).send({ error: 'not logged in' });
+  return;
+}

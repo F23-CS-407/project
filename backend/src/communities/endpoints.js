@@ -147,7 +147,7 @@ export async function search_community_by_post_id(req, res) {
     return;
   }
 
-  const thisComm = await Community.findOne({ posts: { $elemMatch: { $eq: req.query.post_id } } });
+  const thisComm = await Community.findOne({ posts: { $elemMatch: { $eq: req.query.post_id } } }).populate('banner');
   res.status(200).json(thisComm);
 }
 
@@ -163,6 +163,6 @@ export async function getCommunity(req, res, next) {
     return;
   }
 
-  const thisCommunity = await Community.findById(id);
+  const thisCommunity = await Community.findById(id).populate('banner');
   res.status(200).json(thisCommunity);
 }

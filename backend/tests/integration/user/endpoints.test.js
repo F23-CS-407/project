@@ -47,7 +47,7 @@ describe('POST /change_description', () => {
 
     response = await request(app).post('/change_description').set('Cookie', cookie).send({ new_description: 'hello' });
     expect(response.statusCode).toBe(200);
-    expect(response.body.description).toBe('hello');
+    expect(response.body.bio).toBe('hello');
   });
 
   it('should scrub response', async () => {
