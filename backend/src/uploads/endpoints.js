@@ -1,6 +1,8 @@
 import { User } from '../authentication/schemas.js';
 import { UploadReceipt } from './schema.js';
 import { upload } from './utils.js';
+import { Community } from '../communities/schemas.js';
+import mongoose from 'mongoose';
 
 export async function uploadFile(req, res) {
   // must be a request type that can send files
@@ -60,20 +62,15 @@ export async function setProfilePic(req, res) {
       let receipt = new UploadReceipt({ creator: req.user._id, filename: file.filename });
       receipt = await receipt.save();
 
-      // delete current profile pic if there is one
       let user = await User.findById(req.user._id).populate('profile_pic');
-      if (user.profile_pic) {
-        console.log('REACHED');
-        await user.profile_pic.deleteRecursive();
-      }
-      user = await User.findById(req.user._id).populate('profile_pic');
 
       // put receipt in user profile and profile pic
       user.uploads.push(receipt._id);
       user.profile_pic = receipt._id;
 
       // send new user object
-      res.send(await user.save());
+      await user.save();
+      res.send(await User.findById(user._id).populate('profile_pic'));
 
       return;
     });
@@ -85,11 +82,6 @@ export async function setProfilePic(req, res) {
 
 export async function getFile(req, res) {
   const name = req.params.name;
-
-  // must have a filename
-  if (!name) {
-    res.status(400).send({ error: 'name missing' });
-  }
 
   // try to send the file
   res.sendFile(`/usr/backend/uploads/${name}`, (err) => {
@@ -111,8 +103,12 @@ export async function setCommunityBanner(req, res) {
   // must be logged in
   if (req.isAuthenticated()) {
     // community must be valid and user must be mod
-    let community = req.body.community;
-    communty = await Community.findById(community);
+    let community = req.query.id;
+    if (!mongoose.Types.ObjectId.isValid(community)) {
+      res.status(400).send({ error: 'invalid community' });
+      return;
+    }
+    community = await Community.findById(community);
     if (community && community.mods.includes(req.user._id)) {
       // save the file
       upload.single('file')(req, res, async (err) => {
@@ -129,18 +125,16 @@ export async function setCommunityBanner(req, res) {
 
         // delete current profile pic if there is one
         let user = await User.findById(req.user._id).populate('profile_pic');
-        if (user.profile_pic) {
-          console.log('REACHED');
-          await user.profile_pic.deleteRecursive();
-        }
-        user = await User.findById(req.user._id).populate('profile_pic');
 
         // put receipt in user profile and community banner
         user.uploads.push(receipt._id);
         community.banner = receipt._id;
 
+        await user.save();
+        await community.save();
+
         // send new community object
-        res.send(await community.save());
+        res.send(await Community.findById(community._id).populate('banner'));
 
         return;
       });
