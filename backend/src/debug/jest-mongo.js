@@ -25,7 +25,7 @@ export default function useMongoTestWrapper() {
       await con.disconnect();
       await mongoServer.stop();
 
-      fs.rmdirSync('/usr/backend/uploads');
+      fs.rmdirSync('/usr/backend/uploads', { recursive: true });
     } catch {
       return;
     }
