@@ -11,6 +11,7 @@ const UploadReceiptSchema = new Schema(
       ref: 'User',
     },
     filename: String,
+    url: String,
   },
   {
     methods: {

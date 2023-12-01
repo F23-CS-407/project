@@ -145,15 +145,14 @@ describe('POST /upload/profile_pic', () => {
     // upload should be in user uploads
     expect(response.body.uploads.length).toBe(1);
 
-    // profile pic should be populated receipt
+    // profile pic should be populated with url
     expect(response.body.profile_pic).toBeTruthy();
-    expect(response.body.profile_pic.creator).toBe(user._id);
 
     // stored file should be the same as what is uploaded
     expect(
       fs
         .readFileSync(folderPath + 'tst-img1.jpeg')
-        .equals(fs.readFileSync(storePath + response.body.profile_pic.filename)),
+        .equals(fs.readFileSync(storePath + response.body.profile_pic.split('/').pop())),
     ).toBe(true);
   });
 });
@@ -309,6 +308,7 @@ describe('POST /upload/community_banner', () => {
     let user = response.body;
     const cookie = response.headers['set-cookie'];
 
+    // create community
     const comm_name = 'test community';
     const comm_desc = 'a test community';
     response = await request(app)
@@ -332,13 +332,14 @@ describe('POST /upload/community_banner', () => {
     user = await User.findById(user._id);
     expect(user.uploads.length).toBe(1);
 
-    // profile pic should be populated receipt
+    // banner should be populated with url
     expect(response.body.banner).toBeTruthy();
-    expect(user._id.equals(response.body.banner.creator)).toBe(true);
 
     // stored file should be the same as what is uploaded
     expect(
-      fs.readFileSync(folderPath + 'tst-img1.jpeg').equals(fs.readFileSync(storePath + response.body.banner.filename)),
+      fs
+        .readFileSync(folderPath + 'tst-img1.jpeg')
+        .equals(fs.readFileSync(storePath + response.body.banner.split('/').pop())),
     ).toBe(true);
   });
 });

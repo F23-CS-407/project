@@ -533,8 +533,11 @@ Body
 
 ```
 {
-"post" : {"content" : string,
-"tags" : [string, ...]},
+"post" : {
+    "content" : string,
+    "tags" : [string, ...],
+    "photo" (optional): string
+},
 "community" : string
 }
 
@@ -953,6 +956,41 @@ Errors
 ```
 400
 401
+```
+
+### POST /upload/profile_pic
+
+form-data
+
+```
+file: File
+```
+
+Returns User
+
+Errors
+
+```
+400
+401
+```
+
+### POST /upload/community_banner?id={string}
+
+form-data
+
+```
+file: File
+```
+
+Returns Community
+
+Errors
+
+```
+400
+401
+403
 ```
 
 ### GET /upload/{name}

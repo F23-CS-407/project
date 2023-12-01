@@ -54,17 +54,13 @@ export async function post_in_community(req, res) {
     parent_ref: 'Community',
   });
 
-  // if photo id given, add it
+  // if photo url is given, add it
   if (post.photo) {
-    if (!mongoose.Types.ObjectId.isValid(post.photo) || !(await UploadReceipt.findById(post.photo))) {
-      res.status(400).send({ error: 'photo must be a valid upload id' });
-    }
     new_post.photo = post.photo;
   }
 
   //Creates new post in database
   let posted = await new_post.save();
-  posted = await Post.findById(posted._id).populate('photo');
 
   //Updates the community with the new post ID.
   const community = await Community.findOne({ _id: post_comm });

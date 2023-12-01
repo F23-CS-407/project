@@ -33,10 +33,7 @@ const postSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       refPath: 'parent_ref',
     },
-    photo: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'UploadReceipt',
-    },
+    photo: String,
   },
   {
     methods: {

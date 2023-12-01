@@ -4,6 +4,8 @@ import { upload } from './utils.js';
 import { Community } from '../communities/schemas.js';
 import mongoose from 'mongoose';
 
+const uploadBaseUrl = '/api/upload/';
+
 export async function uploadFile(req, res) {
   // must be a request type that can send files
   if (!req.headers['content-type'] || !req.headers['content-type'].includes('multipart/form-data')) {
@@ -23,7 +25,11 @@ export async function uploadFile(req, res) {
 
       // get the file info and generate a receipt
       const file = req.file;
-      let receipt = new UploadReceipt({ creator: req.user._id, filename: file.filename });
+      let receipt = new UploadReceipt({
+        creator: req.user._id,
+        filename: file.filename,
+        url: uploadBaseUrl + file.filename,
+      });
       receipt = await receipt.save();
 
       // put receipt in user profile
@@ -59,14 +65,18 @@ export async function setProfilePic(req, res) {
 
       // get the file info and generate a receipt
       const file = req.file;
-      let receipt = new UploadReceipt({ creator: req.user._id, filename: file.filename });
+      let receipt = new UploadReceipt({
+        creator: req.user._id,
+        filename: file.filename,
+        url: uploadBaseUrl + file.filename,
+      });
       receipt = await receipt.save();
 
       let user = await User.findById(req.user._id).populate('profile_pic');
 
       // put receipt in user profile and profile pic
       user.uploads.push(receipt._id);
-      user.profile_pic = receipt._id;
+      user.profile_pic = receipt.url;
 
       // send new user object
       await user.save();
@@ -120,7 +130,11 @@ export async function setCommunityBanner(req, res) {
 
         // get the file info and generate a receipt
         const file = req.file;
-        let receipt = new UploadReceipt({ creator: req.user._id, filename: file.filename });
+        let receipt = new UploadReceipt({
+          creator: req.user._id,
+          filename: file.filename,
+          url: uploadBaseUrl + file.filename,
+        });
         receipt = await receipt.save();
 
         // delete current profile pic if there is one
@@ -128,7 +142,7 @@ export async function setCommunityBanner(req, res) {
 
         // put receipt in user profile and community banner
         user.uploads.push(receipt._id);
-        community.banner = receipt._id;
+        community.banner = receipt.url;
 
         await user.save();
         await community.save();
