@@ -1,0 +1,123 @@
+* {
+    /*border: 1px solid black;/**/
+}
+
+.top-box {
+    display: flex;
+    width: 100vw;
+    min-width: 500px;
+    min-height: 100px;
+    justify-content: center;
+    align-items: center;            /* Centers vertically */
+    background-color: black;
+}
+
+.top-box .a-back {
+    position: absolute;
+}
+
+.top-box .back-arrow {
+    position: absolute;
+    color:white; 
+    scale:3;
+    margin-top: -12.5px;
+    margin-left: 25px;
+    left: 0%;
+}
+
+.profile-name {
+    text-align: center;
+    color: white;
+    font-size: 48px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.message-box {
+    width: 100%;
+    min-height: 100px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.message-box .prior-message-box {
+    width: 80%;
+    min-width: 300px;
+    height: auto;
+    min-height: 100px;
+    max-height: 500px;
+    overflow: auto;
+}
+
+.message-box .prior-message-scroll::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+.message-box .prior-message-box .message {
+    font-size: 24px;
+    height: auto;
+    min-height: 50px;
+    padding-left: 10px;
+    padding-top: 5px;
+    width: 60%;
+    border-radius: 20px;
+    padding-top: 10px;
+    line-height: 30px;
+}
+
+.message-box .prior-message-box .user-message {
+    display: block;
+    margin-left: 39%;
+    background-color: white;
+}
+.message-box .prior-message-box .user-message-time {
+    display: block;
+    float: right;
+}
+
+.message-box .prior-message-box .recipient-message {
+    display: block;
+    left: 0;
+
+    background-color: rgb(200,200,200);
+}
+.message-box .prior-message-box .recipient-message-time {
+    display: block;
+    margin-left: 0;
+    float: left;
+}
+
+.message-box .new-message {
+    width: 80%;
+    padding-top: 10px;
+}
+
+.message-box .new-message .new-message-input {
+    width: 70%;
+    background-color: rgb(200,200,200);
+    color: white;
+    font-size: 24px;
+    border: none;
+    border-radius: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    overflow-y: hidden;
+    resize: none;
+    padding-left: 10px;
+    padding-top: 5px;
+    line-height: 1.4;
+}
+
+.message-box .new-message .icon-button {
+    position: absolute;
+    background-color: white;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.spacer {
+    height: 40px;
+    margin: 0 0 -10px 0;
+    background: transparent;
+}

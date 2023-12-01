@@ -38,6 +38,7 @@ import { FollowedCommunitiesComponent } from './followed-communities/followed-co
 import { MapComponent } from './map/map.component';
 import { BoardsComponent } from './boards/boards.component';
 import { NewBoardComponent } from './new-board/new-board.component';
+import { DirectMessageComponent } from './direct-message/direct-message.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { NewBoardComponent } from './new-board/new-board.component';
     MapComponent,
     BoardsComponent,
     NewBoardComponent,
+    DirectMessageComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,12 +69,13 @@ import { NewBoardComponent } from './new-board/new-board.component';
       {path: 'login', component: LoginComponent},                  // This is a new path. Can be found at localhost:port/login
       {path: 'signup', component: SignupComponent},
       {path: 'profile', component: ProfileComponent},
+      {path: 'direct_message', component: DirectMessageComponent},
       {path: 'post', component: PostComponent},
       {path: 'account_data', component: AccountDataComponent },
       {path: 'new_post', component: NewPostComponent},
       {path: 'new_community', component: NewCommunityComponent},
       {path: 'community', component: CommunityComponent},
-      { path: 'community/:id/boards', component: BoardsComponent },
+      {path: 'community/:id/boards', component: BoardsComponent},
       {path: 'followed_communities', component: FollowedCommunitiesComponent}
     ]),
     BrowserAnimationsModule,
