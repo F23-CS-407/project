@@ -536,7 +536,7 @@ Body
 "post" : {
     "content" : string,
     "tags" : [string, ...],
-    "photo" (optional): string
+    "media" (optional): string
 },
 "community" : string
 }
@@ -950,6 +950,23 @@ file: File
 ```
 
 Returns UploadReceipt
+
+Errors
+
+```
+400
+401
+```
+
+### POST /upload/clip
+
+form-data
+
+```
+file: File
+```
+
+Returns UploadReceipt for .m3u8 file
 
 Errors
 

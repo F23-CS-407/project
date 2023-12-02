@@ -54,9 +54,9 @@ export async function post_in_community(req, res) {
     parent_ref: 'Community',
   });
 
-  // if photo url is given, add it
-  if (post.photo) {
-    new_post.photo = post.photo;
+  // if media url is given, add it
+  if (post.media) {
+    new_post.media = post.media;
   }
 
   //Creates new post in database
@@ -117,7 +117,7 @@ export async function getPost(req, res, next) {
     return;
   }
 
-  const thisPost = await Post.findById(id).populate('photo');
+  const thisPost = await Post.findById(id).populate('media');
   res.status(200).json(thisPost);
 }
 
@@ -139,7 +139,7 @@ export async function get_posts_by_community(req, res) {
     .populate({
       path: 'posts',
       populate: {
-        path: 'photo',
+        path: 'media',
       },
       options: { sort: { created_date: -1 } },
     })

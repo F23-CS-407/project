@@ -131,14 +131,14 @@ describe('POST /create_post', () => {
     expect(response.statusCode).toBe(200);
     let community = response.body;
 
-    const post = { content: 'Test', photo: 'cool-photo.com/wow' };
+    const post = { content: 'Test', media: 'cool-photo.com/wow' };
     response = await request(app)
       .post('/create_post')
       .set('Cookie', cookie)
       .send({ post, community: community._id, user: user._id });
     expect(response.statusCode).toBe(200);
     expect(response.body.content).toBe(post.content);
-    expect(response.body.photo).toBe(post.photo);
+    expect(response.body.media).toBe(post.media);
 
     // should be in community
     community = await Community.findById(community._id);

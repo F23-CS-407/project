@@ -3,6 +3,11 @@ import { UploadReceipt } from './schema.js';
 import { upload } from './utils.js';
 import { Community } from '../communities/schemas.js';
 import mongoose from 'mongoose';
+import ffmpeg from 'fluent-ffmpeg';
+import ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
+import fs from 'fs';
+
+const uploadBase = '/usr/backend/uploads/';
 
 const uploadBaseUrl = '/api/upload/';
 
@@ -137,7 +142,6 @@ export async function setCommunityBanner(req, res) {
         });
         receipt = await receipt.save();
 
-        // delete current profile pic if there is one
         let user = await User.findById(req.user._id).populate('profile_pic');
 
         // put receipt in user profile and community banner
@@ -160,4 +164,75 @@ export async function setCommunityBanner(req, res) {
   }
   res.status(401).send({ error: 'not logged in' });
   return;
+}
+
+export async function uploadClip(req, res) {
+  // must be a request type that can send files
+  if (!req.headers['content-type'] || !req.headers['content-type'].includes('multipart/form-data')) {
+    res.status(400).send({ error: 'content-type must be multipart/form-data' });
+    return;
+  }
+
+  // must be logged in
+  if (!req.isAuthenticated()) {
+    res.status(401).send({ error: 'not logged in' });
+    return;
+  }
+  let user = await User.findById(req.user._id);
+
+  upload.single('file')(req, res, async (err) => {
+    // file couldn't be fetched from request
+    if (err) {
+      res.status(400).send({ error: 'file must be sent in "file" key of form-data' });
+      return;
+    }
+
+    // get the file info and generate a receipt
+    const file = req.file;
+
+    ffmpeg.setFfmpegPath(ffmpegInstaller.path);
+    ffmpeg(uploadBase + file.filename, { timeout: 432000 })
+      .addOptions(['-hls_time 3', '-f hls'])
+      .output(uploadBase + file.filename.split('.')[0] + '.m3u8')
+      .on('end', async () => {
+        // generate receipts, return m3u8
+        let raw = file.filename;
+        let raw_hash = raw.split('.')[0];
+
+        let m3u8 = null;
+
+        // delete raw file
+        fs.rmSync(uploadBase + raw);
+
+        // make receipts for the new files
+        let files = fs.readdirSync(uploadBase).filter((f) => f.includes(raw_hash));
+
+        for (const f of files) {
+          const file = req.file;
+          let receipt = new UploadReceipt({
+            creator: req.user._id,
+            filename: f,
+            url: uploadBaseUrl + f,
+          });
+          receipt = await receipt.save();
+
+          // put receipt in user profile and community banner
+          user.uploads.push(receipt._id);
+          user = await user.save();
+
+          // if is m3u8 save to return
+          if (f.includes('.m3u8')) {
+            m3u8 = receipt;
+          }
+        }
+
+        res.status(200).send(m3u8);
+        return;
+      })
+      .on('error', () => {
+        res.status(400).send({ error: 'could not encode clip' });
+        return;
+      })
+      .run();
+  });
 }

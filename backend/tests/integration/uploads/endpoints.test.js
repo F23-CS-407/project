@@ -343,3 +343,71 @@ describe('POST /upload/community_banner', () => {
     ).toBe(true);
   });
 });
+
+describe('POST /upload/clip', () => {
+  useMongoTestWrapper();
+
+  it('should fail if not multi part form data', async () => {
+    const app = await createTestApp();
+
+    let response = await request(app).post('/upload/clip').send({});
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should fail if not authenticated', async () => {
+    const app = await createTestApp();
+
+    request(app)
+      .post('/upload/clip')
+      .attach('file', folderPath + 'tst-img1.jpeg')
+      .end((err, response) => {
+        expect(response.statusCode).toBe(401);
+      });
+  });
+
+  it('should fail if not attached as "file"', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    const cookie = response.headers['set-cookie'];
+
+    response = await request(app)
+      .post('/upload/clip')
+      .attach('not-file', folderPath + 'tst-img1.jpeg')
+      .set('Cookie', cookie);
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('should encode and return m3u8', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    // create user
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+    const cookie = response.headers['set-cookie'];
+
+    // upload file
+    response = await request(app)
+      .post('/upload/clip')
+      .attach('file', folderPath + 'tst-vid1.MOV')
+      .set('Cookie', cookie);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.creator).toBe(user._id);
+    expect(response.body.filename.includes('.m3u8')).toBe(true);
+
+    // have one .m3u8 file and many .ts files
+    user = await User.findById(user._id).populate('uploads');
+    let uploads = fs.readdirSync(storePath);
+    expect(uploads.length).toBe(user.uploads.length);
+    for (const f of user.uploads) {
+      expect(uploads.includes(f.filename)).toBe(true);
+      expect(f.filename.includes('.ts') || f.filename.includes('.m3u8')).toBe(true);
+    }
+  }, 100000);
+});

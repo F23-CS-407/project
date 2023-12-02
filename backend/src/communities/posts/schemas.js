@@ -33,7 +33,7 @@ const postSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       refPath: 'parent_ref',
     },
-    photo: String,
+    media: String,
   },
   {
     methods: {
