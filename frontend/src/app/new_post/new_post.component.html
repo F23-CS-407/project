@@ -36,15 +36,10 @@
         <mat-form-field class="input-80-width">
             <input matInput hidden="true">
             <h1>Add Photo/Video:</h1>
-            <div class="image-preview-box">
-                <div class="image-preview-box-text">
-                    This feature is currently not supported
-                </div>
-            </div>
+            <input #Image type="file" (change)="onChange($event)">
         </mat-form-field>
     
         <div class="post-button-area">
-                                                            <!-- Couldn't figure out chip values, will fix later -->
             <button mat-raised-button class="post-button" (click)="create_post(post_desc.value, [chipList.value])">Post</button>
         </div>
     </form>

@@ -21,6 +21,13 @@
         <button mat-button (click)="saveDescription()">Save</button>
     </mat-form-field>
 
+    <mat-form-field class="input-box">
+        <input matInput hidden="true">
+        <h1>Add Profile Picture:</h1>
+        <input #Image type="file" (change)="onPictureChange($event)">
+        <button mat-button (click)="savePicture()">Save</button>
+    </mat-form-field>
+
     <div class="flex-row">
         <!-- Signout button -->
         <button mat-raised-button class="sign-out" (click)="signOut()">Sign Out</button>

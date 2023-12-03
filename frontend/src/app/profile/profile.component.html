@@ -1,24 +1,16 @@
+<div *ngIf="logged_in && !viewing_own_profile">
+    <a href="/" class="direct-message-button"><button mat-button>Direct Message</button></a>
+</div>
 <div class="center-flex">
 <div class="profile_grid">
     <div class="col">
         <mat-icon class="person_icon">account_circle</mat-icon>
     </div>
     <div class="col">
-        <h1 class="username" *ngIf="!currently_editting">
+        <h1 class="username">
             {{username}}
         </h1>
-        <p class="bio" *ngIf="!currently_editting">{{bio}}</p>
-
-        <form *ngIf="currently_editting">
-            <input #new_username class="username_edit no-outline" value="{{username}}" placeholder="Add your name here">
-            <br>
-            <textarea #new_bio class="bio_edit" rows=10 value="{{bio}}" placeholder="Add something interesting about yourself"></textarea>
-        
-            <div>
-                <button mat-raised-button class="cancel_button" (click)="change_edit()">Cancel</button>
-                <button mat-raised-button class="confirm_button" (click)="change_info(new_username.value, new_bio.value)">Confirm</button>
-            </div>
-        </form>
+        <p class="bio">{{bio}}</p>
     </div>
 
     <div class="col">

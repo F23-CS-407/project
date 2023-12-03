@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { FileUploadService } from '../file-upload.service';
 
 @Component({
   selector: 'app-account-data',
@@ -21,7 +22,7 @@ export class AccountDataComponent implements OnInit {
   editingPassword = false;
   editingDescription = false;
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient, private fileUploadService: FileUploadService) {}
 
   ngOnInit() {
     // Fetch user data from the backend during component initialization
@@ -53,6 +54,29 @@ export class AccountDataComponent implements OnInit {
 
   saveDescription() {
     this.saveField('description', this.user.bio);
+  }
+
+  loading: boolean = false;
+  file: File | null = null;
+  public onPictureChange(event : any) {
+    if (event && event.target && event.target.files && event.target.files.length >= 1){
+      this.file = event.target.files[0];
+    }
+  }
+  savePicture() {
+    // Goal: call this.saveField()
+    if (this.file !== null) {
+      this.loading = !this.loading;
+
+      // Call upload service to upload file
+      this.fileUploadService.upload(this.file).subscribe(
+        (event: any) => {
+          if (typeof (event) === 'object') {
+            this.loading = false;
+          }
+        }
+      );
+    }
   }
 
 

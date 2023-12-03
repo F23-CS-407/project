@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { FileUploadService } from '../file-upload.service';
 
 @Component({
   selector: 'app-post',
@@ -27,7 +28,7 @@ export class NewPostComponent {
   community_name: string = "";
   community_desc: string = "";
 
-  constructor(private router : Router, private http : HttpClient) {
+  constructor(private router : Router, private http : HttpClient, private fileUploadService : FileUploadService) {
     this.async_constructor();
   }
   async async_constructor() {
@@ -79,6 +80,14 @@ export class NewPostComponent {
       }});
   }
 
+  loading: boolean = false;
+  file: File | null = null;
+  public onChange(event : any) {
+    if (event && event.target && event.target.files && event.target.files.length >= 1){
+      this.file = event.target.files[0];
+    }
+  }
+
   create_post(description : string, chips : string[]) {
     // If no value selected, default to General
     if (chips[0] == undefined){
@@ -98,6 +107,21 @@ export class NewPostComponent {
       error: error => {         // On fail
         console.log(error);
       }});
+  }
+  // Note: This function is never called
+  uploadFile() {
+    if (this.file !== null) {
+      this.loading = !this.loading;
+
+      // Call upload service to upload file
+      this.fileUploadService.upload(this.file).subscribe(
+        (event: any) => {
+          if (typeof (event) === 'object') {
+            this.loading = false;
+          }
+        }
+      );
+    }
   }
 
 }
