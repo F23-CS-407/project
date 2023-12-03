@@ -17,7 +17,7 @@ import { MatInputModule } from '@angular/material/input';
     MenuBarComponent,
     SettingsDialogComponent,
     PermadeleteComponent,
-    NewCommunityDialogComponent
+    NewCommunityDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -34,7 +34,7 @@ import { MatInputModule } from '@angular/material/input';
     MenuBarComponent,
     SettingsDialogComponent,
     PermadeleteComponent,
-    NewCommunityDialogComponent
-  ] 
+    NewCommunityDialogComponent,
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

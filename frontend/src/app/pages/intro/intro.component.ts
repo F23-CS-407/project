@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.component.html',
@@ -9,7 +15,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from
 })
 export class IntroComponent {
   // Declaraions
-  private backend_addr: string = "http://localhost:8080/api";
+  private backend_addr: string = 'http://localhost:8080/api';
 
   loginForm: FormGroup;
   registerForm: FormGroup;
@@ -21,25 +27,30 @@ export class IntroComponent {
   hasMinLength = false;
   match = false;
 
-
   showLoginForm = true;
-  errorMessage: string = '';  // To hold error messages
-  self_id: string = "";
+  errorMessage: string = ''; // To hold error messages
+  self_id: string = '';
   self_username?: string = undefined;
   logged_in: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router, private fb: FormBuilder) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private fb: FormBuilder,
+  ) {
     this.loginForm = this.fb.group({
       login: ['', Validators.required],
-      loginKey: ['', Validators.required]
+      loginKey: ['', Validators.required],
     });
 
-    this.registerForm = this.fb.group({
-      newUser: ['', Validators.required],
-      newKey: ['', [Validators.required, this.keyValidator()]],
-      keyMatch: ['', Validators.required]
-    }, { validators: this.keyMatchValidator() });
-    
+    this.registerForm = this.fb.group(
+      {
+        newUser: ['', Validators.required],
+        newKey: ['', [Validators.required, this.keyValidator()]],
+        keyMatch: ['', Validators.required],
+      },
+      { validators: this.keyMatchValidator() },
+    );
   }
 
   // VALIDATOR --> key requirements
@@ -64,14 +75,14 @@ export class IntroComponent {
     return (group: AbstractControl): { [key: string]: any } | null => {
       const password = group.get('newKey')?.value;
       const confirmPassword = group.get('keyMatch')?.value;
-  
+
       if (password && confirmPassword && password !== confirmPassword) {
         return { passwordsMismatch: true };
       }
       return null;
     };
   }
-  
+
   // PASSWORD VALIDATION
   onPasswordChange() {
     const value = this.registerForm.get('newKey')?.value;
@@ -79,7 +90,9 @@ export class IntroComponent {
     this.hasLower = /[a-z]/.test(value);
     this.hasNumber = /\d/.test(value);
     this.hasMinLength = value.length >= 8;
-    this.match = this.registerForm.get('newKey')?.value === this.registerForm.get('keyMatch')?.value;
+    this.match =
+      this.registerForm.get('newKey')?.value ===
+      this.registerForm.get('keyMatch')?.value;
   }
 
   toggleVisibile() {
@@ -87,23 +100,22 @@ export class IntroComponent {
   }
 
   // FORMS DISPLAY
-  
+
   showRegistrationForm() {
     this.showLoginForm = false;
   }
-  
+
   showLoginFormAgain() {
     this.showLoginForm = true;
   }
-
 
   // Backend Integration
 
   loginUser(event: Event) {
     event.preventDefault();
-    const user = { 
-      username: this.loginForm.get('login')?.value, 
-      password: this.loginForm.get('loginKey')?.value 
+    const user = {
+      username: this.loginForm.get('login')?.value,
+      password: this.loginForm.get('loginKey')?.value,
     };
     const options = { withCredentials: true };
 
@@ -111,43 +123,53 @@ export class IntroComponent {
       (response: any) => {
         console.log('Login successful:', response);
         localStorage.setItem('token', response.token);
-        this.router.navigate(['/hubit']);  // Redirect to 'hubit' route
+        this.router.navigate(['/hubit']); // Redirect to 'hubit' route
       },
       (error: any) => {
         console.error('Login failed:', error);
-        this.errorMessage = 'Login failed. Please check your credentials and try again.';  // Set error message
-      }
+        this.errorMessage =
+          'Login failed. Please check your credentials and try again.'; // Set error message
+      },
     );
   }
 
   registerUser(event: Event) {
     event.preventDefault();
 
-    const user = { 
-      username: this.registerForm.get('newUser')?.value, 
-      password: this.registerForm.get('newKey')?.value 
+    const user = {
+      username: this.registerForm.get('newUser')?.value,
+      password: this.registerForm.get('newKey')?.value,
     };
-    const options = { withCredentials : true };
+    const options = { withCredentials: true };
 
-    this.http.post<any>(this.backend_addr + "/create_user", user, options).subscribe({
-      next: create_response => {
-        console.log(create_response);
+    this.http
+      .post<any>(this.backend_addr + '/create_user', user, options)
+      .subscribe({
+        next: (create_response) => {
+          console.log(create_response);
 
-        // Log the user in
-        this.http.post<any>(this.backend_addr + "/login", user, options).subscribe(
-          {next: login_response => {
-            console.log("login successful");
-            console.log(login_response);
-            this.router.navigate(['/hubit']);  // Redirect to 'hubit' route
-          }, 
-          error: error => {
-            console.log("Created account, but couldn't log in. This should never happen.");
-            this.errorMessage = 'Account created, but login failed. Please try logging in.';  // Set error message
-          }});
-      }, 
-      error: error => {
-        console.log("Create Account Error: " + error.toString());
-        this.errorMessage = 'Account creation failed. Please try again.';  // Set error message
-      }});
+          // Log the user in
+          this.http
+            .post<any>(this.backend_addr + '/login', user, options)
+            .subscribe({
+              next: (login_response) => {
+                console.log('login successful');
+                console.log(login_response);
+                this.router.navigate(['/hubit']); // Redirect to 'hubit' route
+              },
+              error: (error) => {
+                console.log(
+                  "Created account, but couldn't log in. This should never happen.",
+                );
+                this.errorMessage =
+                  'Account created, but login failed. Please try logging in.'; // Set error message
+              },
+            });
+        },
+        error: (error) => {
+          console.log('Create Account Error: ' + error.toString());
+          this.errorMessage = 'Account creation failed. Please try again.'; // Set error message
+        },
+      });
   }
 }

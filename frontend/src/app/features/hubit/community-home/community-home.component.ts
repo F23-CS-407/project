@@ -6,21 +6,22 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-community-home',
   templateUrl: './community-home.component.html',
-  styleUrls: ['./community-home.component.css']
+  styleUrls: ['./community-home.component.css'],
 })
 export class CommunityHomeComponent {
-
-  constructor(private dialog: MatDialog, private router: Router) {}
+  constructor(
+    private dialog: MatDialog,
+    private router: Router,
+  ) {}
 
   openNewCommunityDialog(): void {
     const dialogRef = this.dialog.open(NewCommunityDialogComponent, {
-      width: 'auto', 
-      height: 'auto'
+      width: 'auto',
+      height: 'auto',
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
+
+    dialogRef.afterClosed().subscribe((result) => {
       this.router.navigate(['/hubit/community']);
     });
   }
-  
 }

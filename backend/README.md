@@ -487,6 +487,17 @@ Error
 401
 ```
 
+## GET /user/followed_communities?id={string}
+
+Returns Community object array
+
+Error
+
+```
+400
+404
+```
+
 ### POST /board/post
 
 Body
@@ -662,7 +673,7 @@ Error
 
 ```
 
-### POST /like/post
+### POST /like_post
 
 Body
 
@@ -711,7 +722,7 @@ Error
 
 ```
 
-### DELETE /like/post
+### DELETE /like_post
 
 Body
 
@@ -926,6 +937,45 @@ Error
 "A post ID is required",
 "Invalid post ID"
 
+```
+
+### POST /upload
+
+form-data
+
+```
+file: File
+```
+
+Returns UploadReceipt
+
+Errors
+
+```
+400
+401
+```
+
+### GET /upload/{name}
+
+Returns file
+
+Errors
+
+```
+400
+404
+```
+
+### GET /user/uploads?id={string}
+
+Returns UploadReceipt array
+
+Errors
+
+```
+400
+404
 ```
 
 ## Debug Endpoints (only exposed when testing)

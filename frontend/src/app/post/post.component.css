@@ -1,0 +1,102 @@
+.post-box {
+  width: 80vw;
+  margin-left: 50px;
+  height: auto;
+  min-height: 40vh;
+  margin-top: 5vh;
+  border-radius: 10px;
+  background-color: aliceblue;
+  position: relative;
+  box-shadow: 1px 1px 3px rgb(50, 50, 50);
+}
+
+.comments-text {
+  margin-left: 50px;
+  margin-right: 0px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
+.post-field {
+  width: 100%;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.post-box .post-field .username {
+  font-size: 28px;
+  font-weight: bold;
+  color: black;
+  padding-top: 10px;
+}
+
+.post-box .post-field .community {
+  font-size: 20px;
+  color: black;
+}
+
+.post-box .post-field .post-content {
+  line-height: 24px;
+  height: 75%;
+  font-size: 16px;
+  overflow-y: auto;
+  padding-top: 30px;
+}
+
+.post-box .like-container {
+  position: absolute;
+  bottom: 0;
+}
+
+.post-box .like-container .like-button-icon {
+  margin-left: -2px;
+}
+
+.new-comment {
+  width: 100%;
+  min-height: 30px;
+  height: 90px;
+}
+
+.new-comment .input {
+  position: relative;
+  width: 50%;
+  min-width: 100px;
+  margin-left: 50px;
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  font-size: 24px;
+  outline: none;
+  overflow-y: auto;
+  resize: none;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.new-comment .button {
+  position: relative;
+  top: -35%;
+  background-color: coral;
+  color: white;
+  border-radius: 5px;
+  font-size: 20px;
+  scale: 1.5;
+  margin-left: 50px;
+  box-shadow: 1px 1px 1px rgb(100, 100, 100);
+}
+
+.existing-comment {
+  width: 80%;
+  margin-left: 50px;
+}
+
+.like-button-icon.liked {
+  color: blue; /* Change the color to indicate liked state */
+  font-weight: bold; /* Add other styles as needed */
+}

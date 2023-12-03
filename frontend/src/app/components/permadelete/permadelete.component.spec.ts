@@ -8,7 +8,7 @@ describe('PermadeleteComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PermadeleteComponent]
+      declarations: [PermadeleteComponent],
     });
     fixture = TestBed.createComponent(PermadeleteComponent);
     component = fixture.componentInstance;

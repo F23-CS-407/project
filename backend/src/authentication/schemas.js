@@ -6,8 +6,8 @@ const { Schema } = mongoose;
 const userSchema = new Schema(
   {
     username: String,
-    bio: String,
     password_hash: String,
+    bio: String,
     salt: String,
     description: String,
     mod_for: [
@@ -38,6 +38,12 @@ const userSchema = new Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Community',
+      },
+    ],
+    uploads: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UploadReceipt',
       },
     ],
   },

@@ -15,7 +15,7 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        component: HomeComponent
+        component: HomeComponent,
       },
       {
         path: 'community-dashboard',
@@ -23,31 +23,31 @@ const routes: Routes = [
       },
       {
         path: 'community',
-        component: CommunityComponent
+        component: CommunityComponent,
       },
       {
         path: 'post',
-        component: PostComponent
+        component: PostComponent,
       },
       {
         path: 'profile',
-        component: ProfileComponent
+        component: ProfileComponent,
       },
       {
         path: 'settings',
-        component: SettingsComponent
+        component: SettingsComponent,
       },
       {
         path: '',
         redirectTo: 'home',
-        pathMatch: 'full'
-      }
-    ]
-  }
+        pathMatch: 'full',
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class HubitRoutingModule { }
+export class HubitRoutingModule {}

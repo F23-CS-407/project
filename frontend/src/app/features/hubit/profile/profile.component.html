@@ -1,64 +1,59 @@
 <div class="profile-container">
-
-    <div class="info-container">
-        <div class="profile-picture">
-            <mat-icon class="person_icon">account_circle</mat-icon>
-        </div>
-
-        <div class="details">
-            <h1 class="username">
-                {{username}}
-            </h1>
-            <p class="bio">{{bio}}</p>
-            <div class="stats-container">
-                <div class="stat">
-                    <h3 class="profile_number">{{num_posts}}</h3>
-                    <p class="profile_number_text">Posts</p>
-                </div>
-                <div class="stat">
-                    <h3 class="profile_number">{{num_followers}}</h3>
-                    <p class="profile_number_text">Followers</p>
-                </div>
-                <div class="stat">
-                    <h3 class="profile_number">{{num_following}}</h3>
-                    <p class="profile_number_text">Following</p>
-                </div>
-                <div class="stat">
-                    <h3 class="profile_number">{{num_communities}}</h3>
-                    <p class="profile_number_text">Communities</p>
-                </div>
-            </div>
-        </div>
-
+  <div class="info-container">
+    <div class="profile-picture">
+      <mat-icon class="person_icon">account_circle</mat-icon>
     </div>
 
-    <div class="divider"></div>
-
-    <div class="post_list">
-        <!-- Use material cards: https://material.angular.io/components/card/overview -->
-        <li *ngFor="let post of posts; index as i">
-            <mat-card class="post_card">
-                <mat-card-header>
-                    <mat-card-title>
-                        {{username}}
-                    </mat-card-title>
-                    <mat-card-subtitle>
-                        <!-- Fix this later -->
-                        community_not_set
-                    </mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <p>
-                        Post {{i}}. {{post.content}}
-                    </p>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>DISLIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-            </mat-card>
-        </li>
+    <div class="details">
+      <h1 class="username">
+        {{ username }}
+      </h1>
+      <p class="bio">{{ bio }}</p>
+      <div class="stats-container">
+        <div class="stat">
+          <h3 class="profile_number">{{ num_posts }}</h3>
+          <p class="profile_number_text">Posts</p>
+        </div>
+        <div class="stat">
+          <h3 class="profile_number">{{ num_followers }}</h3>
+          <p class="profile_number_text">Followers</p>
+        </div>
+        <div class="stat">
+          <h3 class="profile_number">{{ num_following }}</h3>
+          <p class="profile_number_text">Following</p>
+        </div>
+        <div class="stat">
+          <h3 class="profile_number">{{ num_communities }}</h3>
+          <p class="profile_number_text">Communities</p>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="post_list">
+    <!-- Use material cards: https://material.angular.io/components/card/overview -->
+    <li *ngFor="let post of posts; index as i">
+      <mat-card class="post_card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ username }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            <!-- Fix this later -->
+            community_not_set
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Post {{ i }}. {{ post.content }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>DISLIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+    </li>
+  </div>
 </div>
-

@@ -1,67 +1,73 @@
 .new-post-button {
-    position: fixed;
-    top: 14px;
-    right: 30px;
-    background-color: #aaaaaa;
-    border-radius: 5px;
-    color: #ffffff;
+  position: fixed;
+  top: 14px;
+  right: 30px;
+  background-color: #aaaaaa;
+  border-radius: 5px;
+  color: #ffffff;
 }
 
 .community {
-    width: 100%;
+  width: 100%;
 }
 
 .community .community-background {
-    height: 500px;
-    padding-top: 1px; /* This fixes a weird issue with child-component margin-top */
-    width: 100%;
-    background-image: url("./minecraft.webp");
-    background-attachment: fixed;
+  height: 500px;
+  padding-top: 1px; /* This fixes a weird issue with child-component margin-top */
+  width: 100%;
+  background-image: url("./minecraft.webp");
+  background-attachment: fixed;
 }
 
 .community .community-background .community-title {
-    font-size: 72px;
-    font-family: fantasy;
-    color: white;
-    text-shadow: -1px 1px 0 #000, 
-                          1px 1px 0 #000, 
-                         1px -1px 0 #000, 
-                        -1px -1px 0 #000; 
-    margin-top: 50px;
-    margin-left: 25px;
-    min-height: 20%;
+  font-size: 72px;
+  font-family: fantasy;
+  color: white;
+  text-shadow:
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    1px -1px 0 #000,
+    -1px -1px 0 #000;
+  margin-top: 50px;
+  margin-left: 25px;
+  min-height: 20%;
 }
 
 .community .community-background .community-description {
-    font-size: 24px;
-    color: white;
-    text-shadow: -1px 1px 0 #000, 
-                          1px 1px 0 #000, 
-                         1px -1px 0 #000, 
-                        -1px -1px 0 #000; 
-    margin-left: 25px;
-    line-height: 24px;
-    height: 50%;
-    overflow-y: auto;
-    width: 50%;
+  font-size: 24px;
+  color: white;
+  text-shadow:
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    1px -1px 0 #000,
+    -1px -1px 0 #000;
+  margin-left: 25px;
+  line-height: 24px;
+  height: 50%;
+  overflow-y: auto;
+  width: 50%;
 }
 
 .post_list {
-    padding-top: 25px;
-    /* https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: auto;
-    padding-bottom: 50px;
-    row-gap: 15px;
-    list-style-type: none;
-    background-image: linear-gradient(180deg, rgba(239, 176, 86, 1), rgba(222, 89,67, 1));
-    background-attachment: fixed;
+  padding-top: 25px;
+  /* https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  padding-bottom: 50px;
+  row-gap: 15px;
+  list-style-type: none;
+  background-image: linear-gradient(
+    180deg,
+    rgba(239, 176, 86, 1),
+    rgba(222, 89, 67, 1)
+  );
+  background-attachment: fixed;
 }
 
 .post_list .post_card {
-    width: 50vw;
-    align-self: center;
-  }
+  width: 50vw;
+  align-self: center;
+}

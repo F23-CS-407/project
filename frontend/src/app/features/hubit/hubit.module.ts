@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';  // Import RouterModule
+import { RouterModule } from '@angular/router'; // Import RouterModule
 
 import { HubitRoutingModule } from './hubit-routing.module';
 import { HubitComponent } from './hubit.component';
@@ -25,7 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
-    HubitComponent,  // Declare HubitComponent
+    HubitComponent, // Declare HubitComponent
     HomeComponent,
     CommunityComponent,
     PostComponent,
@@ -51,7 +51,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    RouterModule 
+    RouterModule,
   ],
   exports: [
     HubitComponent,
@@ -59,6 +59,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     CommunityComponent,
     PostComponent,
     ProfileComponent,
-  ]
+  ],
 })
-export class HubitModule { }
+export class HubitModule {}

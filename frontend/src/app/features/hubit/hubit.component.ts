@@ -6,17 +6,19 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-hubit',
   templateUrl: './hubit.component.html',
-  styleUrls: ['./hubit.component.css']
+  styleUrls: ['./hubit.component.css'],
 })
 export class HubitComponent implements OnInit {
+  private backend_addr: string = 'http://localhost:8080/api';
 
-  private backend_addr: string = "http://localhost:8080/api";
-
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.userService.fetchUserProfile();
-    this.userService.loading.subscribe(isLoading => {
+    this.userService.loading.subscribe((isLoading) => {
       if (!isLoading) {
         this.checkAuthentication();
       }
@@ -24,7 +26,7 @@ export class HubitComponent implements OnInit {
   }
 
   checkAuthentication(): void {
-    this.userService.user.subscribe(user => {
+    this.userService.user.subscribe((user) => {
       if (user) {
         console.log('User is authenticated:', user);
         // User is authenticated, you can now access user data

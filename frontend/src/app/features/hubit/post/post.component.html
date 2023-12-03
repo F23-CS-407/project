@@ -1,52 +1,58 @@
 <div class="middle_box">
-    <form class="post_form">
-        <mat-form-field class="input-80-width">
-            <h1>Description:</h1>
-            <textarea matInput #post_desc class="post-text" > </textarea>
-         </mat-form-field>
+  <form class="post_form">
+    <mat-form-field class="input-80-width">
+      <h1>Description:</h1>
+      <textarea matInput #post_desc class="post-text"> </textarea>
+    </mat-form-field>
 
-        <mat-form-field class="input-80-width">
-            <h1>Tags:</h1>
-            <mat-chip-listbox #chipList style="width:100%; left: 50%;">
-                <!-- This changes the color, but it doesn't look very good.
+    <mat-form-field class="input-80-width">
+      <h1>Tags:</h1>
+      <mat-chip-listbox #chipList style="width: 100%; left: 50%">
+        <!-- This changes the color, but it doesn't look very good.
                     style="background-color:{{chip.color}};"   -->
-                <mat-chip-option *ngFor="let chip of chip_options" color="accent" >
-                    {{chip.text}}
-                </mat-chip-option>
-            </mat-chip-listbox>
-            <!-- Do not remove this, this fixes a silly goose issue :) -->
-            <input matInput hidden="true">
-        </mat-form-field>
+        <mat-chip-option *ngFor="let chip of chip_options" color="accent">
+          {{ chip.text }}
+        </mat-chip-option>
+      </mat-chip-listbox>
+      <!-- Do not remove this, this fixes a silly goose issue :) -->
+      <input matInput hidden="true" />
+    </mat-form-field>
 
-        <mat-form-field class="input-80-width">
-            <input matInput hidden="true">
-            <h1>Community:</h1>
-            <mat-accordion>
-                <mat-expansion-panel hideToggle>
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      {{community_name}}({{community_id}})
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <p>{{community_desc}}</p>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </mat-form-field>
+    <mat-form-field class="input-80-width">
+      <input matInput hidden="true" />
+      <h1>Community:</h1>
+      <mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ community_name }}({{ community_id }})
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>{{ community_desc }}</p>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-form-field>
 
-        <mat-form-field class="input-80-width">
-            <input matInput hidden="true">
-            <h1>Add Photo/Video:</h1>
-            <div class="image-preview-box">
-                <div class="image-preview-box-text">
-                    This feature is currently not supported
-                </div>
-            </div>
-        </mat-form-field>
-    
-        <div class="post-button-area">
-                                                            <!-- Couldn't figure out chip values, will fix later -->
-            <button mat-raised-button class="post-button" (click)="create_post(post_desc.value, [chipList.value])">Post</button>
+    <mat-form-field class="input-80-width">
+      <input matInput hidden="true" />
+      <h1>Add Photo/Video:</h1>
+      <div class="image-preview-box">
+        <div class="image-preview-box-text">
+          This feature is currently not supported
         </div>
-    </form>
-    <div class="spacer"></div>
+      </div>
+    </mat-form-field>
+
+    <div class="post-button-area">
+      <!-- Couldn't figure out chip values, will fix later -->
+      <button
+        mat-raised-button
+        class="post-button"
+        (click)="create_post(post_desc.value, [chipList.value])"
+      >
+        Post
+      </button>
+    </div>
+  </form>
+  <div class="spacer"></div>
 </div>

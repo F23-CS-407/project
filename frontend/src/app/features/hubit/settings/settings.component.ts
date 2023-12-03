@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { UserInterface } from 'src/app/interfaces/user';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -8,14 +15,12 @@ import { take } from 'rxjs';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  styleUrls: ['./settings.component.css'],
 })
 export class SettingsComponent implements OnInit {
-
   usernameForm: FormGroup;
   descriptionForm: FormGroup;
   passwordForm: FormGroup;
-  
 
   username: string = '';
   description: string = '';
@@ -36,21 +41,27 @@ export class SettingsComponent implements OnInit {
   current_user?: UserInterface;
   loading: boolean = true;
 
-  constructor(private userService: UserService, private fb: FormBuilder, private snackBar: MatSnackBar) {
+  constructor(
+    private userService: UserService,
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+  ) {
     this.usernameForm = this.fb.group({
-      username: ['', Validators.required]
+      username: ['', Validators.required],
     });
     this.descriptionForm = this.fb.group({
-      description: ['', Validators.required, Validators.minLength(25)]
+      description: ['', Validators.required, Validators.minLength(25)],
     });
-    this.passwordForm = this.fb.group({
-      currentPassword: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      newPassword: ['', Validators.required]
-    }, {
-      validator: this.keyMatchValidator()
-    });
-    
+    this.passwordForm = this.fb.group(
+      {
+        currentPassword: ['', Validators.required],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        newPassword: ['', Validators.required],
+      },
+      {
+        validator: this.keyMatchValidator(),
+      },
+    );
   }
 
   // VALIDATOR --> key requirements
@@ -75,7 +86,7 @@ export class SettingsComponent implements OnInit {
     return (group: AbstractControl): { [key: string]: any } | null => {
       const password = group.get('password')?.value;
       const confirmPassword = group.get('newPassword')?.value;
-  
+
       if (password && confirmPassword && password !== confirmPassword) {
         return { passwordsMismatch: true };
       }
@@ -92,13 +103,15 @@ export class SettingsComponent implements OnInit {
     this.hasLower = /[a-z]/.test(value);
     this.hasNumber = /\d/.test(value);
     this.hasMinLength = value.length >= 8;
-    this.match = this.passwordForm.get('password')?.value === this.passwordForm.get('newPassword')?.value;
+    this.match =
+      this.passwordForm.get('password')?.value ===
+      this.passwordForm.get('newPassword')?.value;
 
     this.errorMessage = '';
   }
-  
+
   ngOnInit(): void {
-    this.userService.loading.subscribe(isLoading => {
+    this.userService.loading.subscribe((isLoading) => {
       this.loading = isLoading;
       if (!isLoading) {
         this.fetchUserProfile();
@@ -108,18 +121,17 @@ export class SettingsComponent implements OnInit {
 
   fetchUserProfile() {
     this.userService.user.pipe(take(1)).subscribe(
-      userData => {
+      (userData) => {
         if (userData) {
           this.current_user = userData;
           this.username = userData.username;
         }
       },
-      error => {
+      (error) => {
         console.error('Error fetching user profile:', error);
-      }
+      },
     );
   }
-  
 
   toggleVisible() {
     this.visible = !this.visible;
@@ -138,28 +150,34 @@ export class SettingsComponent implements OnInit {
       }
     }
   }
-  
-  
+
   updateDescription() {
     const description = this.descriptionForm.get('description')?.value;
-    if (description && typeof description === 'string' && description !== this.current_user?.bio) {
+    if (
+      description &&
+      typeof description === 'string' &&
+      description !== this.current_user?.bio
+    ) {
       this.userService.changeDescription(description);
     }
   }
-  
+
   updatePassword() {
     const newPassword = this.passwordForm.get('newPassword')?.value;
     const password = this.passwordForm.get('currentPassword')?.value;
-    if (newPassword && typeof newPassword === 'string' && password && typeof password === 'string') {
+    if (
+      newPassword &&
+      typeof newPassword === 'string' &&
+      password &&
+      typeof password === 'string'
+    ) {
       this.userService.changePassword(newPassword, password);
     }
   }
-  
 
   signOut() {
     this.userService.logoutUser();
   }
-
 
   deleteAccount() {
     const password = this.passwordForm.get('password')?.value;

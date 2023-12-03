@@ -8,7 +8,7 @@ describe('HubitComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HubitComponent]
+      declarations: [HubitComponent],
     });
     fixture = TestBed.createComponent(HubitComponent);
     component = fixture.componentInstance;

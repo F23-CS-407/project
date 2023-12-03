@@ -1,134 +1,134 @@
 :host {
-    background: red;
+  background: red;
 }
 /* Disable Scrolling */
 body {
-    overflow: hidden;
-  }
-  
+  overflow: hidden;
+}
+
 /* Center Everything */
 .intro-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    height: 100vh; 
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  margin: 0;
 }
 
 /* Logo Styling */
 .logo-container {
-    margin-top: 100px;
+  margin-top: 100px;
 }
 
 .logo {
-    width: 200px; 
-    height: auto;
+  width: 200px;
+  height: auto;
 }
 
 /* Center Content Styling */
 .center-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 /* Form Styling */
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px; /* Space between form elements */
-    margin-bottom: 20px; /* Space between form and message */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px; /* Space between form elements */
+  margin-bottom: 20px; /* Space between form and message */
 }
 
 /* Titles Styling */
 h1 {
-    color: #000;
-    font-family: 'Source Sans 3';
-    font-size: 40px;
-    font-style: normal;
-    font-weight: 700;
+  color: #000;
+  font-family: "Source Sans 3";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
 }
 
 mat-form-field.inputfield {
-    width: 300px; 
-    margin-bottom: -15px;
+  width: 300px;
+  margin-bottom: -15px;
 }
 
 .error-message {
-    color: #F1580C;
-    text-align: center;
-    font-family: 'Source Sans 3';
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
+  color: #f1580c;
+  text-align: center;
+  font-family: "Source Sans 3";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
 }
 
 /* Input Validation */
 
 .password-criteria {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding-left: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 35px;
 }
 
 .criteria {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 5px
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
 }
 
 .criteria.mat-icon.material-icons {
-    font-size: 16px;
-    height: 16px;
-    width:16px;
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
 }
 
 .met-criteria {
-    color: rgb(84, 173, 84);
+  color: rgb(84, 173, 84);
 }
 
 .met-criteria mat-icon {
-    color: rgb(84, 173, 84);
+  color: rgb(84, 173, 84);
 }
 
 .unmet-criteria {
-    color: #F1580C;
+  color: #f1580c;
 }
 
 .unmet-criteria mat-icon {
-    color: #F1580C;
+  color: #f1580c;
 }
 
 /* Message Styling */
 h5 {
-    color: #000;
-    text-align: center;
-    font-family: 'Source Sans 3';
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
+  color: #000;
+  text-align: center;
+  font-family: "Source Sans 3";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
 }
 
 /* Link Button Styling */
 .link-button {
-    background: none!important;
-    border: none;
-    padding: 0!important;
-    color: #069;
-    cursor: pointer;
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  color: #069;
+  cursor: pointer;
 
-    color: #F1580C;
-    text-align: center;
-    font-family: 'Source Sans 3';
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
+  color: #f1580c;
+  text-align: center;
+  font-family: "Source Sans 3";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
 }
 .link-button:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
