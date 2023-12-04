@@ -5,6 +5,7 @@ import { Community } from '../communities/schemas.js';
 import mongoose from 'mongoose';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
+import webvtt from 'node-webvtt';
 import fs from 'fs';
 
 const uploadBase = '/usr/backend/uploads/';
@@ -102,6 +103,7 @@ export async function getFile(req, res) {
   res.sendFile(`/usr/backend/uploads/${name}`, (err) => {
     // if file not found then 404
     if (err) {
+      console.log(err);
       res.status(404).send({ error: 'file not found' });
       return;
     }
@@ -180,24 +182,32 @@ export async function uploadClip(req, res) {
   }
   let user = await User.findById(req.user._id);
 
-  upload.single('file')(req, res, async (err) => {
+  upload.any()(req, res, async (err) => {
     // file couldn't be fetched from request
     if (err) {
+      console.log(err);
       res.status(400).send({ error: 'file must be sent in "file" key of form-data' });
       return;
     }
 
     // get the file info and generate a receipt
-    const file = req.file;
+    const file = req.files.find((f) => f.fieldname == 'file');
+    const subtitles = req.files.find((f) => f.fieldname == 'subtitles');
+
+    let raw = file.filename;
+    let raw_hash = raw.split('.')[0];
+
+    let raw_sub = subtitles.filename;
+    let raw_sub_hash = raw_sub.split('.')[0];
+
+    let subtitleMaster = null;
 
     ffmpeg.setFfmpegPath(ffmpegInstaller.path);
     ffmpeg(uploadBase + file.filename, { timeout: 432000 })
-      .addOptions(['-hls_time 3', '-f hls'])
+      .addOptions(['-hls_time 10', '-f hls', '-hls_list_size 0', '-muxdelay 0'])
       .output(uploadBase + file.filename.split('.')[0] + '.m3u8')
       .on('end', async () => {
         // generate receipts, return m3u8
-        let raw = file.filename;
-        let raw_hash = raw.split('.')[0];
 
         let m3u8 = null;
 
@@ -224,6 +234,68 @@ export async function uploadClip(req, res) {
           if (f.includes('.m3u8')) {
             m3u8 = receipt;
           }
+        }
+
+        let segmentDuration = parseInt(
+          fs
+            .readFileSync(uploadBase + file.filename.split('.')[0] + '.m3u8', 'utf8')
+            .match(/#EXT-X-TARGETDURATION:[0-9]+/)[0]
+            .split(':')[1],
+        );
+
+        if (subtitles) {
+          try {
+            const input = fs.readFileSync(uploadBase + subtitles.filename, 'utf8').toString();
+            const startOffset = 0;
+
+            const parsed = webvtt.parse(input);
+
+            let playlist = webvtt.hls.hlsSegmentPlaylist(input, segmentDuration);
+
+            let segments = webvtt.hls.hlsSegment(input, segmentDuration, startOffset).reverse();
+            let replaceList = {};
+            segments = segments.map((s) => {
+              replaceList[s.filename] = raw_sub_hash + s.filename;
+              return { ...s, filename: raw_sub_hash + s.filename };
+            });
+
+            for (const [key, value] of Object.entries(replaceList)) {
+              playlist = playlist.replaceAll('\n' + key + '\n', '\n' + uploadBaseUrl + value + '\n');
+            }
+
+            fs.writeFileSync(uploadBase + raw_sub_hash + '.m3u8', playlist);
+            for (let s of segments) {
+              fs.writeFileSync(uploadBase + s.filename, s.content);
+            }
+            subtitleMaster = uploadBaseUrl + raw_sub_hash + '.m3u8';
+
+            fs.rmSync(uploadBase + raw_sub);
+          } catch (err) {
+            console.log(err);
+            res.status(400).send({ error: 'subtitles not proper WebVTT' });
+            return;
+          }
+        }
+
+        if (subtitleMaster) {
+          let master =
+            '#EXTM3U\n#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="English",DEFAULT=NO,FORCED=NO,URI="sub_master",LANGUAGE="en"\n#EXT-X-STREAM-INF:SUBTITLES="subs"\nvid_master';
+          master = master.replace('sub_master', subtitleMaster).replace('vid_master', m3u8.filename);
+
+          let masterName = 'master-' + m3u8.filename;
+          fs.writeFileSync(uploadBase + masterName, master);
+
+          let receipt = new UploadReceipt({
+            creator: req.user._id,
+            filename: masterName,
+            url: uploadBaseUrl + masterName,
+          });
+          receipt = await receipt.save();
+
+          user.uploads.push(receipt._id);
+          user = await user.save();
+
+          m3u8 = receipt;
         }
 
         res.status(200).send(m3u8);
