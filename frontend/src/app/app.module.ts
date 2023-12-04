@@ -32,6 +32,7 @@ import { NewCommunityComponent } from './new-community/new-community.component';
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { FeedComponent } from './feed/feed.component';
 import { MapComponent } from './map/map.component';
+import { BugReportComponent } from './bug_report/bug_report.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { MapComponent } from './map/map.component';
     FollowedCommunitiesComponent,
     FeedComponent, 
     MapComponent,
+    BugReportComponent
     
   ],
   imports: [
@@ -67,7 +69,8 @@ import { MapComponent } from './map/map.component';
       {path: 'new_community', component: NewCommunityComponent},
       {path: 'community', component: CommunityComponent},
       {path: 'followed_communities', component: FollowedCommunitiesComponent},
-      {path: 'feed', component: FeedComponent }
+      {path: 'feed', component: FeedComponent },
+      {path: 'bug_report', component: BugReportComponent }
     ]),
     BrowserAnimationsModule,
     MatInputModule,

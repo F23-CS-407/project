@@ -1,0 +1,21 @@
+<!-- bug-report.component.html -->
+
+<div class="middle_box">
+  <h1 class="page-heading">Bug Report and Feature Request</h1>
+  <div class="column-box">
+    <mat-form-field class="input-box">
+      <h2>Feedback Type:</h2>
+      <select matNativeControl [(ngModel)]="selectedFeedbackType" name="selectedFeedbackType" required>
+        <option value="bug">Bug Report</option>
+        <option value="feature">Feature Request</option>
+      </select>
+    </mat-form-field>
+
+    <mat-form-field class="input-box">
+      <h2>Details:</h2>
+      <textarea matInput [(ngModel)]="feedbackText" name="feedbackText" required></textarea>
+    </mat-form-field>
+
+    <button mat-button class="bug-report-button" (click)="submitFeedback()">Submit</button>
+  </div>
+</div>
