@@ -27,6 +27,10 @@ export class NewPostComponent {
   community_name: string = "";
   community_desc: string = "";
 
+  // Video upload
+  videoFile: File | null = null;
+  videoFileName: string | null = null;
+
   constructor(private router : Router, private http : HttpClient) {
     this.async_constructor();
   }
@@ -79,25 +83,43 @@ export class NewPostComponent {
       }});
   }
 
+  handleFileInput(event: any) {
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      this.videoFile = fileList[0];
+      this.videoFileName = this.videoFile.name;
+    }
+  }
+
+
   create_post(description : string, chips : string[]) {
     // If no value selected, default to General
-    if (chips[0] == undefined){
+    if (chips[0] == undefined) {
       chips[0] = 'General';
     }
 
-    const body = {post: {content : description,
-                         tags : chips}, 
-                  community: this.community_id, 
-                  user: this.self_id};
-    const options = { withCredentials : true};
-    this.http.post<any>(this.backend_addr + "/create_post", body, options).subscribe({
-      next: create_post_response => {          // On success
+    const formData = new FormData();
+    formData.append('post', JSON.stringify({
+      content: description,
+      tags: chips
+    }));
+    formData.append('community', this.community_id);
+    formData.append('user', this.self_id);
+
+    if (this.videoFile) {
+      formData.append('video', this.videoFile);
+    }
+
+    const options = { withCredentials: true };
+    this.http.post<any>(this.backend_addr + "/create_post", formData, options).subscribe({
+      next: create_post_response => {
         console.log(create_post_response);
-        this.router.navigate(['post'], {queryParams:{'post' : create_post_response._id}});
-      }, 
-      error: error => {         // On fail
+        this.router.navigate(['post'], { queryParams: { 'post': create_post_response._id } });
+      },
+      error: error => {
         console.log(error);
-      }});
+      }
+    });
   }
 
 }

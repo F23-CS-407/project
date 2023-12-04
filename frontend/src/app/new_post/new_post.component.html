@@ -37,8 +37,9 @@
             <input matInput hidden="true">
             <h1>Add Photo/Video:</h1>
             <div class="image-preview-box">
+                <input type="file" (change)="handleFileInput($event)" accept="video/*" />
                 <div class="image-preview-box-text">
-                    This feature is currently not supported
+                    {{ videoFileName || '' }}
                 </div>
             </div>
         </mat-form-field>
