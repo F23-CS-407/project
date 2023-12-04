@@ -533,8 +533,11 @@ Body
 
 ```
 {
-"post" : {"content" : string,
-"tags" : [string, ...]},
+"post" : {
+    "content" : string,
+    "tags" : [string, ...],
+    "media" (optional): string
+},
 "community" : string
 }
 
@@ -953,6 +956,59 @@ Errors
 ```
 400
 401
+```
+
+### POST /upload/clip
+
+form-data
+
+```
+file: File
+captions: File
+```
+
+Returns UploadReceipt for .m3u8 file
+
+Errors
+
+```
+400
+401
+```
+
+### POST /upload/profile_pic
+
+form-data
+
+```
+file: File
+```
+
+Returns User
+
+Errors
+
+```
+400
+401
+```
+
+### POST /upload/community_banner?id={string}
+
+form-data
+
+```
+file: File
+```
+
+Returns Community
+
+Errors
+
+```
+400
+401
+403
 ```
 
 ### GET /upload/{name}

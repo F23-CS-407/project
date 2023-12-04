@@ -1,6 +1,8 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { mongoose } from 'mongoose';
 
+import fs from 'fs';
+
 export default function useMongoTestWrapper() {
   let mongoServer;
   let con;
@@ -9,15 +11,15 @@ export default function useMongoTestWrapper() {
     mongoServer = await MongoMemoryServer.create();
     con = await mongoose.connect(mongoServer.getUri(), {});
     process.env.MONGO_URL = mongoServer.getUri();
+
+    fs.mkdirSync('/usr/backend/uploads');
   });
 
   afterEach(async () => {
     await mongoose.disconnect();
-    if (con) {
-      await con.disconnect();
-    }
-    if (mongoServer) {
-      await mongoServer.stop();
-    }
+    await con.disconnect();
+    await mongoServer.stop();
+
+    fs.rmSync('/usr/backend/uploads', { recursive: true });
   });
 }

@@ -1,4 +1,5 @@
 import request from 'supertest';
+import fs from 'fs';
 
 import { User } from '../../../src/authentication/schemas.js';
 import { hash } from '../../../src/authentication/utils.js';
@@ -8,6 +9,7 @@ import useMongoTestWrapper from '../../../src/debug/jest-mongo.js';
 import { Community } from '../../../src/communities/schemas.js';
 import { Comment } from '../../../src/communities/posts/comments/schemas.js';
 import { Post } from '../../../src/communities/posts/schemas.js';
+import { UploadReceipt } from '../../../src/uploads/schema.js';
 
 describe('POST /create_user', () => {
   useMongoTestWrapper();
@@ -674,6 +676,37 @@ describe('DELETE /delete_user', () => {
     // community has no followers
     community = await Community.findById(community._id);
     expect(community.followers.length).toBe(0);
+  });
+
+  it('should delete all uploads', async () => {
+    const username = 'username';
+    const password = 'password';
+    const folderPath = '/usr/backend/tests/integration/uploads/';
+    const app = await createTestApp();
+
+    let response = await request(app).post('/create_user').send({ username, password });
+    const cookie = response.headers['set-cookie'];
+    expect(response.statusCode).toBe(200);
+    expect(cookie).toBeTruthy();
+
+    expect(fs.readdirSync('/usr/backend/uploads').length).toBe(0);
+    expect((await UploadReceipt.find()).length).toBe(0);
+
+    // upload file
+    response = await request(app)
+      .post('/upload')
+      .attach('file', folderPath + 'tst-img1.jpeg')
+      .set('Cookie', cookie);
+    expect(response.statusCode).toBe(200);
+
+    expect(fs.readdirSync('/usr/backend/uploads').length).toBe(1);
+    expect((await UploadReceipt.find()).length).toBe(1);
+
+    response = await request(app).delete('/delete_user').set('Cookie', cookie).send({ password });
+    expect(response.statusCode).toBe(200);
+
+    expect(fs.readdirSync('/usr/backend/uploads').length).toBe(0);
+    expect((await UploadReceipt.find()).length).toBe(0);
   });
 
   it('should logout', async () => {
