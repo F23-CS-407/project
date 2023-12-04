@@ -66,7 +66,10 @@
   width: 100%;
   padding: 10px;
   margin: 5px 0;
-  text-align: left;
+  text-align: center; /* Center the text horizontally */
+  white-space: nowrap; /* Prevent text from wrapping to the next line */
+  overflow: hidden; /* Hide overflowing text */
+  text-overflow: ellipsis; /* Display an ellipsis (...) when text overflows */
   background-color: #444;
   color: #fff;
   border: none;
@@ -77,6 +80,7 @@
 .side_panel button:hover {
   background-color: #555;
 }
+
 
 /* Show the side panel when it has the 'show' class */
 .side_panel.show {

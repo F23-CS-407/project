@@ -67,6 +67,11 @@ performSearch(event: any) {
     this.router.navigateByUrl('/new_community')
   }
 
+  toBugReport() {
+    this.sidePanelVisible = false;
+    this.router.navigateByUrl('/bug_report')
+  }
+
   toggleSidePanel() {
     this.sidePanelVisible = !this.sidePanelVisible;
     this.searchResults = [];
