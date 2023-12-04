@@ -964,6 +964,7 @@ form-data
 
 ```
 file: File
+captions: File
 ```
 
 Returns UploadReceipt for .m3u8 file

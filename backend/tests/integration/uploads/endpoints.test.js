@@ -400,6 +400,7 @@ describe('POST /upload/clip', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.creator).toBe(user._id);
     expect(response.body.filename.includes('.m3u8')).toBe(true);
+    expect(response.body.filename.includes('master')).toBe(false);
 
     // have one .m3u8 file and many .ts files
     user = await User.findById(user._id).populate('uploads');
@@ -409,5 +410,49 @@ describe('POST /upload/clip', () => {
       expect(uploads.includes(f.filename)).toBe(true);
       expect(f.filename.includes('.ts') || f.filename.includes('.m3u8')).toBe(true);
     }
+  }, 100000);
+
+  it('should encode and return m3u8 with subtitles', async () => {
+    const username = 'username';
+    const password = 'password';
+    const app = await createTestApp();
+
+    // create user
+    let response = await request(app).post('/create_user').send({ username, password });
+    expect(response.statusCode).toBe(200);
+    let user = response.body;
+    const cookie = response.headers['set-cookie'];
+
+    // upload file, should return a master .m3u8
+    response = await request(app)
+      .post('/upload/clip')
+      .attach('file', folderPath + 'tst-vid2.webm')
+      .attach('captions', folderPath + 'tst-vid2-caps.vtt')
+      .set('Cookie', cookie);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.creator).toBe(user._id);
+    expect(response.body.filename.includes('.m3u8')).toBe(true);
+    expect(response.body.filename.includes('master')).toBe(true);
+
+    // have 3 .m3u8 files, many .ts and .vtt files
+    user = await User.findById(user._id).populate('uploads');
+    let uploads = fs.readdirSync(storePath);
+    expect(uploads.length).toBe(user.uploads.length);
+    let m3u8c = 0;
+    let tsc = 0;
+    let vttc = 0;
+    for (const f of user.uploads) {
+      if (f.filename.includes('.m3u8')) {
+        m3u8c += 1;
+      } else if (f.filename.includes('.ts')) {
+        tsc += 1;
+      } else if (f.filename.includes('.vtt')) {
+        vttc += 1;
+      } else {
+        // fail if not .m3u8, .ts, or .vtt
+        expect(true).toBe(false);
+      }
+    }
+    expect(m3u8c).toBe(3);
   }, 100000);
 });

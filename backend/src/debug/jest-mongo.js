@@ -8,26 +8,18 @@ export default function useMongoTestWrapper() {
   let con;
 
   beforeEach(async () => {
-    try {
-      mongoServer = await MongoMemoryServer.create();
-      con = await mongoose.connect(mongoServer.getUri(), {});
-      process.env.MONGO_URL = mongoServer.getUri();
+    mongoServer = await MongoMemoryServer.create();
+    con = await mongoose.connect(mongoServer.getUri(), {});
+    process.env.MONGO_URL = mongoServer.getUri();
 
-      fs.mkdirSync('/usr/backend/uploads');
-    } catch {
-      return;
-    }
+    fs.mkdirSync('/usr/backend/uploads');
   });
 
   afterEach(async () => {
-    try {
-      await mongoose.disconnect();
-      await con.disconnect();
-      await mongoServer.stop();
+    await mongoose.disconnect();
+    await con.disconnect();
+    await mongoServer.stop();
 
-      fs.rmSync('/usr/backend/uploads', { recursive: true });
-    } catch {
-      return;
-    }
+    fs.rmSync('/usr/backend/uploads', { recursive: true });
   });
 }
