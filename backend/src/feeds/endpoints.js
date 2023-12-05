@@ -19,8 +19,20 @@ export async function getFeed(req, res) {
   let count = countQ ? countQ : 0;
   let offset = pageQ ? pageQ * count : 0;
 
+  // count and offset need to be non-negative
+  if (count < 0 || offset < 0) {
+    count = 0;
+    offset = 0;
+  }
+
   // get user and followed communities
   let user = await User.findById(req.user._id).populate('followed_communities');
+
+  // if no followed communities send empty
+  if (user.followed_communities.length == 0) {
+    res.status(200).send([]);
+    return;
+  }
 
   // add all communty ids and all board ids
   let included_parent_ids = [];
