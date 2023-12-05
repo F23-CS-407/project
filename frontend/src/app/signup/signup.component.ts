@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent {
   // https://jasonwatmore.com/post/2019/11/21/angular-http-post-request-examples
-  private backend_addr : string = "http://localhost:8080/api";
+  private backend_addr : string = "/api";
 
   constructor(private router: Router, private http: HttpClient) {
 

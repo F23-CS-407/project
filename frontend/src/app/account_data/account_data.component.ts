@@ -9,7 +9,7 @@ import { FileUploadService } from '../file-upload.service';
   styleUrls: ['./account_data.component.css']
 })
 export class AccountDataComponent implements OnInit {
-  private backend_addr: string = "http://localhost:8080/api";
+  private backend_addr: string = "/api";
 
   user = {
     name: '', // Initialize as empty string
