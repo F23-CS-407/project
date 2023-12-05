@@ -36,6 +36,7 @@ const communitySchema = new Schema(
         ref: 'User',
       },
     ],
+    banner: String,
   },
   {
     methods: {

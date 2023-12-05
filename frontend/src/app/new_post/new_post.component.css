@@ -38,20 +38,6 @@
     resize: none;
 }
 
-.middle_box .post_form .input-80-width .image-preview-box {
-    width: 100%;
-    height: 10vh;
-    line-height: 10vh;
-    background-color: rgb(217,217,217);
-    text-align: center;
-}
-
-.image-preview-box .image-preview-box-text {
-    font-size: 1em;
-    display: inline-block;
-    vertical-align: middle;
-}
-
 .middle_box .post-button-area {
     width: 100%;
     text-align: center;

@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
-// TODO: Link to community
+import { User } from '../../models/User';
+import { Comment } from '../../models/Comment';
+
+import { CommentComponent } from '../comment/comment.component';
 
 @Component({
   selector: 'app-post',
@@ -9,7 +13,6 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./post.component.css']
 })
 export class PostComponent {
-  private backend_addr : string = "http://localhost:8080/api";
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
 
   // Logged in user info
@@ -28,23 +31,27 @@ export class PostComponent {
   like_count: number = 0;
   has_liked: boolean = false;
 
-  constructor(private http: HttpClient) {
+  comments: Comment[] = [];
+
+  constructor(public http: HttpClient, private router: Router) {
     this.post_id = this.urlParams.get('post') as string;
     this.getData();
+    this.get_post_data();
+    this.get_comment_data();
   }
 
 
   async getData() {
     const options = { withCredentials : true};
-    await this.http.get<any>(this.backend_addr + "/user_info", options).subscribe({
-      next: info_response => {          // On success
+    await this.http.get<any>("api/user_info", options).subscribe({
+      next: info_response => {
         this.logged_in = true;
         this.self_id = info_response._id;
         this.self_username = info_response.username;
         console.log(info_response);
         this.get_post_data();
       }, 
-      error: error => {         // On fail
+      error: error => {
         console.log("No session: ");
         console.log(error);
       }});
@@ -53,37 +60,65 @@ export class PostComponent {
   get_post_data() {
     // Query backend for data on post id
     const options = { withCredentials : true };
-    this.http.get<any>(this.backend_addr + "/post?id="+this.post_id, options).subscribe({
-      next: get_post_response => {          // On success
+    this.http.get<any>("api/post?id="+this.post_id, options).subscribe({
+      next: get_post_response => {
         console.log(get_post_response);
         this.post_user_id = get_post_response.created_by;
         this.post_content = get_post_response.content;
         this.like_count = get_post_response.liked_by.length;
         
         // Get username
-        this.http.get<any>(this.backend_addr + "/user?id="+this.post_user_id, options).subscribe({
+        this.http.get<any>("api/user?id="+this.post_user_id, options).subscribe({
           next: get_user_response => {this.post_username = get_user_response.username}});
 
         // Get community
-        this.http.get<any>(this.backend_addr + "/search_community_by_post_id?post_id=" + this.post_id, options).subscribe({
+        this.http.get<any>("api/search_community_by_post_id?post_id=" + this.post_id, options).subscribe({
           next: get_community_response => {this.post_community_name = get_community_response.name;
                                            this.post_community_id = get_community_response._id;}});
 
+        // Get likes
+        this.http.get<any>("api/post/likes?post=" + this.post_id, options).subscribe({
+          next: get_likes_response => {this.like_count = get_likes_response.length;}});
+
         // Get if user has liked
-        this.http.get<any>(this.backend_addr + "/post/user_liked?post=" + this.post_id + "&user="+this.self_id, options).subscribe({
+        this.http.get<any>("api/post/user_liked?post=" + this.post_id + "&user="+this.self_id, options).subscribe({
           next: get_has_liked_response => {
             this.has_liked = get_has_liked_response==1?true:false;
-            console.log(" HERE" + this.has_liked);
-          }, 
+          },
           error: error => {
             console.log(error);
           }});
       }, 
-      error: error => {         // On fail
+      error: error => {
         console.log(error);
       }});
+  }
 
-      
+  get_comment_data() {
+    // Query backend for data on post id
+    const options = { withCredentials : true };
+    this.http.get<any>("api/post/comments?post="+this.post_id, options).subscribe({
+      next: get_comments_response => {
+        let length = get_comments_response.length;
+        for (let i = 0; i < length; i++) {
+          let comment = get_comments_response[i];
+
+          // Create new comment object
+          let new_comment: Comment = new Comment(new User(comment.created_by));
+          new_comment.id = comment._id;
+          new_comment.text = comment.content;
+
+          // Get username
+          this.http.get<any>("api/user?id="+comment.created_by, options).subscribe({
+            next: get_user_response => {new_comment.creator.username = get_user_response.username}});
+
+          // Add comment to list
+          this.comments.push(new_comment);
+        }
+      }, 
+      error: error => {
+        console.log(error);
+      }});
   }
 
   like_button_click() {
@@ -102,6 +137,36 @@ export class PostComponent {
     // Debugging statement
     console.log('has_liked:', this.has_liked);
   }
+
+  create_comment(content: string) {
+    const options = { withCredentials : true };
+    const body = { "comment" : {"content" : content}, "post" : this.post_id};
+    this.http.post<any>("api/create_comment", body, options).subscribe({
+      next: create_comment_response => {
+        // Reload the page
+        window.location.reload();
+      },
+      error: error => {
+        console.log(error);
+      }});
+  }
+
+  delete_comment(id: string) {
+    const body = {"comment" : id};
+    const options = { withCredentials : true, body: body };
+    this.http.delete<any>("api/comment", options).subscribe({
+      next: delete_comment_response => {
+        // Reload the page
+        window.location.reload();
+      },
+      error: error => {
+        if (error.status == 200){
+          // Reload the page
+          window.location.reload();
+        }
+        console.log(error);
+      }});
+  }
   
   likePost() {
     if (!this.logged_in) {
@@ -110,21 +175,21 @@ export class PostComponent {
     }
   
     const options = { withCredentials: true };
-    this.http
-      .post(this.backend_addr + "/like_post", { post: this.post_id }, options)
-      .subscribe(
-        (response: any) => {
-          if (response) {
-            console.log('Like response:', response);
-            this.has_liked = true;
-            this.like_count = response.liked_by.length;
-            console.log('Like count:', this.like_count);
-          }
-        },
-        (error: any) => {
-          console.error("Error liking the post:", error);
+    this.http.post<any>("api/like_post", { post: this.post_id }, options).subscribe({
+      next: response => {
+        if (response) {
+          console.log('Like response:', response);
+          this.has_liked = true;
+          this.like_count = response.liked_by.length;
+          console.log('Like count:', this.like_count);
         }
-      );
+      },
+      error: error=> {
+        if(error.status == 409) {
+          this.has_liked = true
+        }
+        console.error("Error liking the post:", error);
+      }});
   }
   
 
@@ -135,7 +200,7 @@ export class PostComponent {
   
     const options = { withCredentials: true };
     this.http
-      .delete(this.backend_addr + `/like_post`, {...options, body: {post: this.post_id}})
+      .delete(`api/like_post`, {...options, body: {post: this.post_id}})
       .subscribe(
         (response: any) => {
           console.log('Unlike success:', response);
@@ -146,8 +211,11 @@ export class PostComponent {
           }
         },
         (error: any) => {
+          console.log("HERE" + error)
+          if (error.status == 409) {
+            this.has_liked = false
+          }
           console.error("Error unliking the post:", error);
-        }
-      );
-      }
+        });
+  }
 }

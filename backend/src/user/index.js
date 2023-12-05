@@ -6,6 +6,7 @@ import {
   unfollowCommunity,
   isFollowingCommunity,
   changePassword,
+  getUploadedFiles,
   getFollowedCommunities,
 } from './endpoints.js';
 
@@ -25,6 +26,8 @@ export default function useUser(app) {
   app.get('/user/followed_communities', getFollowedCommunities);
 
   app.post('/change_password', changePassword);
+
+  app.get('/user/uploads', getUploadedFiles);
 
   return app;
 }

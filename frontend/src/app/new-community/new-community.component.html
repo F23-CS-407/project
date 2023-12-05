@@ -1,6 +1,7 @@
 <div class="middle_box">
     <form class="new_community_form">
-        <h1> Create a New Community</h1><mat-form-field class="input-80-width" style="padding-top:20px">
+        <h1 class="title-text">Create a New Community</h1>
+        <mat-form-field class="input-80-width">
             <mat-label>Community Name:</mat-label>
                     <input #community_name matInput>
         </mat-form-field>
@@ -38,11 +39,8 @@
         <mat-form-field class="input-80-width">
             <input matInput hidden="true">
             <h1>Add Background Photo:</h1>
-            <div class="image-preview-box">
-                <div class="image-preview-box-text">
-                    This feature is currently not supported
-                </div>
-            </div>
+            <!--<input matInput #Image type="file" (change)="onChange($event.target.files)">-->
+            <input #Image type="file" (change)="onChange($event)">
         </mat-form-field>
     
         <div class="create-community-button-area">

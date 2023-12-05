@@ -4,13 +4,15 @@ import { Router } from '@angular/router';
 
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
-import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable, map, startWith } from 'rxjs';
+
+// For image uploading
+import { FileUploadService } from '../file-upload.service';
 
 @Component({
   selector: 'app-new-community',
@@ -24,7 +26,7 @@ export class NewCommunityComponent {
   community_name: string = "";
   community_desc: string = "";
 
-  constructor(private router : Router, private http : HttpClient) {
+  constructor(private router : Router, private http : HttpClient, private fileUploadService : FileUploadService) {
     // For moderator code
     this.filtered_mods = this.userCtrl.valueChanges.pipe(
       startWith(null),
@@ -150,6 +152,16 @@ export class NewCommunityComponent {
     result = allModsLessSelected.map((mod)=>mod.username);
     return result;
   }
+  loading: boolean = false;
+  file: File | null = null;
+  public onChange(event : any) {
+    if (event && event.target && event.target.files && event.target.files.length >= 1){
+      this.file = event.target.files[0];
+      console.log("this.file set");
+    } else {
+      console.log("Error setting file");
+    }
+  }
   public create_community(community_name : string, community_desc : string, mods : string[]) {
     // Call backend /create_community
     const options = { withCredentials : true };
@@ -168,6 +180,21 @@ export class NewCommunityComponent {
         // TODO: Check error statement
         console.log('Could not make community');
       }});
+  }
+  // Note: This function is never called
+  uploadFile() {
+    if (this.file !== null) {
+      this.loading = !this.loading;
+
+      // Call upload service to upload file
+      this.fileUploadService.upload(this.file).subscribe(
+        (event: any) => {
+          if (typeof (event) === 'object') {
+            this.loading = false;
+          }
+        }
+      );
+    }
   }
 }
 

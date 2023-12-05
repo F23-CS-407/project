@@ -33,8 +33,6 @@ export class ProfileComponent {
   followed_communities: Array<string> = [];
   posts: Array<Post> = [];
 
-  currently_editting: boolean = false;
-
   constructor(private router: Router, private clipboard: Clipboard, private http: HttpClient) {
     this.async_constructor();
   }
@@ -60,8 +58,8 @@ export class ProfileComponent {
         next: get_user_response => {          // On success
           this.username = get_user_response.username;
           this.followed_communities = get_user_response.followed_communities
-          if (get_user_response.description) {
-            this.bio = get_user_response.description;
+          if (get_user_response.bio) {
+            this.bio = get_user_response.bio;
           }
         }, 
         error: error => {         // On fail
@@ -87,7 +85,6 @@ export class ProfileComponent {
               next: get_community_response => {newPost.created_by.for_community.name = get_community_response.name;
                                               newPost.created_by.for_community.id = get_community_response._id;},
                                             error: error => {console.log("profile get commuity error");console.log(error);}});
-            console.log("Com name: "+newPost.created_by.for_community.name);
             
             this.posts.push(newPost);
           }
@@ -116,37 +113,12 @@ export class ProfileComponent {
       }});
   }
 
-  change_edit() {
-    this.currently_editting = !this.currently_editting;
-  }
-
-  change_info(new_username: string, new_bio: string) {
-    this.currently_editting = false;
-
-    // Visual fix
-    if (new_username != "") {
-      this.username = new_username;
-    }
-    this.bio = new_bio;
-
-    // Call to backend to update data
-    const options = { withCredentials : true };
-    const username_body = { "new_username" : new_username };
-    this.http.post<any>(this.backend_addr + "/change_username", username_body, options).subscribe({
-      next: change_username_response => {}, error: error => {}});
-
-    const desc_body = { "new_description" : new_bio }; 
-    this.http.post<any>(this.backend_addr + "/change_description", desc_body, options).subscribe({
-      next: change_description_response => {}, error: error => {}});
-      
-  } 
   share_action() {
     let domain_name: string = "";
     this.clipboard.copy(domain_name + this.router.url);
   }
   settings_action() {
     this.router.navigate(['/account_data'])
-    // Idk what to put here?
   }
 
   create_community_action() {

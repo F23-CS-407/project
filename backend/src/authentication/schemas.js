@@ -7,6 +7,7 @@ const userSchema = new Schema(
   {
     username: String,
     password_hash: String,
+    bio: String,
     salt: String,
     description: String,
     mod_for: [
@@ -39,6 +40,13 @@ const userSchema = new Schema(
         ref: 'Community',
       },
     ],
+    uploads: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UploadReceipt',
+      },
+    ],
+    profile_pic: String,
   },
   {
     methods: {
