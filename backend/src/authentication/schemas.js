@@ -46,6 +46,7 @@ const userSchema = new Schema(
         ref: 'UploadReceipt',
       },
     ],
+    profile_pic: String,
   },
   {
     methods: {

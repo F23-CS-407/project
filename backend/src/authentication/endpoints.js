@@ -28,6 +28,7 @@ export const createUser = async (req, res, next) => {
     bio: 'Go to settings to change your bio!',
     password_hash: hash(requested_password + salt),
     salt,
+    profile_pic: null,
   });
   await new_user.save();
 
@@ -106,7 +107,7 @@ export async function deleteUser(req, res, next) {
 
 export async function get_user(req, res, next) {
   if (req.isAuthenticated()) {
-    res.send((await User.findById(req.user._id)).scrub());
+    res.send((await User.findById(req.user._id).populate('profile_pic')).scrub());
   } else {
     res.status(401).send({ error: 'Not logged in' });
   }

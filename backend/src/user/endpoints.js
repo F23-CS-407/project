@@ -15,7 +15,7 @@ export async function getUser(req, res, next) {
     return;
   }
 
-  const thisUser = (await User.findById(id)).scrub();
+  const thisUser = (await User.findById(id).populate('profile_pic')).scrub();
   res.status(200).json(thisUser);
 }
 
@@ -30,7 +30,7 @@ export async function changeDescription(req, res, next) {
     }
 
     // save and return new user object
-    const thisUser = await User.findOne({ username: req.user.username });
+    const thisUser = await User.findOne({ username: req.user.username }).populate('profile_pic');
     thisUser.bio = new_description;
     res.send((await thisUser.save()).scrub());
     return;
@@ -65,8 +65,8 @@ export async function changeUsername(req, res, next) {
 
     thisUser.username = new_username;
     try {
-      const updatedUser = await thisUser.save();
-
+      let updatedUser = await thisUser.save();
+      updatedUser = await User.findById(updatedUser._id).populate('profile_pic');
       // Update the username in the session and save the session
       req.user.username = new_username;
       req.session.save((err) => {
