@@ -25,6 +25,7 @@ export class ProfileComponent {
 
   // Viewed Profile info/stats
   id: string = "-1";
+  profile_pic_url: string = "";
   username?: string = "N/A";
   bio: string = "N/A";
   num_posts: number = 0;
@@ -60,6 +61,9 @@ export class ProfileComponent {
           this.followed_communities = get_user_response.followed_communities
           if (get_user_response.bio) {
             this.bio = get_user_response.bio;
+          }
+          if (get_user_response.profile_pic) {
+            this.profile_pic_url = get_user_response.profile_pic;
           }
         }, 
         error: error => {         // On fail

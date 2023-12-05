@@ -14,11 +14,11 @@ export class FileUploadService {
     // Create for data
     const formData = new FormData();
 
-    // Storm form name as "file" with file data
+    // Store form name as "file" with file data
     formData.append("file", file, file.name);
 
     // Send to backend (TODO: Update endpoint when created)
-    return this.http.post("/api/profile_pic", formData);
+    return this.http.post("/api/upload/profile_pic", formData);
   }
 
 }
