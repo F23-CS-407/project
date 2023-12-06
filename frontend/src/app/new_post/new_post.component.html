@@ -5,6 +5,11 @@
             <textarea matInput #post_desc class="post-text" > </textarea>
          </mat-form-field>
 
+         <mat-form-field class="input-80-width">
+            <h1>Category:</h1>
+            <input matInput [(ngModel)]="customCategory" placeholder="Type a category">
+        </mat-form-field>
+
         <mat-form-field class="input-80-width">
             <h1>Tags:</h1>
             <mat-chip-listbox #chipList style="width:100%; left: 50%;">

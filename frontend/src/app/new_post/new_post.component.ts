@@ -18,7 +18,7 @@ export class NewPostComponent {
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
   
   chip_options: Chip[] = [new Chip("green", "General"), new Chip("yellow", "Question"), new Chip("red", "Clip") ];
-
+  customCategory: string = ''; 
   // Logged in user info
   logged_in: boolean = false;
   self_id: string = "not logged in";
