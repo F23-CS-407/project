@@ -15,7 +15,22 @@
     margin-right: 0px;
     margin-top: 20px;
     margin-bottom: 0px;
+    padding: 10px;
+}
+
+.photo-box {
+    width: 100%;
     padding: 0px;
+    margin-bottom: 30px;
+}
+
+.video-box {
+    width: 90%;
+    padding: 0px;
+    margin-bottom: 40px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .post-field {

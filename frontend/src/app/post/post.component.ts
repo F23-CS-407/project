@@ -5,7 +5,16 @@ import { Router } from '@angular/router';
 import { User } from '../../models/User';
 import { Comment } from '../../models/Comment';
 
+import Hls from "hls.js"
+
 import { CommentComponent } from '../comment/comment.component';
+
+declare global {
+  interface Window {
+    hls: any,
+    player: any
+  }
+}
 
 @Component({
   selector: 'app-post',
@@ -27,6 +36,8 @@ export class PostComponent {
   post_community_name: string = "community_not_set";
   post_community_id: string = "commmunity_id_not_set";
   post_content: string = "content_not_set";
+  post_media: string = ""
+  post_alt: string = ""
   
   like_count: number = 0;
   has_liked: boolean = false;
@@ -38,6 +49,20 @@ export class PostComponent {
     this.getData();
     this.get_post_data();
     this.get_comment_data();
+  }
+
+  setupPlayer() {
+      const source = this.post_media;
+      const video = document.querySelector('video');
+
+      if (!Hls.isSupported()) {
+        video!.src = source;
+      } else {
+        const hls = new Hls();
+        hls.loadSource(source);
+        hls.attachMedia(video!);
+        window.hls = hls;
+      }
   }
 
 
@@ -66,6 +91,12 @@ export class PostComponent {
         this.post_user_id = get_post_response.created_by;
         this.post_content = get_post_response.content;
         this.like_count = get_post_response.liked_by.length;
+        this.post_media = get_post_response.media ? get_post_response.media : ""
+        this.post_alt = get_post_response.alt ? get_post_response.alt : ""
+
+        if (this.post_media) {
+          this.setupPlayer()
+        }
         
         // Get username
         this.http.get<any>("api/user?id="+this.post_user_id, options).subscribe({

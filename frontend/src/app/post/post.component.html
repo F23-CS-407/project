@@ -10,6 +10,14 @@
     <div class="post-field">
         <p class="post-content">{{post_content}}</p>
     </div>
+    <div *ngIf="post_media">
+        <div *ngIf="post_media.includes('.m3u8'); else showPhoto">
+            <video class="video-box" controls playsinline></video>
+        </div>
+        <ng-template #showPhoto>
+            <img class="photo-box" src="{{post_media}}" alt="{{post_alt}}"/>
+        </ng-template>
+    </div>
     <div class="like-container post-field">
         <button mat-icon-button style="width:auto" (click)="like_button_click()">
             {{like_count}} <mat-icon class="like-button-icon">{{has_liked ? 'thumb_up' : 'thumb_up_off'}}</mat-icon>
