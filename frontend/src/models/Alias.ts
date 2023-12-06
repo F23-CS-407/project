@@ -8,6 +8,7 @@ export class Alias {
   bio: string = '';
   user: User;
   for_community?: Community;
+  community_username?: string;
 
   constructor(user: User, community?: Community) {
     this.user = user;

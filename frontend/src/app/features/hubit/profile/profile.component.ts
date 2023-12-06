@@ -102,10 +102,10 @@ export class ProfileComponent {
                 )
                 .subscribe({
                   next: (get_community_response) => {
-                    newPost.created_by.for_community.name =
-                      get_community_response.name;
-                    newPost.created_by.for_community.id =
-                      get_community_response._id;
+                    if (newPost.created_by && newPost.created_by.for_community) {
+                      newPost.created_by.for_community.name = get_community_response.name;
+                      newPost.created_by.for_community.id = get_community_response._id;
+                    }
                   },
                   error: (error) => {
                     console.log('profile get commuity error');
@@ -122,6 +122,7 @@ export class ProfileComponent {
           },
         });
     } else {
+      console.log('FAIL - no id in url');
       this.router.navigate(['/']);
     }
 
@@ -150,11 +151,11 @@ export class ProfileComponent {
     this.clipboard.copy(domain_name + this.router.url);
   }
   settings_action() {
-    this.router.navigate(['/account_data'])
+    this.router.navigate(['/settings'])
   }
 
   create_community_action() {
-    this.router.navigate(['/new_community']);
+    this.router.navigate(['/community-dashboard']);
   }
 
   toFollowedCommunities() {

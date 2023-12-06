@@ -150,7 +150,7 @@ export class PostComponent {
               .get<any>('api/user?id=' + comment.created_by, options)
               .subscribe({
                 next: (get_user_response) => {
-                  new_comment.creator.username = get_user_response.username;
+                  new_comment.creator.set_username(get_user_response.username);
                 },
               });
 

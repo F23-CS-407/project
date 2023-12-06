@@ -54,10 +54,9 @@
           {{ username }}
         </mat-card-title>
         <mat-card-subtitle>
-          <a
-            href="community?community={{ post.created_by.for_community.id }}"
-            >{{ post.created_by.for_community.name }}</a
-          >
+          <a href="community?community={{ post.created_by?.for_community?.id }}">
+            {{ post.created_by?.for_community?.name }}
+         </a>         
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
