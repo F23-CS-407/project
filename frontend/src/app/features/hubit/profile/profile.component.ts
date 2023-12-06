@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpClient } from '@angular/common/http';
+import { UserService } from '../../../services/user.service';
+import { UserInterface } from '../../../interfaces/user';
 
 import { User } from '../../../../models/User';
 import { Alias } from '../../../../models/Alias';
@@ -21,6 +23,7 @@ export class ProfileComponent {
   );
 
   // Logged in user info
+  currentUser?: UserInterface;
   logged_in: boolean = false;
   self_id: string = 'not logged in';
   viewing_own_profile: boolean = false;
@@ -35,98 +38,119 @@ export class ProfileComponent {
   followed_communities: Array<string> = [];
   posts: Array<Post> = [];
 
-  constructor(private router: Router, private clipboard: Clipboard, private http: HttpClient) {
-    this.async_constructor();
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private clipboard: Clipboard,
+    private http: HttpClient
+  ) {}
+  ngOnInit() {
+    this.userService.user.subscribe((userData: UserInterface) => {
+      if (Object.keys(userData).length) {
+        this.currentUser = userData;
+        this.fetchUserPosts(userData._id);
+      } else {
+        // Handle the case where no user data is available
+        console.log('No user data available');
+        this.router.navigate(['/login']); // Or any other appropriate action
+      }
+    });
   }
 
-  async async_constructor() {
-    // Get data from cookie
-    this.getData();
 
-    // Resolving pre-definition error, ask Alex about it if curious
-    await new Promise((f) => setTimeout(f, 1000));
+  // async async_constructor() {
+  //   // Get data from cookie
+  //   this.getData();
 
-    if (this.urlParams.get('id')) {
-      this.id = this.urlParams.get('id') as string;
+  //   // Resolving pre-definition error, ask Alex about it if curious
+  //   await new Promise((f) => setTimeout(f, 1000));
 
-      if (this.id === this.self_id) {
-        this.viewing_own_profile = true;
-      }
+  //   if (this.urlParams.get('id')) {
+  //     this.id = this.urlParams.get('id') as string;
 
-      const options = { withCredentials: true };
+  //     if (this.id === this.self_id) {
+  //       this.viewing_own_profile = true;
+  //     }
 
-      // Get username and bio
-      this.http
-        .get<any>(this.backend_addr + '/user?id=' + this.id, options)
-        .subscribe({
-          next: (get_user_response) => {
-            // On success
-            this.username = get_user_response.username;
-            this.followed_communities = get_user_response.followed_communities;
-            if (get_user_response.bio) {
-              this.bio = get_user_response.bio;
-            }
-          },
-          error: (error) => {
-            // On fail
-            console.log(error);
-          },
-        });
+  //     const options = { withCredentials: true };
 
-      // Get posts
-      this.http
-        .get<any>(this.backend_addr + '/user/posts?user_id=' + this.id, options)
-        .subscribe({
-          next: (get_user_posts_response) => {
-            // On success
-            this.num_posts = get_user_posts_response.length;
+  //     // Get username and bio
+  //     this.http
+  //       .get<any>(this.backend_addr + '/user?id=' + this.id, options)
+  //       .subscribe({
+  //         next: (get_user_response) => {
+  //           // On success
+  //           this.username = get_user_response.username;
+  //           this.followed_communities = get_user_response.followed_communities;
+  //           if (get_user_response.bio) {
+  //             this.bio = get_user_response.bio;
+  //           }
+  //         },
+  //         error: (error) => {
+  //           // On fail
+  //           console.log(error);
+  //         },
+  //       });
 
-            let i: number = 0;
-            for (i = 0; i < get_user_posts_response.length; i++) {
-              // Create new post
-              let newPost: Post = new Post(
-                new Alias(new User(this.username as string), new Community()),
-              );
+  //     // Get posts
+  //     this.http
+  //       .get<any>(this.backend_addr + '/user/posts?user_id=' + this.id, options)
+  //       .subscribe({
+  //         next: (get_user_posts_response) => {
+  //           // On success
+  //           this.num_posts = get_user_posts_response.length;
 
-              // Set id and content
-              newPost.id = get_user_posts_response[i]._id;
-              newPost.content = get_user_posts_response[i].content;
+  //           let i: number = 0;
+  //           for (i = 0; i < get_user_posts_response.length; i++) {
+  //             // Create new post
+  //             let newPost: Post = new Post(
+  //               new Alias(new User(this.username as string), new Community()),
+  //             );
 
-              // Get community
-              this.http
-                .get<any>(
-                  this.backend_addr +
-                    '/search_community_by_post_id?post_id=' +
-                    newPost.id,
-                  options,
-                )
-                .subscribe({
-                  next: (get_community_response) => {
-                    if (newPost.created_by && newPost.created_by.for_community) {
-                      newPost.created_by.for_community.name = get_community_response.name;
-                      newPost.created_by.for_community.id = get_community_response._id;
-                    }
-                  },
-                  error: (error) => {
-                    console.log('profile get commuity error');
-                    console.log(error);
-                  },
-                });
+  //             // Set id and content
+  //             newPost.id = get_user_posts_response[i]._id;
+  //             newPost.content = get_user_posts_response[i].content;
 
-              this.posts.push(newPost);
-            }
-          },
-          error: (error) => {
-            // On fail
-            console.log(error);
-          },
-        });
-    } else {
-      console.log('FAIL - no id in url');
-      this.router.navigate(['/']);
-    }
+  //             // Get community
+  //             this.http
+  //               .get<any>(
+  //                 this.backend_addr +
+  //                   '/search_community_by_post_id?post_id=' +
+  //                   newPost.id,
+  //                 options,
+  //               )
+  //               .subscribe({
+  //                 next: (get_community_response) => {
+  //                   if (newPost.created_by && newPost.created_by.for_community) {
+  //                     newPost.created_by.for_community.name = get_community_response.name;
+  //                     newPost.created_by.for_community.id = get_community_response._id;
+  //                   }
+  //                 },
+  //                 error: (error) => {
+  //                   console.log('profile get commuity error');
+  //                   console.log(error);
+  //                 },
+  //               });
 
-    this.num_posts = this.posts.length;
+  //             this.posts.push(newPost);
+  //           }
+  //         },
+  //         error: (error) => {
+  //           // On fail
+  //           console.log(error);
+  //         },
+  //       });
+  //   } else {
+  //     console.log('FAIL - no id in url');
+  //     this.router.navigate(['/']);
+  //   }
+
+  //   this.num_posts = this.posts.length;
+  // }
+
+  fetchUserPosts(userId: string) {
+    // Implement logic to fetch posts for the user
+    // Use userId to make HTTP requests to fetch posts
   }
 
   getData() {
