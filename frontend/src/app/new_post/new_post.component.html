@@ -5,6 +5,11 @@
             <textarea matInput #post_desc class="post-text" > </textarea>
          </mat-form-field>
 
+         <mat-form-field class="input-80-width">
+            <h1>Category:</h1>
+            <input matInput [(ngModel)]="customCategory" placeholder="Type a category">
+        </mat-form-field>
+
         <mat-form-field class="input-80-width">
             <h1>Tags:</h1>
             <mat-chip-listbox #chipList style="width:100%; left: 50%;">
@@ -36,16 +41,11 @@
         <mat-form-field class="input-80-width">
             <input matInput hidden="true">
             <h1>Add Photo/Video:</h1>
-            <div class="image-preview-box">
-                <input type="file" (change)="handleFileInput($event)" accept="video/*" />
-                <div class="image-preview-box-text">
-                    {{ videoFileName || '' }}
-                </div>
-            </div>
+            <input #Image type="file" (change)="onChange($event)">
         </mat-form-field>
     
         <div class="post-button-area">
-            <button mat-raised-button class="post-button" (click)="create_post(post_desc.value, [chipList.value])">Post</button>
+            <button mat-raised-button class="post-button" (click)="create_post(post_desc.value, [chipList.value], customCategory)">Post</button>
         </div>
     </form>
     <div class="spacer"></div>

@@ -17,7 +17,7 @@ export class NewPostComponent {
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
   
   chip_options: Chip[] = [new Chip("green", "General"), new Chip("yellow", "Question"), new Chip("red", "Clip") ];
-
+  customCategory: string = ''; 
   // Logged in user info
   logged_in: boolean = false;
   self_id: string = "not logged in";
@@ -27,10 +27,6 @@ export class NewPostComponent {
   community_id: string = "";
   community_name: string = "";
   community_desc: string = "";
-
-  // Video upload
-  videoFile: File | null = null;
-  videoFileName: string | null = null;
 
   constructor(private router : Router, private http : HttpClient, private fileUploadService : FileUploadService) {
     this.async_constructor();
@@ -84,15 +80,6 @@ export class NewPostComponent {
       }});
   }
 
-  handleFileInput(event: any) {
-    const fileList: FileList = event.target.files;
-    if (fileList.length > 0) {
-      this.videoFile = fileList[0];
-      this.videoFileName = this.videoFile.name;
-    }
-  }
-
-
   loading: boolean = false;
   file: File | null = null;
   public onChange(event : any) {
@@ -101,35 +88,32 @@ export class NewPostComponent {
     }
   }
 
-  create_post(description : string, chips : string[]) {
-    // If no value selected, default to General
-    if (chips[0] == undefined) {
-      chips[0] = 'General';
-    }
+  create_post(description: string, chips: string[], category: string) {
+    // If no custom category provided, use the selected category
+    const finalCategory = category || this.customCategory || 'General';
 
-    const formData = new FormData();
-    formData.append('post', JSON.stringify({
-      content: description,
-      tags: chips
-    }));
-    formData.append('community', this.community_id);
-    formData.append('user', this.self_id);
-
-    if (this.videoFile) {
-      formData.append('video', this.videoFile);
-    }
+    const body = {
+        post: {
+            content: description,
+            tags: chips,
+            category: finalCategory
+        },
+        community: this.community_id,
+        user: this.self_id
+    };
 
     const options = { withCredentials: true };
-    this.http.post<any>(this.backend_addr + "/create_post", formData, options).subscribe({
-      next: create_post_response => {
-        console.log(create_post_response);
-        this.router.navigate(['post'], { queryParams: { 'post': create_post_response._id } });
-      },
-      error: error => {
-        console.log(error);
-      }
+    this.http.post<any>(this.backend_addr + "/create_post", body, options).subscribe({
+        next: create_post_response => {
+            console.log(create_post_response);
+            this.router.navigate(['post'], { queryParams: { 'post': create_post_response._id } });
+        },
+        error: error => {
+            console.log(error);
+        }
     });
   }
+
   // Note: This function is never called
   uploadFile() {
     if (this.file !== null) {
