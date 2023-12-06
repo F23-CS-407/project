@@ -24,6 +24,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BoardsComponent } from './boards/boards.component';
+import { DirectMessageComponent } from './direct-message/direct-message.component';
+import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 @NgModule({
   declarations: [
     HubitComponent, // Declare HubitComponent
@@ -34,6 +36,8 @@ import { BoardsComponent } from './boards/boards.component';
     SettingsComponent,
     CommunityHomeComponent,
     BoardsComponent,
+    DirectMessageComponent,
+    FollowedCommunitiesComponent
   ],
   imports: [
     CommonModule,
@@ -64,6 +68,8 @@ import { BoardsComponent } from './boards/boards.component';
     SettingsComponent,
     CommunityHomeComponent,
     BoardsComponent,
+    DirectMessageComponent,
+    FollowedCommunitiesComponent
   ],
 })
 export class HubitModule {}

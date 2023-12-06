@@ -32,9 +32,7 @@
         <mat-card class="post_card">
           <mat-card-header>
             <mat-card-title>
-              <a href="/profile?id={{ post.created_by.user.id }}">{{
-                post.created_by ? post.created_by.community_username : "_null"
-              }}</a>
+              <a href="/profile?id={{ post.created_by?.user?.get_id() }}">{{ post.created_by?.user?.get_username() }}</a>
             </mat-card-title>
             <mat-card-subtitle>
               {{ community_name }}

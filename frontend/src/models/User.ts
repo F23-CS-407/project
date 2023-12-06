@@ -19,7 +19,7 @@ export class User {
     return this.id;
   }
 
-  public get_username() {
+  public get_username(): string | undefined{
     return this.username;
   }
 

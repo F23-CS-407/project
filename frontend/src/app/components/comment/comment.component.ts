@@ -12,4 +12,12 @@ export class CommentComponent {
   @Input() viewing_user_id: string = '';
   @Input({ required: true }) deleteComment!: (id: string) => void;
   @Input({ required: true }) http!: HttpClient;
+
+  get creatorId(): string {
+    return this.comment.creator.get_id();
+  }
+
+  get creatorUsername(): string | undefined {
+    return this.comment.creator.get_username();
+  }
 }
