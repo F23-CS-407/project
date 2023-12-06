@@ -220,6 +220,22 @@ Error
 "Not logged in"
 ```
 
+### GET /feed?page(optional)=Int&count(optional)=Int
+
+If logged in, returns date descending Post list of posts from followed communities, populates the board and community
+
+Params:
+count: max number of posts to return
+page: how count length offsets from most recent feed post
+Note: If count or page are used they must both be incuded, not setting page or count returns all feed posts
+
+Errors
+
+```
+401,
+400
+```
+
 ### POST /create_community
 
 Body
