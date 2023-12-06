@@ -247,6 +247,17 @@ export class NewCommunityDialogComponent {
     }
   }
 
+  loading: boolean = false;
+  file: File | null = null;
+  public onCoverChange(event : any) {
+    if (event && event.target && event.target.files && event.target.files.length >= 1){
+      this.file = event.target.files[0];
+      console.log("this.file set");
+    } else {
+      console.log("Error setting file");
+    }
+  }
+
   public create_community(
     community_name: string,
     community_desc: string,

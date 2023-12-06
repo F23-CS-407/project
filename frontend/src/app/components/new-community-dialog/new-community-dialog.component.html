@@ -118,13 +118,10 @@
       <div class="image-box">
         <h3 class="title">Add Cover Photo:</h3>
         <div class="image-upload">
-          <label for="file-input">
-            <img src="../../../assets/letter-logo.png" class="image-preview" />
-          </label>
-          <div class="image-upload">
-            <input id="file-input" type="file" />
-          </div>
-          <!-- TODO: (change)="onFileSelected($event)" for uploading -->
+          <input matInput hidden="true">
+            <h1>Add Background Photo:</h1>
+            <!--<input matInput #Image type="file" (change)="onChange($event.target.files)">-->
+            <input #Image type="file" (change)="onCoverChange($event)">
         </div>
       </div>
     </div>

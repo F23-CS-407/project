@@ -1,13 +1,37 @@
 .new-post-button {
-  position: fixed;
+  position: absolute;
   top: 14px;
   right: 30px;
-  background-color: #aaaaaa;
+  background-color: #ffffff;
   border-radius: 5px;
-  color: #ffffff;
+  color: #000000;
+}
+
+.boards-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  color: #000000;
+}
+
+.follow-toggle {
+  position: absolute;
+  top: 14px;
+  right: 150px;
+  width: 80px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  color: #000000;
 }
 
 .community {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
 }
 
@@ -23,11 +47,10 @@
   font-size: 72px;
   font-family: fantasy;
   color: white;
-  text-shadow:
-    -1px 1px 0 #000,
-    1px 1px 0 #000,
-    1px -1px 0 #000,
-    -1px -1px 0 #000;
+  text-shadow: -1px 1px 0 #000, 
+                        1px 1px 0 #000, 
+                       1px -1px 0 #000, 
+                      -1px -1px 0 #000; 
   margin-top: 50px;
   margin-left: 25px;
   min-height: 20%;
@@ -36,16 +59,20 @@
 .community .community-background .community-description {
   font-size: 24px;
   color: white;
-  text-shadow:
-    -1px 1px 0 #000,
-    1px 1px 0 #000,
-    1px -1px 0 #000,
-    -1px -1px 0 #000;
+  text-shadow: -1px 1px 0 #000, 
+                        1px 1px 0 #000, 
+                       1px -1px 0 #000, 
+                      -1px -1px 0 #000; 
   margin-left: 25px;
   line-height: 24px;
   height: 50%;
   overflow-y: auto;
   width: 50%;
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }
 
 .post_list {
@@ -59,11 +86,7 @@
   padding-bottom: 50px;
   row-gap: 15px;
   list-style-type: none;
-  background-image: linear-gradient(
-    180deg,
-    rgba(239, 176, 86, 1),
-    rgba(222, 89, 67, 1)
-  );
+  background-image: linear-gradient(180deg, rgba(239, 176, 86, 1), rgba(222, 89,67, 1));
   background-attachment: fixed;
 }
 
