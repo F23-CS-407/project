@@ -12,12 +12,20 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { CommentComponent } from './comment/comment.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { NewBoardComponent } from './new-board/new-board.component';
+import { PostComponent } from './post/post.component';
 @NgModule({
   declarations: [
     MenuBarComponent,
     SettingsDialogComponent,
     PermadeleteComponent,
     NewCommunityDialogComponent,
+    CommentComponent,
+    NewBoardComponent,
+    PostComponent,
   ],
   imports: [
     CommonModule,
@@ -28,6 +36,8 @@ import { MatInputModule } from '@angular/material/input';
     MatChipsModule,
     MatAutocompleteModule,
     MatInputModule,
+    MatCardModule,
+    MatListModule,
     ReactiveFormsModule,
   ],
   exports: [
@@ -35,6 +45,8 @@ import { MatInputModule } from '@angular/material/input';
     SettingsDialogComponent,
     PermadeleteComponent,
     NewCommunityDialogComponent,
+    CommentComponent,
+    PostComponent,
   ],
 })
 export class SharedModule {}

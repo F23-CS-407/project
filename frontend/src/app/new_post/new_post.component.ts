@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { FileUploadService } from '../file-upload.service';
+import { FileUploadService } from '../services/file-upload.service';
 
 @Component({
   selector: 'app-post',

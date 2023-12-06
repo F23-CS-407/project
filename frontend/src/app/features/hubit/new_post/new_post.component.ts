@@ -8,10 +8,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-post',
-  templateUrl: './post.component.html',
-  styleUrls: ['./post.component.css'],
+  templateUrl: './new_post.component.html',
+  styleUrls: ['./new_post.component.css'],
 })
-export class PostComponent {
+export class NewPostComponent {
   private backend_addr: string = 'http://localhost:8080/api';
   private urlParams: URLSearchParams = new URLSearchParams(
     window.location.search,

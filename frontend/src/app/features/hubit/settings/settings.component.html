@@ -5,7 +5,7 @@
     <!-- Settings Form -->
     <div class="settings-container">
       <!-- Username Field -->
-      <form [formGroup]="usernameForm" (submit)="updateUsername()">
+      <form [formGroup]="usernameForm" (ngSubmit)="updateUsername()">
         <div class="settings-item">
           <h1>Username:</h1>
           <div class="field">
@@ -26,10 +26,10 @@
                 <mat-icon>cancel</mat-icon>
               </button>
             </mat-form-field>
-            <div class="criteria" *ngIf="successMessage">
-              <mat-icon *ngIf="successMessage; else noChange">check</mat-icon>
+            <div class="criteria" *ngIf="successUser">
+              <mat-icon *ngIf="successUser; else noChange">check</mat-icon>
               <ng-template #noChange><mat-icon>close</mat-icon></ng-template>
-              {{ successMessage }}
+              {{ successUser }}
             </div>
           </div>
           <button
@@ -43,7 +43,7 @@
       </form>
 
       <!-- Password Field -->
-      <form [formGroup]="passwordForm" (submit)="updatePassword()">
+      <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
         <div class="settings-item">
           <h1>Password:</h1>
           <div class="password">
@@ -84,7 +84,7 @@
                   matInput
                   [type]="visible ? 'text' : 'password'"
                   formControlName="password"
-                  (input)="onChange()"
+                  (input)="onPasswordChange()"
                 />
                 <button
                   mat-icon-button
@@ -183,7 +183,7 @@
                   matInput
                   [type]="visible ? 'text' : 'password'"
                   formControlName="newPassword"
-                  (input)="onChange()"
+                  (input)="onPasswordChange()"
                 />
                 <button
                   mat-icon-button
@@ -212,13 +212,20 @@
               </div>
             </div>
           </div>
-          <button
-            mat-raised-button
-            type="submit"
-            [disabled]="passwordForm.invalid"
-          >
-            Update
-          </button>
+          <div class="update">
+              <button
+              mat-raised-button
+              type="submit"
+              [disabled]="passwordForm.invalid"
+            >
+              Update
+            </button>
+            <div class="criteria" *ngIf="successPass">
+              <mat-icon *ngIf="successPass; else noChange">check</mat-icon>
+              <ng-template #noChange><mat-icon>close</mat-icon></ng-template>
+              {{ successPass }}
+            </div>
+          </div>
         </div>
       </form>
 
@@ -233,7 +240,7 @@
                 matInput
                 formControlName="description"
                 rows="4"
-                (input)="onChange()"
+                (input)="onBioChange()"
               ></textarea>
               <button
                 mat-icon-button
@@ -260,26 +267,26 @@
               At least 25 characters
             </div>
           </div>
-          <button mat-raised-button type="submit" [disabled]="!hasDescLength">
-            Update
-          </button>
+          <div class="update">
+            <button mat-raised-button type="submit" [disabled]="!hasDescLength">
+              Update
+            </button>
+            <div class="criteria" *ngIf="successBio">
+              <mat-icon *ngIf="successBio; else noChange">check</mat-icon>
+              <ng-template #noChange><mat-icon>close</mat-icon></ng-template>
+              {{ successBio }}
+            </div>
+          </div>
         </div>
       </form>
 
       <div class="image-box">
-        <h3 class="title">Add Cover Photo:</h3>
+        <h3 class="title">Add Photo:</h3>
         <div class="image-upload">
-          <label for="file-input">
-            <img
-              src="../../../../assets/letter-logo.png"
-              class="image-preview"
-            />
-          </label>
-          <div class="image-upload">
-            <input id="file-input" type="file" />
-          </div>
+          <input matInput hidden="true">
+          <input #Image type="file" (change)="onPictureChange($event)">
+          <button mat-button (click)="savePicture()">Save</button>
         </div>
-        <!-- TODO: (change)="onFileSelected($event)" for uploading -->
       </div>
 
       <!-- Buttons -->

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HubitComponent } from './hubit.component';
 import { HomeComponent } from './home/home.component';
 import { CommunityComponent } from './community/community.component';
-import { PostComponent } from './post/post.component';
+import { NewPostComponent } from './new_post/new_post.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 import { CommunityHomeComponent } from './community-home/community-home.component';
@@ -27,7 +27,7 @@ const routes: Routes = [
       },
       {
         path: 'post',
-        component: PostComponent,
+        component: NewPostComponent,
       },
       {
         path: 'profile',

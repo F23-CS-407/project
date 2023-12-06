@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
-import { NewBoardComponent } from '../new-board/new-board.component';
+import { NewBoardComponent } from '../../../components/new-board/new-board.component';
 
 @Component({
   selector: 'app-boards',

@@ -12,7 +12,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable, map, startWith } from 'rxjs';
 
 // For image uploading
-import { FileUploadService } from '../file-upload.service';
+import { FileUploadService } from '../services/file-upload.service';
 
 @Component({
   selector: 'app-new-community',

@@ -6,7 +6,7 @@ import { HubitRoutingModule } from './hubit-routing.module';
 import { HubitComponent } from './hubit.component';
 import { HomeComponent } from './home/home.component';
 import { CommunityComponent } from './community/community.component';
-import { PostComponent } from './post/post.component';
+import { NewPostComponent } from './new_post/new_post.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SharedModule } from 'src/app/components/shared.module';
 
@@ -23,15 +23,17 @@ import { CommunityHomeComponent } from './community-home/community-home.componen
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BoardsComponent } from './boards/boards.component';
 @NgModule({
   declarations: [
     HubitComponent, // Declare HubitComponent
     HomeComponent,
     CommunityComponent,
-    PostComponent,
+    NewPostComponent,
     ProfileComponent,
     SettingsComponent,
     CommunityHomeComponent,
+    BoardsComponent,
   ],
   imports: [
     CommonModule,
@@ -57,8 +59,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     HubitComponent,
     HomeComponent,
     CommunityComponent,
-    PostComponent,
+    NewPostComponent,
     ProfileComponent,
+    SettingsComponent,
+    CommunityHomeComponent,
+    BoardsComponent,
   ],
 })
 export class HubitModule {}

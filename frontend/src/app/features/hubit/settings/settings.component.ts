@@ -8,8 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
+import { FileUploadService } from '../../../services/file-upload.service';
 import { UserInterface } from 'src/app/interfaces/user';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
 
 @Component({
@@ -29,7 +29,9 @@ export class SettingsComponent implements OnInit {
 
   hasDescLength: boolean = false;
   errorMessage: string = '';
-  successMessage: string = '';
+  successUser: string = '';
+  successBio: string = '';
+  successPass: string = '';
 
   visible: boolean = false;
   hasUpper = false;
@@ -40,18 +42,22 @@ export class SettingsComponent implements OnInit {
 
   current_user?: UserInterface;
   loading: boolean = true;
+  pictureLoading: boolean = false;
+  file: File | null = null;
 
   constructor(
     private userService: UserService,
+    private fileUploadService: FileUploadService,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar,
   ) {
     this.usernameForm = this.fb.group({
       username: ['', Validators.required],
     });
+
     this.descriptionForm = this.fb.group({
-      description: ['', Validators.required, Validators.minLength(25)],
+      description: ['', Validators.required],
     });
+
     this.passwordForm = this.fb.group(
       {
         currentPassword: ['', Validators.required],
@@ -94,10 +100,7 @@ export class SettingsComponent implements OnInit {
     };
   }
 
-  onChange() {
-    const desc = this.descriptionForm.get('description')?.value;
-    this.hasDescLength = desc.length >= 25;
-
+  onPasswordChange() {
     const value = this.passwordForm.get('password')?.value;
     this.hasUpper = /[A-Z]/.test(value);
     this.hasLower = /[a-z]/.test(value);
@@ -108,6 +111,11 @@ export class SettingsComponent implements OnInit {
       this.passwordForm.get('newPassword')?.value;
 
     this.errorMessage = '';
+  }
+
+  onBioChange() {
+    const desc = this.descriptionForm.get('description')?.value;
+    this.hasDescLength = desc.length >= 25;
   }
 
   ngOnInit(): void {
@@ -125,6 +133,7 @@ export class SettingsComponent implements OnInit {
         if (userData) {
           this.current_user = userData;
           this.username = userData.username;
+          this.description = userData.bio;
         }
       },
       (error) => {
@@ -141,12 +150,10 @@ export class SettingsComponent implements OnInit {
     const username = this.usernameForm.get('username')?.value;
     if (username && typeof username === 'string') {
       if (this.current_user && username !== this.current_user.username) {
-        // Assuming changeUsername is a synchronous function
         this.userService.changeUsername(username);
-        this.successMessage = 'Change successful';
-        this.current_user.username = username; // Update the current user's username
-        this.usernameForm.reset(); // Reset the form
-        this.snackBar.open(this.successMessage, 'Close', { duration: 3000 });
+        this.successUser = 'New Username Saved';
+        this.current_user.username = username; 
+        this.usernameForm.reset(); 
       }
     }
   }
@@ -156,9 +163,13 @@ export class SettingsComponent implements OnInit {
     if (
       description &&
       typeof description === 'string' &&
-      description !== this.current_user?.bio
+      description !== this.current_user?.bio &&
+      this.current_user
     ) {
       this.userService.changeDescription(description);
+      this.successBio = 'Saved';
+      this.current_user.bio = description;
+      this.descriptionForm.reset();
     }
   }
 
@@ -172,6 +183,30 @@ export class SettingsComponent implements OnInit {
       typeof password === 'string'
     ) {
       this.userService.changePassword(newPassword, password);
+      this.successPass = 'Saved';
+      this.passwordForm.reset();
+    }
+  }
+
+
+  public onPictureChange(event : any) {
+    if (event && event.target && event.target.files && event.target.files.length >= 1){
+      this.file = event.target.files[0];
+    }
+  }
+  savePicture() {
+    // Goal: call this.saveField()
+    if (this.file !== null) {
+      this.pictureLoading = !this.pictureLoading;
+
+      // Call upload service to upload file
+      this.fileUploadService.upload(this.file).subscribe(
+        (event: any) => {
+          if (typeof (event) === 'object') {
+            this.pictureLoading = false;
+          }
+        }
+      );
     }
   }
 
@@ -188,4 +223,30 @@ export class SettingsComponent implements OnInit {
       console.error('Password is required to delete account');
     }
   }
+
+
+  // signOut() {
+  //   const options = { withCredentials: true };
+  //   this.http.delete<any>(this.backend_addr + '/logout', options).subscribe({
+  //     next: (logout_response) => {
+  //       // On success
+  //       console.log(logout_response);
+
+  //       // Redirect to login page
+  //       this.router.navigate(['/login']);
+  //     },
+  //     error: (error_response) => {
+  //       if (error_response.error.text == 'Logged out successfully') {
+  //         // Success
+  //         // Redirect to login page
+  //         this.router.navigate(['/login']);
+  //       }
+  //       console.log(error_response);
+  //     },
+  //   });
+  // }
+
+  // deleteAction() {
+  //   this.router.navigate(['/permadelete']);
+  // }
 }
