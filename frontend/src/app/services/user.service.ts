@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { UserInterface } from '../interfaces/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class UserService {
   private loadingSubject = new BehaviorSubject<boolean>(true);
   public loading = this.loadingSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   fetchUserProfile(): void {
     this.loadingSubject.next(true); // Indicate that loading has started
@@ -53,6 +54,7 @@ export class UserService {
         next: (confirmation) => {
           this.userSubject.next({} as UserInterface); // Reset user
           console.log(confirmation);
+          this.router.navigate(['/intro']);
         },
         error: (error) => console.error('Logout failed:', error),
       });
@@ -104,6 +106,7 @@ export class UserService {
         next: (confirmation) => {
           this.userSubject.next({} as UserInterface); // Reset user
           console.log(confirmation);
+          this.router.navigate(['/intro']);
         },
         error: (error) => console.error('Delete account failed:', error),
       });

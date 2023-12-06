@@ -220,33 +220,7 @@ export class SettingsComponent implements OnInit {
       this.userService.deleteUser(password);
     } else {
       // Handle error - password required
-      console.error('Password is required to delete account');
+      console.error('Check your password, it is required to delete your account');
     }
   }
-
-
-  // signOut() {
-  //   const options = { withCredentials: true };
-  //   this.http.delete<any>(this.backend_addr + '/logout', options).subscribe({
-  //     next: (logout_response) => {
-  //       // On success
-  //       console.log(logout_response);
-
-  //       // Redirect to login page
-  //       this.router.navigate(['/login']);
-  //     },
-  //     error: (error_response) => {
-  //       if (error_response.error.text == 'Logged out successfully') {
-  //         // Success
-  //         // Redirect to login page
-  //         this.router.navigate(['/login']);
-  //       }
-  //       console.log(error_response);
-  //     },
-  //   });
-  // }
-
-  // deleteAction() {
-  //   this.router.navigate(['/permadelete']);
-  // }
 }
