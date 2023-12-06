@@ -44,19 +44,34 @@ export class ProfileComponent {
     private clipboard: Clipboard,
     private http: HttpClient
   ) {}
+
+
   ngOnInit() {
+    this.userService.fetchUserProfile();
+    
+
     this.userService.user.subscribe((userData: UserInterface) => {
-      if (Object.keys(userData).length) {
+      if (userData && userData._id) {
+        console.log(userData); //For testing
         this.currentUser = userData;
+        this.username = userData.username;
+        this.bio = userData.bio;
+        this.followed_communities = userData.followed_communities;
+        this.posts = userData.posts;
+        this.num_posts = userData.posts.length; 
+        this.num_following = userData.followed_communities.length;
+        this.num_followers = userData.followed_communities.length; //TODO: implement followers count
+        this.self_id, this.id = userData._id;
+        this.logged_in = true;
+        this.viewing_own_profile = true;
+
         this.fetchUserPosts(userData._id);
       } else {
-        // Handle the case where no user data is available
         console.log('No user data available');
-        this.router.navigate(['/login']); // Or any other appropriate action
+        this.router.navigate(['/intro']);
       }
     });
   }
-
 
   // async async_constructor() {
   //   // Get data from cookie
@@ -153,37 +168,38 @@ export class ProfileComponent {
     // Use userId to make HTTP requests to fetch posts
   }
 
-  getData() {
-    const options = { withCredentials: true };
-    this.http.get<any>(this.backend_addr + '/user_info', options).subscribe({
-      next: (info_response) => {
-        // On success
-        this.logged_in = true;
-        this.self_id = info_response._id;
-        console.log(info_response);
-      },
-      error: (error) => {
-        // On fail
-        console.log('No session: ');
-        console.log(error);
-      },
-    });
-  }
+  // fetchUserProfile in user.service.ts is called in ngOnInit() above
+  // getData() {
+  //   const options = { withCredentials: true };
+  //   this.http.get<any>(this.backend_addr + '/user_info', options).subscribe({
+  //     next: (info_response) => {
+  //       // On success
+  //       this.logged_in = true;
+  //       this.self_id = info_response._id;
+  //       console.log(info_response);
+  //     },
+  //     error: (error) => {
+  //       // On fail
+  //       console.log('No session: ');
+  //       console.log(error);
+  //     },
+  //   });
+  // }
 
   share_action() {
     let domain_name: string = '';
     this.clipboard.copy(domain_name + this.router.url);
   }
   settings_action() {
-    this.router.navigate(['/settings'])
+    this.router.navigate(['/hubit/settings'])
   }
 
   create_community_action() {
-    this.router.navigate(['/community-dashboard']);
+    this.router.navigate(['/hubit/community-dashboard']);
   }
 
   toFollowedCommunities() {
-    this.router.navigate(['/followed_communities'], {
+    this.router.navigate(['/hubit/followed_communities'], {
       queryParams: { id: this.id },
     });
   }
