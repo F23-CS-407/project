@@ -280,14 +280,24 @@
         </div>
       </form>
 
-      <div class="image-box">
-        <h3 class="title">Add Photo:</h3>
-        <div class="image-upload">
-          <img *ngIf="previewUrl" [src]="previewUrl" class="profile-pic-preview"/>
-          <input #Image type="file" (change)="onPictureChange($event)">
-          <button mat-button (click)="savePicture()">Save</button>
+      <div class="settings-item">
+        <h1>Profile Picture:</h1>
+        <div class="image-box">
+          <div class="image-upload">
+            <img *ngIf="previewUrl" [src]="previewUrl" class="profile-pic-preview"/>
+            <input #Image type="file" (change)="onPictureChange($event)">
+          </div>
         </div>
-        <div *ngIf="uploadSuccessMessage">{{ uploadSuccessMessage }}</div>
+        <div class="update">
+          <button mat-raised-button (click)="savePicture()" [disabled]="!previewUrl">
+            Update
+          </button>
+          <div class="criteria" *ngIf="uploadSuccessMessage">
+            <mat-icon *ngIf="uploadSuccessMessage; else noChange">check</mat-icon>
+            <ng-template #noChange><mat-icon>close</mat-icon></ng-template>
+            {{ uploadSuccessMessage }}
+          </div>
+        </div>
       </div>
 
       <!-- Buttons -->
