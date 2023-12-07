@@ -175,7 +175,7 @@ export class IntroComponent {
 
   setProfilePic(userId: string) {
     // Fetch the default profile as a blob from your assets
-    fetch('../../assets/default-profile.png')
+    fetch('assets/default-profile.png')
       .then((response) => response.blob())
       .then((blob) => {
         const file = new File([blob], 'default-profile.png', { type: 'image/png' });

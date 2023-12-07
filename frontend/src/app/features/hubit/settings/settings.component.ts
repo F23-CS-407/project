@@ -140,17 +140,10 @@ export class SettingsComponent implements OnInit {
           this.current_user = userData;
           this.username = userData.username;
           this.description = userData.bio;
-  
+          
           // Check if the user has a profile picture
           if (userData.profile_pic) {
-            // Extract the filename from the full file path
-            const profilePicFilename = userData.profile_pic.split('/upload/').pop();
-            if (profilePicFilename) {
-              this.fetchProfilePicture(profilePicFilename);
-            } else {
-              // Set a default profile picture if the path is not valid
-              this.previewUrl = this.defaultProfilePic;
-            }
+            this.previewUrl = userData.profile_pic;
           } else {
             // Set a default profile picture if there isn't one
             this.previewUrl = this.defaultProfilePic;
@@ -163,30 +156,6 @@ export class SettingsComponent implements OnInit {
         this.previewUrl = this.defaultProfilePic;
       }
     );
-  }
-  
-  fetchProfilePicture(profilePicFilename: string) {
-    this.fileUploadService.getFileByName(profilePicFilename).subscribe(
-      (blob: Blob) => {
-        this.createImageFromBlob(blob);
-      },
-      (error) => {
-        console.error('Error fetching profile picture:', error);
-        // Set a default profile picture if there is an error fetching the picture
-        this.previewUrl = this.defaultProfilePic;
-      }
-    );
-  }
-
-  createImageFromBlob(image: Blob) {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => {
-      this.previewUrl = reader.result;
-    }, false);
-  
-    if (image) {
-      reader.readAsDataURL(image);
-    }
   }
 
   toggleVisible() {

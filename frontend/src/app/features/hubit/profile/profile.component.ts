@@ -17,6 +17,7 @@ import { Community } from '../../../../models/Community';
 })
 export class ProfileComponent {
   private backend_addr: string = '/api';
+  profileImageUrl: string | null = null;
 
   private urlParams: URLSearchParams = new URLSearchParams(
     window.location.search,
@@ -71,6 +72,7 @@ export class ProfileComponent {
             // On success
             this.username = get_user_response.username;
             this.followed_communities = get_user_response.followed_communities;
+            this.profileImageUrl = get_user_response.profile_pic;
             if (get_user_response.bio) {
               this.bio = get_user_response.bio;
             }
@@ -170,5 +172,10 @@ export class ProfileComponent {
     this.router.navigate(['/hubit/profile/followed-communities'], {
       queryParams: { id: this.id },
     });
+  }
+
+  toSavedPosts() {
+    // Redirect to the saved posts page/component
+    //this.router.navigate(['/path-to-saved-posts']);
   }
 }
