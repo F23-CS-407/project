@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -44,6 +45,8 @@ export class NewPostComponent {
 
   // progress
   loading: boolean = false
+
+  @ViewChild('map', { static: false }) mapElement!: ElementRef;
 
   constructor(private router : Router, private http : HttpClient, private fileUploadService : FileUploadService) {
     this.async_constructor();
@@ -111,6 +114,28 @@ export class NewPostComponent {
       this.captionFile = fileList[0];
       this.captionFileName = this.captionFile.name;
     }
+  }
+
+  addLocation() {
+    const mapElement = this.mapElement.nativeElement;
+
+    mapElement.addEventListener('click', (event: MouseEvent) => {
+      const x = event.offsetX;
+      const y = event.offsetY;
+
+      const coordinates = this.calculateCoordinates(x, y);
+      console.log('Clicked coordinates:', coordinates);
+    });
+  }
+
+  calculateCoordinates(x: number, y: number): { latitude: number, longitude: number } {
+    const imageLocation = { latitude: 40.7128, longitude: -74.0060 };
+    const scaleFactor = 0.0001;
+
+    const latitude = imageLocation.latitude + scaleFactor * y;
+    const longitude = imageLocation.longitude + scaleFactor * x;
+
+    return { latitude, longitude };
   }
 
   async processUpload() {
