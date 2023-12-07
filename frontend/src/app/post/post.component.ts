@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { User } from '../../models/User';
 import { Comment } from '../../models/Comment';
 
+import Hls from "hls.js"
+
 import { CommentComponent } from '../comment/comment.component';
+
+declare global {
+  interface Window {
+    hls: any,
+    player: any
+  }
+}
 
 @Component({
   selector: 'app-post',
@@ -14,6 +23,11 @@ import { CommentComponent } from '../comment/comment.component';
 })
 export class PostComponent {
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
+  @Input() embedded = false;
+  @Input() input_post_id = ""
+
+  @ViewChild('videoContent') videoContent: any;
+  video: any
 
   // Logged in user info
   logged_in: boolean = false;
@@ -27,17 +41,50 @@ export class PostComponent {
   post_community_name: string = "community_not_set";
   post_community_id: string = "commmunity_id_not_set";
   post_content: string = "content_not_set";
+  post_media: string = ""
+  post_alt: string = ""
   
   like_count: number = 0;
   has_liked: boolean = false;
 
   comments: Comment[] = [];
 
-  constructor(public http: HttpClient, private router: Router) {
-    this.post_id = this.urlParams.get('post') as string;
+  constructor(public http: HttpClient, private router: Router) {}
+
+  ngOnInit() {
+    if (this.embedded) {
+      this.post_id = this.input_post_id
+    } else {
+      this.post_id = this.urlParams.get('post') as string;
+    }
     this.getData();
     this.get_post_data();
     this.get_comment_data();
+  }
+
+  ngOnDestroy() {
+    window.hls = null
+    this.video = null
+  }
+
+  toPostPage() {
+    if (this.embedded) {
+      this.router.navigate(["/post"], { queryParams: {post: this.post_id}});
+    }
+  }
+
+  setupPlayer() {
+      const source = this.post_media;
+      this.video = this.videoContent.nativeElement
+
+      if (!Hls.isSupported()) {
+        this.video!.src = source;
+      } else {
+        const hls = new Hls();
+        hls.loadSource(source);
+        hls.attachMedia(this.video!);
+        window.hls = hls;
+      }
   }
 
 
@@ -66,6 +113,12 @@ export class PostComponent {
         this.post_user_id = get_post_response.created_by;
         this.post_content = get_post_response.content;
         this.like_count = get_post_response.liked_by.length;
+        this.post_media = get_post_response.media ? get_post_response.media : ""
+        this.post_alt = get_post_response.alt ? get_post_response.alt : ""
+
+        if (this.post_media && this.post_media.includes(".m3u8")) {
+          this.setupPlayer()
+        }
         
         // Get username
         this.http.get<any>("api/user?id="+this.post_user_id, options).subscribe({

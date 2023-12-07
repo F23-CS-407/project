@@ -9,7 +9,7 @@ import { FileUploadService } from '../file-upload.service';
 import { first, firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-post',
+  selector: 'app-new-post',
   templateUrl: './new_post.component.html',
   styleUrls: ['./new_post.component.css']
 })
