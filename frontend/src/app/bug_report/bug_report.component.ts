@@ -15,6 +15,7 @@ export class BugReportComponent {
 
   selectedFeedbackType: string = 'bug';
   feedbackText: string = '';
+  feedbackSubmitted: boolean = false;
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -23,22 +24,24 @@ export class BugReportComponent {
 
     const feedbackData = {
       type: this.selectedFeedbackType,
-      details: this.feedbackText
+      details: this.feedbackText,
     };
 
     const options = { withCredentials: true };
 
     this.http.post<any>(`${this.backend_addr}/submit_feedback`, feedbackData, options).subscribe({
-      next: response => {
+      next: (response) => {
         console.log('Feedback submitted successfully:', response);
-        // You can add further actions, such as showing a success message or redirecting the user.
+        // Update the feedbackSubmitted variable to show the confirmation message
+        this.feedbackSubmitted = true;
       },
-      error: error => {
+      error: (error) => {
         console.error('Error submitting feedback:', error);
         // Handle the error, e.g., show an error message to the user.
-      }
+      },
     });
   }
-
-
 }
+
+
+

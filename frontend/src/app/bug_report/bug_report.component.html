@@ -1,8 +1,11 @@
-<!-- bug-report.component.html -->
-
 <div class="middle_box">
   <h1 class="page-heading">Bug Report and Feature Request</h1>
   <div class="column-box">
+    <!-- Add ngIf to conditionally display confirmation message -->
+    <div *ngIf="feedbackSubmitted" class="confirmation-message">
+      Feedback submitted successfully! Thank you for your input.
+    </div>
+
     <mat-form-field class="input-box">
       <h2>Feedback Type:</h2>
       <select matNativeControl [(ngModel)]="selectedFeedbackType" name="selectedFeedbackType" required>
