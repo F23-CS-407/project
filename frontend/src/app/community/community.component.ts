@@ -15,7 +15,7 @@ const options = { withCredentials : true };
   styleUrls: ['./community.component.css']
 })
 export class CommunityComponent {
-  private backend_addr : string = "http://localhost:8080/api";
+  private backend_addr : string = "/api";
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
 
   community_id : string = "";

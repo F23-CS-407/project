@@ -20,7 +20,7 @@ import { FileUploadService } from '../file-upload.service';
   styleUrls: ['./new-community.component.css']
 })
 export class NewCommunityComponent {
-  private backend_addr : string = "http://localhost:8080/api";
+  private backend_addr : string = "/api";
 
   // Community page data
   community_name: string = "";

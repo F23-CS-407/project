@@ -12,7 +12,7 @@ import { User } from '../../models/User';
 })
 
 export class HomeComponent {
-  private backend_addr : string = "http://localhost:8080/api";
+  private backend_addr : string = "/api";
 
   self_id: string = "";
   self_username?: string = undefined;
