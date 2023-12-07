@@ -23,7 +23,7 @@ performSearch(event: any) {
     if (this.searchCriteria.trim()) {
       console.log('Perform search with criteria: ', this.searchCriteria);
 
-      const api = 'http://localhost:8080/api';
+      const api = '/api';
 
       // Perform both user and community searches
       this.http
