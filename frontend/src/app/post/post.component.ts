@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -23,6 +23,11 @@ declare global {
 })
 export class PostComponent {
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
+  @Input() embedded = false;
+  @Input() input_post_id = ""
+
+  @ViewChild('videoContent') videoContent: any;
+  video: any
 
   // Logged in user info
   logged_in: boolean = false;
@@ -44,23 +49,40 @@ export class PostComponent {
 
   comments: Comment[] = [];
 
-  constructor(public http: HttpClient, private router: Router) {
-    this.post_id = this.urlParams.get('post') as string;
+  constructor(public http: HttpClient, private router: Router) {}
+
+  ngOnInit() {
+    if (this.embedded) {
+      this.post_id = this.input_post_id
+    } else {
+      this.post_id = this.urlParams.get('post') as string;
+    }
     this.getData();
     this.get_post_data();
     this.get_comment_data();
   }
 
+  ngOnDestroy() {
+    window.hls = null
+    this.video = null
+  }
+
+  toPostPage() {
+    if (this.embedded) {
+      this.router.navigate(["/post"], { queryParams: {post: this.post_id}});
+    }
+  }
+
   setupPlayer() {
       const source = this.post_media;
-      const video = document.querySelector('video');
+      this.video = this.videoContent.nativeElement
 
       if (!Hls.isSupported()) {
-        video!.src = source;
+        this.video!.src = source;
       } else {
         const hls = new Hls();
         hls.loadSource(source);
-        hls.attachMedia(video!);
+        hls.attachMedia(this.video!);
         window.hls = hls;
       }
   }
@@ -94,7 +116,7 @@ export class PostComponent {
         this.post_media = get_post_response.media ? get_post_response.media : ""
         this.post_alt = get_post_response.alt ? get_post_response.alt : ""
 
-        if (this.post_media) {
+        if (this.post_media && this.post_media.includes(".m3u8")) {
           this.setupPlayer()
         }
         

@@ -8,7 +8,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { FileUploadService } from '../file-upload.service';
 
 @Component({
-  selector: 'app-post',
+  selector: 'app-new-post',
   templateUrl: './new_post.component.html',
   styleUrls: ['./new_post.component.css']
 })
