@@ -66,6 +66,10 @@ export class CommunityHomeComponent {
     });
   }
 
+  clickCommunity(community: CommunityInterface) {
+    this.router.navigate(['/hubit/community'], { queryParams: { community: community._id } });
+  }
+
 
   openNewCommunityDialog(): void {
     const dialogRef = this.dialog.open(NewCommunityDialogComponent, {

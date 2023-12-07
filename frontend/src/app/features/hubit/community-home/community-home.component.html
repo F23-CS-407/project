@@ -7,14 +7,14 @@
   <div class="divider-big"></div>
   <div class="communities-panel">
     <!-- Dynamic rendering of communities -->
-    <div class="community-box" *ngFor="let community of communities" [routerLink]="['/hubit/community', community._id]">
+    <div class="community-box" *ngFor="let community of communities">
       <div class="cover">
         <!-- Placeholder image, update as needed -->
         <img src="../../../assets/letter-logo.png" class="image-preview" />
       </div>
       <div class="name-box">
         <div class="divider"></div>
-        <h3 class="name">{{ community.name }}</h3>
+        <h3 class="name" (click)="clickCommunity(community)">{{ community.name }}</h3>
       </div>
       <div class="count-box">
         <div class="divider"></div>
