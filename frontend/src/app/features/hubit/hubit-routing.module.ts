@@ -9,6 +9,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { CommunityHomeComponent } from './community-home/community-home.component';
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
+import { PostComponent } from './post/post.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
       {
         path: 'new_post',
         component: NewPostComponent,
+      },
+      {
+        path: 'post',
+        component: PostComponent,
       },
       {
         path: 'profile',

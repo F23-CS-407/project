@@ -103,7 +103,7 @@ export class NewPostComponent {
     this.http.post<any>(this.backend_addr + "/create_post", body, options).subscribe({
       next: create_post_response => {          // On success
         console.log(create_post_response);
-        this.router.navigate(['post'], {queryParams:{'post' : create_post_response._id}});
+        this.router.navigate(['/hubit/post'], {queryParams:{post : create_post_response._id}});
       }, 
       error: error => {         // On fail
         console.log(error);

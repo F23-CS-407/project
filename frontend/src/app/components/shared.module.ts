@@ -16,7 +16,6 @@ import { CommentComponent } from './comment/comment.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { NewBoardComponent } from './new-board/new-board.component';
-import { PostComponent } from './post/post.component';
 @NgModule({
   declarations: [
     MenuBarComponent,
@@ -25,7 +24,6 @@ import { PostComponent } from './post/post.component';
     NewCommunityDialogComponent,
     CommentComponent,
     NewBoardComponent,
-    PostComponent,
   ],
   imports: [
     CommonModule,
@@ -47,7 +45,6 @@ import { PostComponent } from './post/post.component';
     PermadeleteComponent,
     NewCommunityDialogComponent,
     CommentComponent,
-    PostComponent,
   ],
 })
 export class SharedModule {}

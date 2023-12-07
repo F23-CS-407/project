@@ -26,12 +26,15 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BoardsComponent } from './boards/boards.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
+import { PostComponent } from './post/post.component';
+import { MatListModule } from '@angular/material/list';
 @NgModule({
   declarations: [
     HubitComponent, // Declare HubitComponent
     HomeComponent,
     CommunityComponent,
     NewPostComponent,
+    PostComponent,
     ProfileComponent,
     SettingsComponent,
     CommunityHomeComponent,
@@ -47,6 +50,7 @@ import { FollowedCommunitiesComponent } from './followed-communities/followed-co
     MatCardModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatListModule,
     MatIconModule,
     MatCardModule,
     MatChipsModule,
@@ -64,6 +68,7 @@ import { FollowedCommunitiesComponent } from './followed-communities/followed-co
     HomeComponent,
     CommunityComponent,
     NewPostComponent,
+    PostComponent,
     ProfileComponent,
     SettingsComponent,
     CommunityHomeComponent,

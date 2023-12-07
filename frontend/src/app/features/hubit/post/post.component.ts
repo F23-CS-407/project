@@ -2,10 +2,10 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { User } from '../../../models/User';
-import { Comment } from '../../../models/Comment';
+import { User } from '../../../../models/User';
+import { Comment } from '../../../../models/Comment';
 import Hls from "hls.js"
-import { CommentComponent } from '../comment/comment.component';
+import { CommentComponent } from '../../../components/comment/comment.component';
 
 declare global {
   interface Window {
@@ -70,7 +70,7 @@ export class PostComponent {
 
   toPostPage() {
     if (this.embedded) {
-      this.router.navigate(["/post"], { queryParams: {post: this.post_id}});
+      this.router.navigate(["/hubit/post"], { queryParams: {post: this.post_id}});
     }
   }
 

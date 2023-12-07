@@ -35,24 +35,29 @@ export class MenuBarComponent {
 
   ngOnInit() {
     this.userService.fetchUserProfile();
-    this.userService.user.subscribe((userData: UserInterface) => {
-      if (userData && userData._id) {
-        console.log(userData); //For testing
-        this.currentUser = userData;
-        this.username = userData.username;
-        this.bio = userData.bio;
-        this.followed_communities = userData.followed_communities;
-        this.posts = userData.posts;
-        this.num_posts = userData.posts.length; 
-        this.num_following = userData.followed_communities.length;
-        this.num_followers = userData.followed_communities.length; //TODO: implement followers count
-        this.self_id, this.id = userData._id;
-        this.logged_in = true;
-        this.viewing_own_profile = true;
 
-      } else {
-        console.log('No user data available');
-        this.router.navigate(['/intro']);
+    this.userService.loading.subscribe(loading => {
+      if (!loading) {
+        this.userService.user.subscribe((userData: UserInterface) => {
+          if (userData && userData._id) {
+            console.log(userData); //For testing
+            this.currentUser = userData;
+            this.username = userData.username;
+            this.bio = userData.bio;
+            this.followed_communities = userData.followed_communities;
+            this.posts = userData.posts;
+            this.num_posts = userData.posts.length; 
+            this.num_following = userData.followed_communities.length;
+            this.num_followers = userData.followed_communities.length; //TODO: implement followers count
+            this.self_id, this.id = userData._id;
+            this.logged_in = true;
+            this.viewing_own_profile = true;
+
+          } else {
+            console.log('No user data available');
+            this.router.navigate(['/intro']);
+          }
+        });
       }
     });
   }
@@ -64,13 +69,5 @@ export class MenuBarComponent {
   navigateToProfile(): void {
     this.router.navigate(['/hubit/profile'], { queryParams: { id: this.id } });
   }
-
-  navigateToNewPost(): void {
-    this.router.navigate(['/hubit/new_post'], );
-  }
-
-  // navigateToCommunity(): void {
-  //   this.router.navigate(['/hubit/community'], { queryParams: { community: community_id } });
-  // }
 
 }
