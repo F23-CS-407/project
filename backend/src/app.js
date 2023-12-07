@@ -5,6 +5,7 @@ import useAuthentication from './authentication/index.js';
 import useCommunities from './communities/index.js';
 import useUser from './user/index.js';
 import useUploads from './uploads/index.js';
+import useFeeds from './feeds/index.js';
 
 export default async function createApp(options) {
   // set up express and define app
@@ -23,6 +24,9 @@ export default async function createApp(options) {
 
   // use users
   app = useUser(app);
+
+  // use feeds
+  app = useFeeds(app);
 
   return app;
 }
