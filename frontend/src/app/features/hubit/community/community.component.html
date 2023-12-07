@@ -10,9 +10,7 @@
     Follow
   </button>
 </ng-template>
-<a href="/new_post?community={{ community_id }}" class="new-post-button"
-  ><button mat-button>New Post</button></a
->
+<button mat-button class="new-post-button" (click)="navigateToNewPost()">New Post</button>
 <div class="community">
   <div class="community-background">
     <p class="community-title">{{ community_name }}</p>
@@ -32,7 +30,7 @@
         <mat-card class="post_card">
           <mat-card-header>
             <mat-card-title>
-              <a href="/profile?id={{ post.created_by?.user?.get_id() }}">{{ post.created_by?.user?.get_username() }}</a>
+              <a href="/hubit/profile?id={{ post.created_by?.user?.get_id() }}">{{ post.created_by?.user?.get_username() }}</a>
             </mat-card-title>
             <mat-card-subtitle>
               {{ community_name }}

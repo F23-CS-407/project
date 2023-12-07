@@ -28,7 +28,7 @@ const routes: Routes = [
         component: CommunityComponent,
       },
       {
-        path: 'post',
+        path: 'new_post',
         component: NewPostComponent,
       },
       {

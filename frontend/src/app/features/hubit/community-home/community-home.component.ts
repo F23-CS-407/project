@@ -21,7 +21,8 @@ export class CommunityHomeComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.router.navigate(['/hubit/community']);
+      console.log('Community Created:', result);
+      this.router.navigate(['/hubit/community'], { queryParams: { community: result } });
     });
   }
 }

@@ -61,7 +61,8 @@ export class NewPostComponent {
     // Get community id from query parameters
     this.community_id = this.urlParams.get('community') as string;
     if (this.community_id == undefined || this.community_id == "") {
-      // this.router.navigate(["/"]);
+      console.log("HERE 1");
+      this.router.navigate(["/"]);
     }
 
     // Get community data
@@ -75,7 +76,8 @@ export class NewPostComponent {
         console.log(error);
 
         // Trying to post to a community that doesn't exist
-        // this.router.navigate(["/"]);
+        console.log("HERE 2");
+        this.router.navigate(["/"]);
       }});
   }
 

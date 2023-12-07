@@ -98,6 +98,23 @@ export class UserService {
       });
   }
 
+  createPost(content: string, tags: string[], communityId: string, media?: string): Observable<any> {
+    const postBody = {
+      post: {
+        content: content,
+        tags: tags,
+        ...(media && { media: media }), // Include media only if it's provided
+      },
+      community: communityId,
+    };
+
+    const options = { withCredentials: true };
+    return this.http.post<any>(`${this.backend_addr}/create_post`, postBody, options).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
   deleteUser(password: string): void {
     this.http
       .delete(`${this.backend_addr}/delete_user`, { body: { password } })

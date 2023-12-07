@@ -241,6 +241,7 @@ export class NewCommunityDialogComponent {
       const communityDesc = this.newCommunityForm.get('community_desc')?.value;
       const mods = this.selected_mods.map((mod) => mod.id);
       this.create_community(communityName, communityDesc, mods);
+
     } else {
       // Handle form validation errors or show a message to the user
       console.error('Form is invalid');
@@ -275,7 +276,8 @@ export class NewCommunityDialogComponent {
       .subscribe({
         next: async (create_community_response) => {
           let community_id = create_community_response._id;
-          this.dialogRef.close();
+
+          this.dialogRef.close(community_id);
         },
         error: (error) => {
           // Check if the error response has the 'error' key and set the errorMessage accordingly

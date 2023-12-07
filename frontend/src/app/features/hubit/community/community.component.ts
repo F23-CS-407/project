@@ -181,6 +181,14 @@ export class CommunityComponent {
       });
   }
 
+  navigateToNewPost() {
+    if (this.community_id) {
+      this.router.navigate(['/hubit/new_post'], { queryParams: { community: this.community_id } });
+    } else {
+      console.log('Error: No community id found');
+    }
+  }
+
   /** 
    Given user id, returns associated account username
    **/
