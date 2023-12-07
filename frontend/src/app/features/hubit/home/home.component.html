@@ -28,28 +28,37 @@
   <h3 class="title">Users:</h3>
   <div class="user-results-panel">
     <div *ngIf="searchResults && searchResults.length > 0">
-      <button
-        *ngFor="let result of searchResults"
-        mat-button
-        (click)="goToUserProfile()"
-      >
-        <mat-icon>person</mat-icon>
-        {{ result.username }}
-      </button>
+      <div *ngFor="let result of searchResults">
+        <button mat-button (click)="goToUserProfile(result._id)">
+          <mat-icon>person</mat-icon>
+          {{ result.username }}
+        </button>
+      </div>
     </div>
   </div>
   <div class="divider"></div>
   <h3 class="title">Communities:</h3>
-  <div class="community-results-panel">
+  <div class="community-panel">
     <div *ngIf="communitySearchResults && communitySearchResults.length > 0">
-      <button
-        *ngFor="let community of communitySearchResults"
-        mat-button
-        (click)="goToCommunityProfile()"
-      >
-        <mat-icon>groups</mat-icon>
-        {{ community.name }}
-      </button>
+      <div class="community-box" *ngFor="let community of communitySearchResults">
+        <div class="cover">
+          <!-- Placeholder image, update as needed -->
+          <img src="../../../assets/letter-logo.png" class="image-preview" />
+        </div>
+        <div class="name-box">
+          <div class="divider-community"></div>
+          <h3 class="name" (click)="goToCommunityProfile(community._id)">{{ community.name }}</h3>
+        </div>
+        <div class="count-box">
+          <div class="divider-community"></div>
+          <!-- Placeholder for members count, not sure if followers = members -->
+          <h6 class="members">Members: {{ community.followers.length }}</h6>
+        </div>
+        <div class="info">
+          <div class="divider-community"></div>
+          <p>{{ community.description }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

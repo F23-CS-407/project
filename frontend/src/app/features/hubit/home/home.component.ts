@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { UserInterface } from 'src/app/interfaces/user';
 import { Post } from 'src/models/Post';
+import { CommunityService } from 'src/app/services/community.service';
 
 @Component({
   selector: 'app-home',
@@ -38,6 +39,7 @@ export class HomeComponent {
     private router: Router,
     private fb: FormBuilder,
     private userService: UserService,
+    private communityService: CommunityService,
   ) {
     this.searchForm = this.fb.group({
       search: ['', Validators.required],
@@ -74,15 +76,15 @@ export class HomeComponent {
     });
   }
 
-  goToUserProfile() {
-    // TODO navigate to specific profile
-    this.router.navigate(['/hubit/profile'], { queryParams: { id: this.id } });
+  goToUserProfile(userId: string) {
+    this.router.navigate(['/hubit/profile'], { queryParams: { id: userId } });
   }
 
-  goToCommunityProfile() {
-    // TODO navigate to specific community profile
-    this.router.navigate(['/hubit/community']);
+  goToCommunityProfile(communityId: string) {
+    console.log('Going to community profile with id: ', communityId);
+    this.router.navigate(['/hubit/community'], { queryParams: { community: communityId } });
   }
+
 
   onChange() {
     const searchVal = this.searchForm.get('search')?.value;
