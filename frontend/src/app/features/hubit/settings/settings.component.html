@@ -285,11 +285,11 @@
         <div class="image-box">
           <div class="image-upload">
             <img *ngIf="previewUrl" [src]="previewUrl" class="profile-pic-preview"/>
-            <input #Image type="file" (change)="onPictureChange($event)">
+            <input #Image type="file" (change)="onPictureChange($event)" accept=".png,.jpg,.jpeg">
           </div>
         </div>
         <div class="update">
-          <button mat-raised-button (click)="savePicture()" [disabled]="!previewUrl">
+          <button mat-raised-button (click)="savePicture()" [disabled]="!file">
             Update
           </button>
           <div class="criteria" *ngIf="uploadSuccessMessage">

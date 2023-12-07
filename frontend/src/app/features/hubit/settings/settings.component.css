@@ -50,6 +50,13 @@ mat-form-field.inputfield {
   margin-bottom: -15px;
 }
 
+.profile-pic-preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .error-message {
   color: #f1580c;
   text-align: center;

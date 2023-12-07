@@ -45,6 +45,7 @@ export class SettingsComponent implements OnInit {
   pictureLoading: boolean = false;
   file: File | null = null;
   previewUrl: string | ArrayBuffer | null = null;
+  defaultProfilePic: string = 'assets/images/default-profile.png';
   uploadSuccessMessage: string = '';
 
 
@@ -71,6 +72,8 @@ export class SettingsComponent implements OnInit {
         validator: this.keyMatchValidator(),
       },
     );
+
+    this.previewUrl = this.defaultProfilePic;
   }
 
   // VALIDATOR --> key requirements
@@ -137,12 +140,53 @@ export class SettingsComponent implements OnInit {
           this.current_user = userData;
           this.username = userData.username;
           this.description = userData.bio;
+  
+          // Check if the user has a profile picture
+          if (userData.profile_pic) {
+            // Extract the filename from the full file path
+            const profilePicFilename = userData.profile_pic.split('/upload/').pop();
+            if (profilePicFilename) {
+              this.fetchProfilePicture(profilePicFilename);
+            } else {
+              // Set a default profile picture if the path is not valid
+              this.previewUrl = this.defaultProfilePic;
+            }
+          } else {
+            // Set a default profile picture if there isn't one
+            this.previewUrl = this.defaultProfilePic;
+          }
         }
       },
       (error) => {
         console.error('Error fetching user profile:', error);
-      },
+        // Set a default profile picture if there is an error fetching user data
+        this.previewUrl = this.defaultProfilePic;
+      }
     );
+  }
+  
+  fetchProfilePicture(profilePicFilename: string) {
+    this.fileUploadService.getFileByName(profilePicFilename).subscribe(
+      (blob: Blob) => {
+        this.createImageFromBlob(blob);
+      },
+      (error) => {
+        console.error('Error fetching profile picture:', error);
+        // Set a default profile picture if there is an error fetching the picture
+        this.previewUrl = this.defaultProfilePic;
+      }
+    );
+  }
+
+  createImageFromBlob(image: Blob) {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      this.previewUrl = reader.result;
+    }, false);
+  
+    if (image) {
+      reader.readAsDataURL(image);
+    }
   }
 
   toggleVisible() {
@@ -193,12 +237,16 @@ export class SettingsComponent implements OnInit {
 
   public onPictureChange(event: any) {
     const file = event.target.files && event.target.files[0];
-    if (file) {
+    if (file) { // Validate that the file is an image
       this.file = file;
       // File Preview
       const reader = new FileReader();
       reader.onload = e => this.previewUrl = reader.result;
       reader.readAsDataURL(file);
+    } else {
+      // Reset to the default image or show an error message if the file is not an image
+      this.previewUrl = this.defaultProfilePic;
+      this.file = null;
     }
   }
 

@@ -8,6 +8,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { FileUploadService } from '../../services/file-upload.service';
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.component.html',
@@ -37,6 +38,7 @@ export class IntroComponent {
     private http: HttpClient,
     private router: Router,
     private fb: FormBuilder,
+    private fileUploadService: FileUploadService,
   ) {
     this.loginForm = this.fb.group({
       login: ['', Validators.required],
@@ -146,15 +148,13 @@ export class IntroComponent {
       .post<any>(this.backend_addr + '/create_user', user, options)
       .subscribe({
         next: (create_response) => {
-          console.log(create_response);
-
           // Log the user in
           this.http
             .post<any>(this.backend_addr + '/login', user, options)
             .subscribe({
               next: (login_response) => {
                 console.log('login successful');
-                console.log(login_response);
+                this.setProfilePic(login_response._id);
                 this.router.navigate(['/hubit']); // Redirect to 'hubit' route
               },
               error: (error) => {
@@ -170,6 +170,23 @@ export class IntroComponent {
           console.log('Create Account Error: ' + error.toString());
           this.errorMessage = 'Account creation failed. Please try again.'; // Set error message
         },
+      });
+  }
+
+  setProfilePic(userId: string) {
+    // Fetch the default profile as a blob from your assets
+    fetch('../../assets/default-profile.png')
+      .then((response) => response.blob())
+      .then((blob) => {
+        const file = new File([blob], 'default-profile.png', { type: 'image/png' });
+        this.fileUploadService.uploadProfilePic(file).subscribe({
+          next: (response) => {
+            console.log('Default profile picture set successfully', response);
+          },
+          error: (error) => {
+            console.error('Failed to set default profile picture', error);
+          }
+        }); 
       });
   }
 }

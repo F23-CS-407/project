@@ -13,6 +13,15 @@ export class FileUploadService {
 
   constructor(private http: HttpClient) { }
 
+  getFileByName(fileName: string): Observable<Blob> {
+    console.log("Getting file by name: " + fileName);
+    return this.http.get(`${this.backend_addr}/upload/${fileName}`, { responseType: 'blob' });
+  }
+
+  getUserUploads(userId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.backend_addr}/user/uploads?id=${userId}`);
+  }
+
   uploadFile(file: File): Observable<any> {
     return this.upload(file, '/upload');
   }
