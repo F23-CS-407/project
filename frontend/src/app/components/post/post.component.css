@@ -7,15 +7,30 @@
   border-radius: 10px;
   background-color: aliceblue;
   position: relative;
-  box-shadow: 1px 1px 3px rgb(50, 50, 50);
+  margin-bottom: 20px;
+  box-shadow: 1px 1px 3px rgb(50,50,50);
 }
 
 .comments-text {
   margin-left: 50px;
   margin-right: 0px;
-  margin-top: 20px;
   margin-bottom: 0px;
+  padding: 10px;
+}
+
+.photo-box {
+  width: 100%;
   padding: 0px;
+  margin-bottom: 30px;
+}
+
+.video-box {
+  width: 90%;
+  padding: 0px;
+  margin-bottom: 40px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .post-field {
@@ -69,7 +84,7 @@ a {
   width: 50%;
   min-width: 100px;
   margin-left: 50px;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0,0,0,0);
   color: white;
   font-size: 24px;
   outline: none;
@@ -88,7 +103,7 @@ a {
   font-size: 20px;
   scale: 1.5;
   margin-left: 50px;
-  box-shadow: 1px 1px 1px rgb(100, 100, 100);
+  box-shadow: 1px 1px 1px rgb(100,100,100);
 }
 
 .existing-comment {

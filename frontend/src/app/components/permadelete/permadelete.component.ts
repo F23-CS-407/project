@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class PermadeleteComponent {
   deleteAccount_button_disabled: boolean = false;
 
-  private backend_addr: string = 'http://localhost:8080/api'; // Deletes the account after the corresponding delete button is confirmed.
+  private backend_addr: string = '/api'; // Deletes the account after the corresponding delete button is confirmed.
   constructor(
     private router: Router,
     private http: HttpClient,

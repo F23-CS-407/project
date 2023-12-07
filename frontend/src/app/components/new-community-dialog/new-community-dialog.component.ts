@@ -23,7 +23,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./new-community-dialog.component.css'],
 })
 export class NewCommunityDialogComponent {
-  private backend_addr: string = 'http://localhost:8080/api';
+  private backend_addr: string = '/api';
 
   newCommunityForm: FormGroup;
 

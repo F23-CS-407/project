@@ -16,7 +16,7 @@ import { Community } from '../../../../models/Community';
   styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent {
-  private backend_addr: string = 'http://localhost:8080/api';
+  private backend_addr: string = '/api';
 
   private urlParams: URLSearchParams = new URLSearchParams(
     window.location.search,

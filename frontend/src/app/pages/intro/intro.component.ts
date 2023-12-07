@@ -15,7 +15,7 @@ import {
 })
 export class IntroComponent {
   // Declaraions
-  private backend_addr: string = 'http://localhost:8080/api';
+  private backend_addr: string = '/api';
 
   loginForm: FormGroup;
   registerForm: FormGroup;

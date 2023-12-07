@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
 export class User {
-  private static backend_addr: string = 'http://localhost:8080/api';
+  private static backend_addr: string = '/api';
   private static http: HttpClient;
 
   private id: string = '-1';
