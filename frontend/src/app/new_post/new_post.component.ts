@@ -118,26 +118,27 @@ export class NewPostComponent {
 
   addLocation() {
     const mapElement = this.mapElement.nativeElement;
-
+  
     mapElement.addEventListener('click', (event: MouseEvent) => {
-      const x = event.offsetX;
-      const y = event.offsetY;
-
-      const coordinates = this.calculateCoordinates(x, y);
-      console.log('Clicked coordinates:', coordinates);
+      // Calculate coordinates relative to the target element
+      const [x, y] = this.getMousePositionRelativeToTarget(event, mapElement);
+  
+      // Use the calculated coordinates as needed
+      console.log('Clicked coordinates:', { x, y });
     });
   }
-
-  calculateCoordinates(x: number, y: number): { latitude: number, longitude: number } {
-    const imageLocation = { latitude: 40.7128, longitude: -74.0060 };
-    const scaleFactor = 0.0001;
-
-    const latitude = imageLocation.latitude + scaleFactor * y;
-    const longitude = imageLocation.longitude + scaleFactor * x;
-
-    return { latitude, longitude };
+  
+  getMousePositionRelativeToTarget(event: MouseEvent, target: HTMLElement): [number, number] {
+    // Get the bounding rectangle of the target
+    const rect = target.getBoundingClientRect();
+  
+    // Mouse position relative to the target
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+  
+    return [x, y];
   }
-
+  
   async processUpload() {
     const options = { withCredentials: true };
 
