@@ -46,35 +46,7 @@ export class ProfileComponent {
   ) {
     this.async_constructor();
   }
-
-
-  // ngOnInit() {
-  //   this.userService.fetchUserProfile();
-    
-
-  //   this.userService.user.subscribe((userData: UserInterface) => {
-  //     if (userData && userData._id) {
-  //       console.log(userData); //For testing
-  //       this.currentUser = userData;
-  //       this.username = userData.username;
-  //       this.bio = userData.bio;
-  //       this.followed_communities = userData.followed_communities;
-  //       this.posts = userData.posts;
-  //       this.num_posts = userData.posts.length; 
-  //       this.num_following = userData.followed_communities.length;
-  //       this.num_followers = userData.followed_communities.length; //TODO: implement followers count
-  //       this.self_id, this.id = userData._id;
-  //       this.logged_in = true;
-  //       this.viewing_own_profile = true;
-
-  //       this.fetchUserPosts(userData._id); //not doing anything right now
-  //     } else {
-  //       console.log('No user data available');
-  //       this.router.navigate(['/intro']);
-  //     }
-  //   });
-  // }
-
+  
   async async_constructor() {
     // Get data from cookie
     this.getData();
@@ -165,12 +137,6 @@ export class ProfileComponent {
     this.num_posts = this.posts.length;
   }
 
-  fetchUserPosts(userId: string) {
-    // Implement logic to fetch posts for the user
-    // Use userId to make HTTP requests to fetch posts
-  }
-
-  //fetchUserProfile in user.service.ts is called in ngOnInit() above
   getData() {
     const options = { withCredentials: true };
     this.http.get<any>(this.backend_addr + '/user_info', options).subscribe({

@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class UserService {
   private userSubject = new BehaviorSubject<UserInterface>({} as UserInterface);
   public user = this.userSubject.asObservable();
-  private backend_addr: string = 'http://localhost:8080/api';
+  private backend_addr: string = '/api';
   private loadingSubject = new BehaviorSubject<boolean>(true);
   public loading = this.loadingSubject.asObservable();
 
