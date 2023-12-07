@@ -114,8 +114,8 @@ export class NewPostComponent {
     if (this.file !== null) {
       this.loading = !this.loading;
 
-      // Call upload service to upload file
-      this.fileUploadService.upload(this.file).subscribe(
+      //TODO: Not sure what type of upload goes here file service has several, this is for a general file
+      this.fileUploadService.uploadFile(this.file).subscribe(
         (event: any) => {
           if (typeof (event) === 'object') {
             this.loading = false;

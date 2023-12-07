@@ -44,6 +44,9 @@ export class SettingsComponent implements OnInit {
   loading: boolean = true;
   pictureLoading: boolean = false;
   file: File | null = null;
+  previewUrl: string | ArrayBuffer | null = null;
+  uploadSuccessMessage: string = '';
+
 
   constructor(
     private userService: UserService,
@@ -188,23 +191,27 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-
-  public onPictureChange(event : any) {
-    if (event && event.target && event.target.files && event.target.files.length >= 1){
-      this.file = event.target.files[0];
+  public onPictureChange(event: any) {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      this.file = file;
+      // File Preview
+      const reader = new FileReader();
+      reader.onload = e => this.previewUrl = reader.result;
+      reader.readAsDataURL(file);
     }
   }
-  savePicture() {
-    // Goal: call this.saveField()
-    if (this.file !== null) {
-      this.pictureLoading = !this.pictureLoading;
 
-      // Call upload service to upload file
-      this.fileUploadService.upload(this.file).subscribe(
-        (event: any) => {
-          if (typeof (event) === 'object') {
-            this.pictureLoading = false;
-          }
+  savePicture() {
+    if (this.file) {
+      this.fileUploadService.uploadProfilePic(this.file).subscribe(
+        response => {
+          this.uploadSuccessMessage = 'Profile picture updated successfully.';
+          // Handle additional actions like updating user data if necessary
+        },
+        error => {
+          console.error('Error uploading file:', error);
+          this.uploadSuccessMessage = 'Failed to upload profile picture.';
         }
       );
     }
