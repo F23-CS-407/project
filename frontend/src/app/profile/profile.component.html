@@ -46,22 +46,6 @@
 <div class="post_list">
     <!-- Use material cards: https://material.angular.io/components/card/overview -->
     <li *ngFor="let post of posts; index as i">
-        <a href="post?post={{post.id}}">
-            <mat-card class="post_card">
-                <mat-card-header>
-                    <mat-card-title>
-                        {{username}}
-                    </mat-card-title>
-                    <mat-card-subtitle>
-                        <a href="community?community={{post.created_by.for_community.id}}">{{post.created_by.for_community.name}}</a>
-                    </mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <p>
-                        {{post.content}}
-                    </p>
-                </mat-card-content>
-            </mat-card>
-        </a>
+        <app-post [embedded]="true" input_post_id="{{post.id}}"></app-post>
     </li>
 </div>

@@ -8,13 +8,15 @@ import { Alias } from "../../models/Alias";
 import { Post } from "../../models/Post";
 import { Community } from "../../models/Community";
 
+import { PostComponent } from '../post/post.component';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
-  private backend_addr : string = "http://localhost:8080/api";
+  private backend_addr : string = "/api";
 
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
   

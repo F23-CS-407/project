@@ -8,12 +8,12 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { FileUploadService } from '../file-upload.service';
 
 @Component({
-  selector: 'app-post',
+  selector: 'app-new-post',
   templateUrl: './new_post.component.html',
   styleUrls: ['./new_post.component.css']
 })
 export class NewPostComponent {
-  private backend_addr : string = "http://localhost:8080/api";
+  private backend_addr : string = "/api";
   private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
   
   chip_options: Chip[] = [new Chip("green", "General"), new Chip("yellow", "Question"), new Chip("red", "Clip") ];

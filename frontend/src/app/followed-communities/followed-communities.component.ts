@@ -18,7 +18,7 @@ type FollowedCommunityEntry = {
     styleUrls: ['./followed-communities.component.css']
 })
 export class FollowedCommunitiesComponent {
-    private backend_addr : string = "http://localhost:8080/api";
+    private backend_addr : string = "/api";
 
     private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
 

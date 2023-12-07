@@ -220,6 +220,22 @@ Error
 "Not logged in"
 ```
 
+### GET /feed?page(optional)=Int&count(optional)=Int
+
+If logged in, returns date descending Post list of posts from followed communities, populates the board and community
+
+Params:
+count: max number of posts to return
+page: how count length offsets from most recent feed post
+Note: If count or page are used they must both be incuded, not setting page or count returns all feed posts
+
+Errors
+
+```
+401,
+400
+```
+
 ### POST /create_community
 
 Body
@@ -1031,6 +1047,42 @@ Errors
 ```
 400
 404
+```
+
+### GET /messages/:userid
+
+Returns user IDs of users who have exchanged messages with the given ID (by most recent)
+
+Errors
+
+```
+400
+404
+```
+
+### GET /messages/:userid/:userid
+
+Returns messages between two users with corresponding user IDs by recency.
+
+Errors
+
+```
+400
+404
+```
+
+### POST /messages/newmessage
+
+Creates a new message with given content, sender, and receiver. (Timestamp created automatically)
+
+Body
+
+```
+{
+    "content": string,
+    "sender": (string)UserId,
+    "receiver": (string)UserId
+}
 ```
 
 ## Debug Endpoints (only exposed when testing)
