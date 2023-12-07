@@ -1,4 +1,27 @@
-<div>
-    <h1>Feed Page</h1>
-    <!-- Add your feed content here -->
+<div *ngIf="posts.length > 0">
+  <!-- Display each post -->
+  <div *ngFor="let post of posts">
+    <mat-card class="post_card">
+      <mat-card-header>
+        <mat-card-title>
+          {{ post.created_by.username }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          <a [routerLink]="['/community', { community: post.created_by.for_community.id }]">
+            {{ post.created_by.for_community.name }}
+          </a>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{ post.content }}
+        </p>
+      </mat-card-content>
+    </mat-card>
   </div>
+</div>
+
+<!-- Show a message if there are no posts -->
+<div *ngIf="posts.length === 0">
+  <p>No posts to display.</p>
+</div>

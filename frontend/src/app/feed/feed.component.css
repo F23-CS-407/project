@@ -1,0 +1,38 @@
+/* Styles for the feed component */
+.feed {
+    margin: 20px;
+  }
+  
+  .post-card {
+    width: 50vw;
+    align-self: center;
+    margin-bottom: 15px;
+  }
+  
+  .post-card mat-card-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .post-card mat-card-content {
+    line-height: 24px;
+  }
+  
+  /* Additional styles for the feed component */
+  .feed-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .feed-post-content {
+    font-size: 16px;
+  }
+  
+  .feed-post-details {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* Add other styles as needed */
+  

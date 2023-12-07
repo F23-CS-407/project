@@ -1,8 +1,10 @@
+<!-- profile.component.html -->
+
 <div *ngIf="logged_in && !viewing_own_profile">
     <a href="/" class="direct-message-button"><button mat-button>Direct Message</button></a>
 </div>
 <div class="center-flex">
-<div class="profile_grid">
+  <div class="profile_grid">
     <div class="col">
         <mat-icon class="person_icon">account_circle</mat-icon>
     </div>
@@ -29,15 +31,18 @@
         <h3 class="profile_number">{{followed_communities.length}}</h3>
         <p class="profile_number_text">Communities</p>
     </div>
-    </div>
+  </div>
 
-    <!-- If viewing own profile -->
-    <div>
-        <div class="col" *ngIf="viewing_own_profile">
-        <button mat-raised-button class="settings_button" (click)="settings_action()"><mat-icon class="settings_icon">settings</mat-icon> Settings  </button>
+  <!-- If viewing own profile -->
+  <div>
+    <div class="col" *ngIf="viewing_own_profile">
+      <button mat-raised-button class="settings_button" (click)="settings_action()">
+        <mat-icon class="settings_icon">settings</mat-icon> Settings
+      </button>
     </div>
+  </div>
 </div>
-</div>
+
 <div class="post_list">
     <!-- Use material cards: https://material.angular.io/components/card/overview -->
     <li *ngFor="let post of posts; index as i">
