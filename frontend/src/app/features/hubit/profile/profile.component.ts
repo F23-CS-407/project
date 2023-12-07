@@ -201,7 +201,7 @@ export class ProfileComponent {
   }
 
   toFollowedCommunities() {
-    this.router.navigate(['/hubit/followed_communities'], {
+    this.router.navigate(['/hubit/profile/followed-communities'], {
       queryParams: { id: this.id },
     });
   }

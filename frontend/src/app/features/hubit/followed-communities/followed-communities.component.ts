@@ -181,7 +181,7 @@ export class FollowedCommunitiesComponent {
   };
 
   toCommunity(i: number) {
-    this.router.navigate(['/community'], {
+    this.router.navigate(['/hubit/community'], {
       queryParams: { community: this.entries[i].community._id },
     });
   }

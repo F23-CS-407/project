@@ -18,7 +18,7 @@
   </div>
   <div class="boards-button">
     <a
-      [routerLink]="['/community', community_id, 'boards']"
+      [routerLink]="['/hubit/community', community_id, 'boards']"
       class="boards-button"
     >
       <button mat-button>Boards</button>
@@ -26,7 +26,7 @@
   </div>
   <div class="post_list">
     <li *ngFor="let post of community_posts; index as i">
-      <a href="/post?post={{ post.id }}">
+      <a href="/hubit/post?post={{ post.id }}">
         <mat-card class="post_card">
           <mat-card-header>
             <mat-card-title>

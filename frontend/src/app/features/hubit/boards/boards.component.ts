@@ -29,6 +29,7 @@ export class BoardsComponent implements OnInit {
       this.getBoards();
     } else {
       // Handle the case where community_id is not in the route
+      console.log('No community id in route');
     }
   }
 

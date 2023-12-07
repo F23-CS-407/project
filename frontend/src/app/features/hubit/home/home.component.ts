@@ -2,6 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
+import { UserInterface } from 'src/app/interfaces/user';
+import { Post } from 'src/models/Post';
 
 @Component({
   selector: 'app-home',
@@ -15,19 +18,65 @@ export class HomeComponent {
   search: string = '';
   notEmpty: boolean = false;
 
+  // Logged in user info
+  currentUser?: UserInterface;
+  logged_in: boolean = false;
+  self_id: string = 'not logged in';
+  viewing_own_profile: boolean = false;
+ 
+  id: string = '-1';
+  username?: string = 'N/A';
+  bio: string = 'N/A';
+  num_posts: number = 0;
+  num_followers: number = 0;
+  num_following: number = 0;
+  followed_communities: Array<string> = [];
+  posts: Array<Post> = [];
+
   constructor(
     private http: HttpClient,
     private router: Router,
     private fb: FormBuilder,
+    private userService: UserService,
   ) {
     this.searchForm = this.fb.group({
       search: ['', Validators.required],
     });
   }
 
+
+  ngOnInit() {
+    this.userService.fetchUserProfile();
+
+    this.userService.loading.subscribe(loading => {
+      if (!loading) {
+        this.userService.user.subscribe((userData: UserInterface) => {
+          if (userData && userData._id) {
+            console.log(userData); //For testing
+            this.currentUser = userData;
+            this.username = userData.username;
+            this.bio = userData.bio;
+            this.followed_communities = userData.followed_communities;
+            this.posts = userData.posts;
+            this.num_posts = userData.posts.length; 
+            this.num_following = userData.followed_communities.length;
+            this.num_followers = userData.followed_communities.length; //TODO: implement followers count
+            this.self_id, this.id = userData._id;
+            this.logged_in = true;
+            this.viewing_own_profile = true;
+
+          } else {
+            console.log('No user data available');
+            this.router.navigate(['/intro']);
+          }
+        });
+      }
+    });
+  }
+
   goToUserProfile() {
     // TODO navigate to specific profile
-    this.router.navigate(['/hubit/profile']);
+    this.router.navigate(['/hubit/profile'], { queryParams: { id: this.id } });
   }
 
   goToCommunityProfile() {
@@ -54,7 +103,7 @@ export class HomeComponent {
   performSearch(searchCriteria: string) {
     if (searchCriteria && searchCriteria.trim() !== '') {
       console.log('Perform search with criteria: ', searchCriteria);
-      const api = 'http://localhost:8080/api';
+      const api = '/api';
       // Search for users
       this.http
         .get<any>(`${api}/search_users?username=${searchCriteria}`)
