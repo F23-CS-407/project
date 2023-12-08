@@ -28,6 +28,7 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { PostComponent } from './post/post.component';
 import { MatListModule } from '@angular/material/list';
+import { SavedComponent } from './saved/saved.component';
 @NgModule({
   declarations: [
     HubitComponent, // Declare HubitComponent
@@ -40,7 +41,8 @@ import { MatListModule } from '@angular/material/list';
     CommunityHomeComponent,
     BoardsComponent,
     DirectMessageComponent,
-    FollowedCommunitiesComponent
+    FollowedCommunitiesComponent,
+    SavedComponent
   ],
   imports: [
     CommonModule,

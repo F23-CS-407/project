@@ -33,6 +33,8 @@ export class PostComponent {
   logged_in: boolean = false;
   self_id: string = 'not logged in';
   self_username: string = 'no username';
+  profileImageUrl: string | null = null;
+
 
   // Post Info
   post_id: string = 'post_id_not_set';
@@ -127,6 +129,7 @@ export class PostComponent {
           .subscribe({
             next: (get_user_response) => {
               this.post_username = get_user_response.username;
+              this.profileImageUrl = get_user_response.profile_pic;
             },
           });
 
@@ -228,6 +231,16 @@ export class PostComponent {
     }
     // Debugging statement
     console.log('has_liked:', this.has_liked);
+  }
+
+  comment_button_click() {
+    // Implementation for commenting on a post
+    // You can direct the user to the comment section or open a comment dialog
+  }
+
+  save_button_click() {
+    // Implementation for saving a post
+    // You'll need to manage the saved state of the post
   }
 
   create_comment(content: string) {

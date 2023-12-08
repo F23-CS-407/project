@@ -175,7 +175,6 @@ export class ProfileComponent {
   }
 
   toSavedPosts() {
-    // Redirect to the saved posts page/component
-    //this.router.navigate(['/path-to-saved-posts']);
+    this.router.navigate(['/hubit/saved']);
   }
 }

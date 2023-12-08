@@ -1,14 +1,59 @@
 .post-box {
-  width: 80vw;
-  margin-left: 50px;
-  height: auto;
-  min-height: 40vh;
-  margin-top: 5vh;
-  border-radius: 10px;
-  background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   position: relative;
-  margin-bottom: 20px;
+  width: 40vw;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: aliceblue;
   box-shadow: 1px 1px 3px rgb(50,50,50);
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 80%;
+}
+
+.user-field,  .community-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.username, .community {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 0;
+}
+
+.profile_picture {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.profile-pic {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.divider {
+  width: 450px;
+  height: 2px;
+  background-color: black;
+  margin: 10px;
+  border-radius: 40%;
 }
 
 .comments-text {
@@ -33,44 +78,53 @@
   transform: translateX(-50%);
 }
 
-.post-field {
-  width: 100%;
-  margin-top: 10px;
-  margin-left: 10px;
-}
-
 a {
   text-decoration: none;
-  color: black;
-}
-
-.post-box .post-field .username {
-  font-size: 28px;
-  font-weight: bold;
-  color: black;
-  padding-top: 10px;
-}
-
-.post-box .post-field .community {
-  font-size: 20px;
   color: black;
 }
 
 .post-box .post-field .post-content {
   line-height: 24px;
   height: 75%;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 16px;
   overflow-y: auto;
-  padding-top: 30px;
+  margin-bottom: 0;
 }
 
-.post-box .like-container {
+.interactions {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.interaction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+
+.interaction-button {
+  background-color: #F1580C ;
+}
+
+.interaction-count {
+  font-size: 16px; /* Smaller font size for counts */
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.save-button-container {
   position: absolute;
-  bottom: 0;
+  top: 5px;
+  right: 5px;
 }
 
-.post-box .like-container .like-button-icon {
-  margin-left: -2px;
+.save-button {
+  background-color: #F1580C; /* Adjust color as needed */
 }
 
 .new-comment {

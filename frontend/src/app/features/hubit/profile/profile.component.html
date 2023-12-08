@@ -1,5 +1,5 @@
 <div *ngIf="logged_in && !viewing_own_profile">
-  <a href="/" class="direct-message-button"><button mat-button>Direct Message</button></a>
+  <a href="/hubit/message" class="direct-message-button"><button mat-button>Direct Message</button></a>
 </div>
 <div class="center-flex">
 
@@ -35,7 +35,7 @@
   </div>
 </div>
 
-<div class="buttons">
+<div *ngIf="logged_in && viewing_own_profile" class="buttons">
   <button mat-fab class="saved_button" (click)="toSavedPosts()">
     <mat-icon class="saved_icon">bookmark</mat-icon>
   </button>
