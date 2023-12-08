@@ -59,6 +59,7 @@ Return
 {
     "_id": string,
     "username": string,
+    "bio": string,
     "password_hash": string,
     "salt": string,
     "__v": number

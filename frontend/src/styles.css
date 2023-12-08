@@ -1,4 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body,
+app-root {
+  height: 100%;
+  margin: 0;
+  font-family: "Inter", "Source Sans 3", "Helvetica Neue", sans-serif;
+  overflow: hidden;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* MATERIAL STYLE OVERRIDES */
+
+mat-label {
+  font-family: "Source Sans 3" !important;
+}
+
+.mat-mdc-fab {
+  background-color: white !important;
+}
+
+.mat-icon.search {
+  color: black !important;
+}
