@@ -137,10 +137,11 @@ export class MapComponent implements OnInit {
       this.fileUploadService.uploadCommunityMap(this.selectedFile, this.communityId)
         .subscribe({
           next: (response) => {
-            // Handle successful upload
+            this.mapurl = response.map;
           },
           error: (error) => {
-            // Handle error
+            console.log('Issue uploading map');
+            console.log(error);
           }
         });
     } else {
