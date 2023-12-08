@@ -57,6 +57,11 @@ export async function post_in_community(req, res) {
   // if media url is given, add it
   if (post.media) {
     new_post.media = post.media;
+    console.log('Media added.');
+  }
+  if (post.alt) {
+    new_post.alt = post.alt;
+    console.log('alt text ready.');
   }
 
   //Creates new post in database
