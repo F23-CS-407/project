@@ -1119,6 +1119,19 @@ Errors
 404
 ```
 
+### POST /report
+
+Saves report content to file.
+
+Body
+
+```
+{
+    "type": String ("bug" or "feature")
+    "content": String
+}
+```
+
 ### GET /messages/:userid
 
 Returns user IDs of users who have exchanged messages with the given ID (by most recent)
@@ -1139,8 +1152,7 @@ Errors
 ```
 400
 404
-```
-
+``
 ### POST /messages/newmessage
 
 Creates a new message with given content, sender, and receiver. (Timestamp created automatically)
@@ -1148,11 +1160,13 @@ Creates a new message with given content, sender, and receiver. (Timestamp creat
 Body
 
 ```
+
 {
-    "content": string,
-    "sender": (string)UserId,
-    "receiver": (string)UserId
+"content": string,
+"sender": (string)UserId,
+"receiver": (string)UserId
 }
+
 ```
 
 ## Debug Endpoints (only exposed when testing)
@@ -1160,6 +1174,8 @@ Body
 ### GET /test_auth
 
 Returns a message to test your auth status
+
+```
 
 ```
 
