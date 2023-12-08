@@ -514,6 +514,46 @@ Error
 404
 ```
 
+### POST /user/save_post
+
+Body
+
+```
+{
+    "postId": string
+}
+```
+
+If logged in and post ID is valid, saves the post to the user's saved posts list and returns a confirmation message.
+
+Error
+
+```
+404
+400
+500
+```
+
+### POST /user/unsave_post
+
+Body
+
+```
+{
+    "postId": string
+}
+```
+
+If logged in and post ID is valid, saves the post to the user's saved posts list and returns a confirmation message.
+
+Error
+
+```
+404
+400
+500
+```
+
 ### POST /board/post
 
 Body

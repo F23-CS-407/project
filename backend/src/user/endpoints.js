@@ -291,3 +291,54 @@ export async function getUploadedFiles(req, res) {
   // send an array of UploadReceipts
   res.send(user.uploads);
 }
+
+export async function savePost(req, res) {
+  const postId = req.body.postId;
+  const userId = req.user._id;
+
+  if (!mongoose.Types.ObjectId.isValid(postId)) {
+    return res.status(400).send({ error: 'Invalid post ID' });
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).send({ error: 'User not found' });
+
+    // Add the post ID to saved_posts if it's not already there
+    if (!user.saved_posts.includes(postId)) {
+      user.saved_posts.push(postId);
+      await user.save();
+    }
+
+    res.status(200).send({ message: 'Post saved successfully' });
+  } catch (error) {
+    res.status(500).send({ error: 'Internal server error' });
+  }
+  return;
+}
+
+export async function unsavePost(req, res) {
+  const postId = req.body.postId;
+  const userId = req.user._id;
+
+  if (!mongoose.Types.ObjectId.isValid(postId)) {
+    return res.status(400).send({ error: 'Invalid post ID' });
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).send({ error: 'User not found' });
+
+    // Remove the post ID from saved_posts if it exists
+    const index = user.saved_posts.indexOf(postId);
+    if (index > -1) {
+      user.saved_posts.splice(index, 1);
+      await user.save();
+    }
+
+    res.status(200).send({ message: 'Post unsaved successfully' });
+  } catch (error) {
+    res.status(500).send({ error: 'Internal server error' });
+  }
+  return;
+}

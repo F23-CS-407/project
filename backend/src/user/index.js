@@ -8,6 +8,8 @@ import {
   changePassword,
   getUploadedFiles,
   getFollowedCommunities,
+  savePost,
+  unsavePost,
 } from './endpoints.js';
 
 export default function useUser(app) {
@@ -28,6 +30,10 @@ export default function useUser(app) {
   app.post('/change_password', changePassword);
 
   app.get('/user/uploads', getUploadedFiles);
+
+  app.post('/user/save_post', savePost);
+
+  app.post('/user/unsave_post', unsavePost);
 
   return app;
 }
