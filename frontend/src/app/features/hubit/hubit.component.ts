@@ -9,7 +9,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./hubit.component.css'],
 })
 export class HubitComponent implements OnInit {
-  private backend_addr: string = 'http://localhost:8080/api';
+  private backend_addr: string = '/api';
 
   constructor(
     private userService: UserService,

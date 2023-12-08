@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./settings-dialog.component.css'],
 })
 export class SettingsDialogComponent {
-  private backend_addr: string = 'http://localhost:8080/api';
+  private backend_addr: string = '/api';
   errorMessage: string = ''; // To hold error messages
 
   constructor(

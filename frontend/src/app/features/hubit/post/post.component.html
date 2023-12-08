@@ -1,12 +1,4 @@
 <div class="post-box">
-    <div class="save-button-container">
-        <div class="save-button-container">
-            <button mat-mini-fab class="save-button" (click)="save_button_click()">
-                <mat-icon>{{ isSaved ? 'bookmark' : 'bookmark_border' }}</mat-icon>
-            </button>
-        </div>
-    </div>
-
     <div class="top">
         <div class="user-field">
             <div class="profile_picture">
@@ -42,6 +34,12 @@
     <div class="divider"></div>
 
     <div class="interactions">
+        <div class="interaction">
+            <button mat-mini-fab class="save-button" (click)="save_button_click()">
+                <mat-icon>{{ isSaved ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+            </button>
+        </div>
+        
         <div class="interaction">
             <span class="interaction-count">{{ like_count }}</span>
             <button mat-mini-fab class="interaction-button" (click)="like_button_click()">
