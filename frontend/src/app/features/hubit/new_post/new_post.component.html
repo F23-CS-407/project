@@ -48,23 +48,23 @@
           <input type="checkbox" id="have_media" name="have_media" [(ngModel)]="have_media"/>
           <label for="have_media">Include a photo or video</label>
           <div *ngIf="have_media">
-              <input type="radio" id="is_photo" name="media_type" [value]="photo" [(ngModel)]="media_type"/>
+              <input type="radio" id="is_photo" [hidden]="!have_media" name="media_type" [value]="photo" [(ngModel)]="media_type"/>
               <label for="is_photo">Photo</label>
 
-              <input type="radio" id="is_video" name="media_type" [value]="video" [(ngModel)]="media_type"/>
+              <input type="radio" id="is_video" [hidden]="!have_media" name="media_type" [value]="video" [(ngModel)]="media_type"/>
               <label for="is_video">Video</label>
 
               <div *ngIf="media_type == 'photo'; else video_input">
                   <h3 class="media_label">Photo</h3>
-                  <input type="file" (change)="handleFileInput($event)" accept=".png,.jpg,.jpeg" />
+                  <input type="file" [hidden]="!have_media || media_type.includes('video')" (change)="handleFileInput($event)" accept=".png,.jpg,.jpeg" />
                   <h3 class="media_label">Alt Text</h3>
                   <textarea matInput #altText class="post-text" > </textarea>
               </div>
               <ng-template #video_input>
                   <h3 class="media_label">Video</h3>
-                  <input type="file" (change)="handleFileInput($event)" accept=".MOV,.mp4" />
+                  <input type="file" (change)="handleFileInput($event)" [hidden]="!have_media || media_type.includes('photo')" accept=".MOV,.mp4" />
                   <h3 class="media_label">Captions (optional)</h3>
-                  <input type="file" (change)="handleCaptionInput($event)" accept=".vtt" />
+                  <input type="file" (change)="handleCaptionInput($event)" [hidden]="!have_media || media_type.includes('photo')" accept=".vtt" />
                </ng-template>
           </div>
       </mat-form-field>
