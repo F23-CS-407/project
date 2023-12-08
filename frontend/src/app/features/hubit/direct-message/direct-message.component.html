@@ -1,9 +1,6 @@
 <div class="top-box">
-    <a href="no_location_set"><mat-icon class="back-arrow">arrow_back</mat-icon></a>
+    <a href="/hubit/all_messages"><mat-icon class="back-arrow">arrow_back</mat-icon></a>
     <a href="/profile?id={{recipient_id}}" style="text-decoration:none"><p class="profile-name">{{recipient_name}}</p></a>
-</div>
-<div style="color:white; position: absolute;">
-    When the task bar gets put on the bottom, this bar will be at the top
 </div>
 <div class="message-box">
     <div class="prior-message-box prior-message-scroll">
@@ -25,7 +22,7 @@
     </div>
     <div class="new-message">
         <textarea matInput #message_input class="new-message-input" placeholder="Type a new message..."></textarea>
-        <button mat-icon-button class="icon-button">
+        <button mat-icon-button (click)="new_message(message_input.value)" class="icon-button">
             <mat-icon>arrow_upward</mat-icon>
         </button>
     </div>

@@ -42,7 +42,7 @@ export class ProfileComponent {
   followed_communities: Array<string> = [];
   posts: Array<Post> = [];
 
-  // TODO: For inbox icon
+  // For inbox icon
   dm_count: number = 0;
 
   constructor(
@@ -137,6 +137,19 @@ export class ProfileComponent {
             console.log(error);
           },
         });
+
+      // Get message count
+      if (this.viewing_own_profile) {
+        this.http.get<any>(this.backend_addr + "/messages/"+this.self_id)
+        .subscribe({
+          next: messages_response => {
+            this.dm_count = messages_response.users.length;
+          }, error: error => {
+            console.log("Endpoint messages/:userid threw an error");
+          }
+        });
+      }
+      
     } else {
       console.log('FAIL - no id in url');
       this.router.navigate(['/']);
@@ -188,9 +201,9 @@ export class ProfileComponent {
   }
 
   toAllDMs() {
-    this.router.navigate(['/hubit/all_dms']);
+    this.router.navigate(['/hubit/all_messages']);
   }
   toDM() {
-    this.router.navigate(['/direct_message'], {queryParams:{recipient_id : this.id}});
+    this.router.navigate(['/hubit/message'], {queryParams:{recipient_id : this.id}});
   }
 }

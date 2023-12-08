@@ -9,8 +9,10 @@ import { SettingsComponent } from './settings/settings.component';
 import { CommunityHomeComponent } from './community-home/community-home.component';
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
+import { ViewDirectMessagesComponent } from './view-direct-messages/view-direct-messages.component';
 import { PostComponent } from './post/post.component';
 import { BoardsComponent } from './boards/boards.component';
+import { Dir } from '@angular/cdk/bidi';
 
 const routes: Routes = [
   {
@@ -60,6 +62,10 @@ const routes: Routes = [
       {
         path: 'message',
         component: DirectMessageComponent,
+      },
+      {
+        path: 'all_messages',
+        component: ViewDirectMessagesComponent,
       },
       {
         path: '',
