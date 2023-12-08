@@ -219,6 +219,14 @@ export class CommunityComponent implements OnInit {
     }
   }
 
+  mapsCall() {
+    if (this.community_id) {
+      this.router.navigate(['/hubit/map'], { queryParams: { community: this.community_id } });
+    } else {
+      console.log('Error: No community id found');
+    }
+  }
+
   /** 
    Given user id, returns associated account username
    **/
