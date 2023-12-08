@@ -1,47 +1,62 @@
 <div class="middle_box">
   <form class="post_form">
       <mat-form-field class="input-80-width">
-          <h1>Description:</h1>
+          <h1 class="heading">Description:</h1>
           <textarea matInput #post_desc class="post-text" > </textarea>
        </mat-form-field>
 
+       <mat-form-field class="input-80-width">
+        <h1 class="heading">Category:</h1>
+        <input matInput #post_cat placeholder="Type a category">
+        </mat-form-field>
+
       <mat-form-field class="input-80-width">
-          <h1>Tags:</h1>
-          <mat-chip-listbox #chipList style="width:100%; left: 50%;">
-              <!-- This changes the color, but it doesn't look very good.
-                  style="background-color:{{chip.color}};"   -->
-              <mat-chip-option *ngFor="let chip of chip_options" color="accent" >
-                  {{chip.text}}
-              </mat-chip-option>
-          </mat-chip-listbox>
-          <!-- Do not remove this, this fixes a silly goose issue :) -->
-          <input matInput hidden="true">
+        <button mat-button (click)="addLocation()">Add Location</button>
       </mat-form-field>
 
       <mat-form-field class="input-80-width">
           <input matInput hidden="true">
-          <h1>Community:</h1>
+          <h1 class="heading">Community:</h1>
           <mat-accordion>
               <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    {{community_name}}({{community_id}})
+                    {{community_name}}
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-                <p>{{community_desc}}</p>
               </mat-expansion-panel>
           </mat-accordion>
       </mat-form-field>
 
       <mat-form-field class="input-80-width">
           <input matInput hidden="true">
-          <h1>Add Photo/Video:</h1>
-          <input #Image type="file" (change)="onChange($event)">
+          <h1 class="heading">Add Media:</h1>
+          <input type="checkbox" id="have_media" name="have_media" [(ngModel)]="have_media"/>
+          <label for="have_media">Include a photo or video</label>
+          <div *ngIf="have_media">
+              <input type="radio" id="is_photo" [hidden]="!have_media" name="media_type" [value]="photo" [(ngModel)]="media_type"/>
+              <label for="is_photo">Photo</label>
+
+              <input type="radio" id="is_video" [hidden]="!have_media" name="media_type" [value]="video" [(ngModel)]="media_type"/>
+              <label for="is_video">Video</label>
+
+              <div *ngIf="media_type == 'photo'; else video_input">
+                  <h3 class="media_label">Photo</h3>
+                  <input type="file" [hidden]="!have_media || media_type.includes('video')" (change)="handleFileInput($event)" accept=".png,.jpg,.jpeg" />
+                  <h3 class="media_label">Alt Text</h3>
+                  <textarea matInput #altText class="post-text" > </textarea>
+              </div>
+              <ng-template #video_input>
+                  <h3 class="media_label">Video</h3>
+                  <input type="file" (change)="handleFileInput($event)" [hidden]="!have_media || media_type.includes('photo')" accept=".MOV,.mp4" />
+                  <h3 class="media_label">Captions (optional)</h3>
+                  <input type="file" (change)="handleCaptionInput($event)" [hidden]="!have_media || media_type.includes('photo')" accept=".vtt" />
+               </ng-template>
+          </div>
       </mat-form-field>
   
       <div class="post-button-area">
-          <button mat-raised-button class="post-button" (click)="create_post(post_desc.value, [chipList.value])">Post</button>
-      </div>
+        <button mat-raised-button class="post-button" (click)="create_post(post_desc.value, post_cat.value)" [disabled]="loading">Post</button>      </div>
   </form>
   <div class="spacer"></div>
 </div>

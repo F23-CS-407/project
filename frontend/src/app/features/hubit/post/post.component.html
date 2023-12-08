@@ -1,12 +1,5 @@
-<div class="post-box">
-    <div class="save-button-container">
-        <div class="save-button-container">
-            <button mat-mini-fab class="save-button" (click)="save_button_click()">
-                <mat-icon>{{ isSaved ? 'bookmark' : 'bookmark_border' }}</mat-icon>
-            </button>
-        </div>
-    </div>
-
+<div class="top-level">
+<div class="post-box" (click)="toPostPage()">
     <div class="top">
         <div class="user-field">
             <div class="profile_picture">
@@ -43,13 +36,19 @@
 
     <div class="interactions">
         <div class="interaction">
+            <button mat-mini-fab class="save-button" (click)="save_button_click()">
+                <mat-icon>{{ isSaved ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+            </button>
+        </div>
+        
+        <div class="interaction">
             <span class="interaction-count">{{ like_count }}</span>
             <button mat-mini-fab class="interaction-button" (click)="like_button_click()">
                 <mat-icon>{{ has_liked ? 'favorite' : 'favorite_border' }}</mat-icon>
             </button>
         </div>
         
-        <div class="interaction">
+        <div class="interaction" *ngIf="embedded">
             <span class="interaction-count">{{ comments.length }}</span>
             <button mat-mini-fab class="interaction-button" (click)="toPostPage()">
                 <mat-icon>comment</mat-icon>
@@ -70,4 +69,5 @@
       </div>
       <mat-divider style="margin-top: 15px" *ngIf="i !== (comments.length-1)"></mat-divider>
   </mat-list>
+</div>
 </div>
