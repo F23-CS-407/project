@@ -21,8 +21,6 @@ import * as L from 'leaflet';
 //(For testing purposes, I've been navigating to this test map via the link /hubit/map, which I set up in the hubit-routing.module.ts file)
 
 export class MapComponent implements OnInit {
-  @ViewChild('leafletMapContainer', { static: true }) mapContainer!: ElementRef;
-  
   private map: any;
   private currentOverlay: any;
 
@@ -34,7 +32,10 @@ export class MapComponent implements OnInit {
   }
 
   private initMap(): void {
-    this.map = L.map('leafletMap').setView([0, 0], 2);
+    this.map = L.map('leafletMap', {
+      crs: L.CRS.Simple,
+      minZoom: -5,
+    });
 
     // Add any additional layers or configurations here
   }
@@ -52,56 +53,22 @@ export class MapComponent implements OnInit {
   }
 
   private loadImageOverlay(imageUrl: string): void {
-    if (this.currentOverlay) {
-      this.currentOverlay.remove();
-    }
-    
-    const containerHeight = 768;
-    const containerWidth = 1366;
-  
-    const image = new Image();
-    image.src = imageUrl;
-  
-    image.onload = () => {
-      const imageAspectRatio = image.width / image.height;
-  
-      let overlayWidth, overlayHeight, bounds;
-  
-
-      //This is the best way I could figure to adjust the aspect ratio of the image.
-      //Could not make this perfect, still stretches images in bizarre ways but it doesn't horribly skew it like before.
-
-      if (imageAspectRatio > 1) {
-        // Image is wider than tall (landscape)
-        overlayWidth = containerWidth;
-        overlayHeight = containerWidth / imageAspectRatio;
-        bounds = L.latLngBounds([
-          [-overlayHeight / 2, -overlayWidth / 2],   // Southwest corner
-          [overlayHeight / 2, overlayWidth / 2]     // Northeast corner
-        ]);
-      } else {
-        // Image is taller than wide (portrait)
-        overlayHeight = containerHeight;
-        overlayWidth = containerHeight * imageAspectRatio;
-        bounds = L.latLngBounds([
-          [-overlayHeight / 2, -overlayWidth / 2],   // Southwest corner
-          [overlayHeight / 2, overlayWidth / 2]     // Northeast corner
-        ]);
+      if (this.currentOverlay) {
+        this.currentOverlay.remove();
       }
+    
+      const containerHeight = 768;
+      const containerWidth = 1366;
+  
+      const rawbounds : L.LatLngTuple[] = [[0, 0], [768, 1366]]
+      const bounds = L.latLngBounds(rawbounds);
   
       this.currentOverlay = L.imageOverlay(imageUrl, bounds).addTo(this.map);
 
       // Does not allow you to drag outside of the max bounds of the map. (To test, zoom in on map and try to drag it offscreen, then let go of the drag)
       this.map.setMaxBounds(bounds);
-
-      //This was an attempt to fix the default zoom. It doesn't seem to work.
-      const maxZoom = this.map.getBoundsZoom(bounds, false);
-      this.map.setView(this.map.getCenter(), maxZoom);
-      this.map.fitBounds(bounds, {
-        animate: false,
-      });
-    };
-  }
+      this.map.fitBounds(bounds);
+  };
 
   private showPostFormPopup(latLng: L.LatLng): void {
     const popupContent = this.createPostFormHTML();
@@ -113,7 +80,6 @@ export class MapComponent implements OnInit {
       .setContent(popupContent)
       .openOn(this.map);
   
-    // Optionally, you can add event listeners to handle form submission
     const submitButton = document.getElementById('submitPostButton');
     if (submitButton) {
       submitButton.addEventListener('click', () => {
