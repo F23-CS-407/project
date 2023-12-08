@@ -177,4 +177,8 @@ export class ProfileComponent {
   toSavedPosts() {
     this.router.navigate(['/hubit/saved']);
   }
+
+  toLikedPosts() {
+    this.router.navigate(['/hubit/liked']);
+  }
 }

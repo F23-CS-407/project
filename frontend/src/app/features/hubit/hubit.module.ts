@@ -31,6 +31,7 @@ import { MatListModule } from '@angular/material/list';
 import { BugReportComponent } from './bug_report/bug_report.component';
 import { FeedComponent } from './feed/feed.component';
 import { SavedComponent } from './saved/saved.component';
+import { LikedComponent } from './liked/liked.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { SavedComponent } from './saved/saved.component';
     FollowedCommunitiesComponent,
     BugReportComponent,
     FeedComponent,
-    SavedComponent
+    SavedComponent,
+    LikedComponent,
   ],
   imports: [
     CommonModule,
@@ -84,7 +86,8 @@ import { SavedComponent } from './saved/saved.component';
     FollowedCommunitiesComponent,
     BugReportComponent,
     FeedComponent,
-    SavedComponent
+    SavedComponent,
+    LikedComponent,
   ],
 })
 export class HubitModule {}

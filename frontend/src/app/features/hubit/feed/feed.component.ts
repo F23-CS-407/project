@@ -19,7 +19,7 @@ export class FeedComponent implements OnInit {
   }
 
   fetchUserFeed(userId: string) {
-    const apiUrl = `${this.backendAddr}/feed?id=${userId}`;
+    const apiUrl = `${this.backendAddr}/feed`;
 
     this.http.get<any[]>(apiUrl).subscribe({
       next: feedResponse => {
