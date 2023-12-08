@@ -1,35 +1,63 @@
-<div class="post-box" (click)="toPostPage()">
-  <div class="post-field">
-      <h1 class="username">
-          <a href="/hubit/profile?id={{post_user_id}}" style="text-decoration:none;">{{post_username}}</a>
-      </h1>
-  </div>
-  <div class="post-field">
-      <p class="community"><a href="/hubit/community?community={{post_community_id}}">{{post_community_name}}</a></p>
-  </div>
-  <div class="post-field">
-      <p class="post-content">{{post_content}}</p>
-  </div>
-  <div *ngIf="post_media">
-      <div *ngIf="post_media.includes('.m3u8'); else showPhoto">
-          <video #videoContent class="video-box" controls playsinline></video>
-      </div>
-      <ng-template #showPhoto>
-          <img class="photo-box" src="{{post_media}}" alt="{{post_alt}}"/>
-      </ng-template>
-  </div>
-  <div class="like-container post-field">
-      <button mat-icon-button style="width:auto" (click)="like_button_click()">
-          {{like_count}} <mat-icon class="like-button-icon">{{has_liked ? 'thumb_up' : 'thumb_up_off'}}</mat-icon>
-      </button>
-  </div>
-  <div class="like-container post-field">
-      <button mat-icon-button style="width:auto" (click)="like_button_click()">
-          {{like_count}}
-          <mat-icon class="like-button-icon">thumb_up</mat-icon>
-      </button>
-  </div>
+<div class="post-box">
+    <div class="save-button-container">
+        <div class="save-button-container">
+            <button mat-mini-fab class="save-button" (click)="save_button_click()">
+                <mat-icon>{{ isSaved ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="top">
+        <div class="user-field">
+            <div class="profile_picture">
+                <img *ngIf="profileImageUrl" [src]="profileImageUrl" class="profile-pic"/>
+            </div>
+            <h1 class="username">
+                <a href="/hubit/profile?id={{post_user_id}}" style="text-decoration:none;">{{post_username}}</a>
+            </h1>
+        </div>
+        <div class="community-field">
+            <mat-icon>groups</mat-icon>
+            <h1 class="community">
+                <a href="/hubit/community?community={{post_community_id}}">{{post_community_name}}</a>
+            </h1>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="content">
+        <div class="post-field">
+            <p class="post-content">{{post_content}}</p>
+        </div>
+        <div *ngIf="post_media">
+            <div *ngIf="post_media.includes('.m3u8'); else showPhoto">
+                <video #videoContent class="video-box" controls playsinline></video>
+            </div>
+            <ng-template #showPhoto>
+                <img class="photo-box" src="{{post_media}}" alt="{{post_alt}}"/>
+            </ng-template>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="interactions">
+        <div class="interaction">
+            <span class="interaction-count">{{ like_count }}</span>
+            <button mat-mini-fab class="interaction-button" (click)="like_button_click()">
+                <mat-icon>{{ has_liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+            </button>
+        </div>
+        
+        <div class="interaction">
+            <span class="interaction-count">{{ comments.length }}</span>
+            <button mat-mini-fab class="interaction-button" (click)="toPostPage()">
+                <mat-icon>comment</mat-icon>
+            </button>
+        </div>
+    </div>
 </div>
+
 <div *ngIf="!embedded">
   <h2 class="comments-text">Comments</h2>
   <div class="new-comment">
