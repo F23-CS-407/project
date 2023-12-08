@@ -59,6 +59,7 @@ Return
 {
     "_id": string,
     "username": string,
+    "bio": string,
     "password_hash": string,
     "salt": string,
     "__v": number
@@ -957,6 +958,22 @@ Error
 
 ```
 
+### POST /post/usercategory/:userId
+
+Body
+
+```
+{
+"category": String
+}
+```
+
+Returns posts created by given user ID that match the given category.
+
+### GET /post/userlikes/:userId
+
+Returns posts liked by the given user ID.
+
 ### POST /upload
 
 form-data
@@ -1059,6 +1076,42 @@ Body
 {
     "type": String ("bug" or "feature")
     "content": String
+}
+```
+
+
+### GET /messages/:userid
+
+Returns user IDs of users who have exchanged messages with the given ID (by most recent)
+
+Errors
+
+```
+400
+404
+```
+
+### GET /messages/:userid/:userid
+
+Returns messages between two users with corresponding user IDs by recency.
+
+Errors
+
+```
+400
+404
+``
+### POST /messages/newmessage
+
+Creates a new message with given content, sender, and receiver. (Timestamp created automatically)
+
+Body
+
+```
+{
+    "content": string,
+    "sender": (string)UserId,
+    "receiver": (string)UserId
 }
 ```
 

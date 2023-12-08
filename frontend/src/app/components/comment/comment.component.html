@@ -1,0 +1,22 @@
+<mat-card class="fixed_size">
+  <mat-card-header>
+    <mat-card-subtitle><!-- Board name should go here --></mat-card-subtitle>
+    <mat-card-title
+      ><a href="/profile?id={{ creatorId }}">{{
+        creatorUsername
+      }}</a></mat-card-title
+    >
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ comment.text }}</p>
+    <div *ngIf="creatorId">
+      <button
+        mat-icon-button
+        class="delete"
+        (click)="deleteComment(comment.id)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

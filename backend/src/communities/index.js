@@ -12,6 +12,8 @@ import { deleteComment, getComment, get_comments_by_post, new_comment } from './
 import {
   deletePost,
   getPost,
+  getUserLikedPosts,
+  getUserPostsByCategory,
   get_likes,
   get_posts_by_community,
   get_posts_by_user_id,
@@ -41,6 +43,8 @@ export default function useCommunities(app) {
   app.get('/post/user_liked', user_post_like);
   app.get('/post', getPost);
   app.delete('/post', deletePost);
+  app.post('/post/usercategory/:userId', getUserPostsByCategory);
+  app.get('/post/userlikes/:userId', getUserLikedPosts);
 
   //comment endpoints
   app.post('/create_comment', new_comment);

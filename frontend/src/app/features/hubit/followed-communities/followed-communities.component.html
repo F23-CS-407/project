@@ -1,0 +1,35 @@
+<div>
+  <h1 class="title-text">Followed Communities</h1>
+  <h2 class="username-text">{{ username }}</h2>
+  <div *ngFor="let entry of entries; index as i; first as isFirst">
+    <div *ngIf="isFirst">
+      <hr class="divider" />
+    </div>
+    <div class="flex-box">
+      <div *ngIf="entry.show_follow_button">
+        <div *ngIf="entry.logged_in_user_following; else followCommunity">
+          <button
+            mat-button
+            (click)="unfollowCommunityCall(i)"
+            class="follow-toggle"
+          >
+            Unfollow
+          </button>
+        </div>
+      </div>
+      <ng-template #followCommunity>
+        <button
+          mat-button
+          (click)="followCommunityCall(i)"
+          class="follow-toggle"
+        >
+          Follow
+        </button>
+      </ng-template>
+      <p class="community-name" (click)="toCommunity(i)">
+        {{ entry.community.name }}
+      </p>
+    </div>
+    <hr class="divider" />
+  </div>
+</div>

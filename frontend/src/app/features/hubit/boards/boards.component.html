@@ -1,0 +1,12 @@
+<div class="page-content">
+  <div class="boards-button">
+    <button mat-button (click)="openCreateBoardDialog()">Create Board</button>
+  </div>
+  <div class="divider"></div>
+  <div class="board-list">
+    <h1>Boards:</h1>
+    <div *ngFor="let board of boards">
+      {{ board.name }}
+    </div>
+  </div>
+</div>

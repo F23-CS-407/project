@@ -1,0 +1,27 @@
+<div class="menu-bar">
+  <div class="menu-bar__content">
+    <div class="menu-bar__content__menu__item">
+        <button mat-icon-button (click)="navigateTo('/hubit/home')">
+          <mat-icon>search</mat-icon>
+        </button>
+    </div>
+    <div class="menu-bar__content__menu__item">
+        <button
+          mat-icon-button
+          (click)="navigateTo('/hubit/community-dashboard')"
+        >
+          <mat-icon>groups</mat-icon>
+        </button>
+    </div>
+    <div class="menu-bar__content__menu__item">
+      <button mat-icon-button (click)="navigateTo('/hubit/message')">
+        <mat-icon>forum</mat-icon>
+      </button>
+    </div>
+    <div class="menu-bar__content__menu__item">
+        <button mat-icon-button (click)="navigateToProfile()">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+    </div>
+  </div>
+</div>
