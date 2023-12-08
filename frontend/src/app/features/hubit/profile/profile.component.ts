@@ -38,6 +38,11 @@ export class ProfileComponent {
   num_following: number = 0;
   followed_communities: Array<string> = [];
   posts: Array<Post> = [];
+  categories: Set<String> = new Set()
+
+  show_posts: Array<Post> = []
+
+  selected_category: String = ""
 
   constructor(
     private userService: UserService,
@@ -46,6 +51,18 @@ export class ProfileComponent {
     private http: HttpClient
   ) {
     this.async_constructor();
+  }
+
+  changeSelect(value: string) {
+    this.selected_category = value
+    if (this.selected_category) {
+      this.show_posts = this.posts.filter(p => {
+        console.log(p.category, this.selected_category)
+        return p.category == this.selected_category
+    })
+    } else {
+      this.show_posts = this.posts
+    }
   }
   
   async async_constructor() {
@@ -102,6 +119,11 @@ export class ProfileComponent {
               newPost.id = get_user_posts_response[i]._id;
               newPost.content = get_user_posts_response[i].content;
 
+              if (get_user_posts_response[i].category) {
+                this.categories.add(get_user_posts_response[i].category)
+              }
+              newPost.category = get_user_posts_response[i].category
+
               // Get community
               this.http
                 .get<any>(
@@ -124,6 +146,8 @@ export class ProfileComponent {
                 });
 
               this.posts.push(newPost);
+              this.show_posts.push(newPost)
+              console.log("POST", newPost)
             }
           },
           error: (error) => {
@@ -176,5 +200,9 @@ export class ProfileComponent {
 
   toSavedPosts() {
     this.router.navigate(['/hubit/saved']);
+  }
+
+  toLikedPosts() {
+    this.router.navigate(['/hubit/liked']);
   }
 }

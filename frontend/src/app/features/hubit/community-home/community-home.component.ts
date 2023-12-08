@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NewCommunityDialogComponent } from '../../../components/new-community-dialog/new-community-dialog.component';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { CommunityService } from 'src/app/services/community.service';
   templateUrl: './community-home.component.html',
   styleUrls: ['./community-home.component.css'],
 })
-export class CommunityHomeComponent {
+export class CommunityHomeComponent implements OnInit {
 
   // Logged in user info
   currentUser?: UserInterface;

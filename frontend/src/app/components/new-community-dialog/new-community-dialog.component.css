@@ -107,6 +107,13 @@ mat-form-field.inputfield {
   justify-content: center;
 }
 
+.profile-pic-preview {
+  width: 400px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
 .submit {
   display: flex;
   flex-direction: column;
