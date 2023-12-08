@@ -11,6 +11,10 @@
   box-shadow: 0px 0px 10px gray;
 }
 
+.heading {
+  margin: 0px;
+}
+
 .media_label {
   margin-top: 10px;
   margin-bottom: 0px;
@@ -23,7 +27,6 @@
 .middle_box .post_form .input-80-width {
   margin-left: 10%;
   width: 80%;
-  margin-bottom: 20px; /* Add some space between form fields */
 }
 
 .middle_box .post_form .input-80-width .post-text {

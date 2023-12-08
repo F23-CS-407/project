@@ -19,8 +19,6 @@ export class NewPostComponent {
   
   chip_options: Chip[] = [new Chip("green", "General"), new Chip("yellow", "Question"), new Chip("red", "Clip") ];
 
-  customCategory: string = ''; 
-
   // Logged in user info
   logged_in: boolean = false;
   self_id: string = "not logged in";
@@ -181,7 +179,8 @@ export class NewPostComponent {
     }
   }
 
-  async create_post(description : string, chips : string[]) {
+
+  async create_post(description : string, category: string) {
 
     this.loading = true
 
@@ -191,15 +190,11 @@ export class NewPostComponent {
       this.loading = false
       return
     }
-    // If no value selected, default to General
-    if (chips[0] == undefined){
-      chips[0] = 'General';
-    }
 
     const body: any = {
       post: {
         content : description,
-        tags : chips
+        category : category
       }, 
       community: this.community_id, 
       user: this.self_id
