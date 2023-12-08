@@ -48,6 +48,7 @@ export async function post_in_community(req, res) {
     created_by: post_user,
     created_date: created_date,
     tags: post.tags,
+    category: post.category ? post.category : 'default',
     liked_by: [],
     comments: [],
     parent: post_comm,
@@ -317,4 +318,36 @@ export async function user_post_like(req, res) {
   }
 
   res.status(200).json(1);
+}
+
+export async function getUserPostsByCategory(req, res) {
+  try {
+    const { userId } = req.params;
+    const { category } = req.body;
+
+    // Use regex to match posts with the specified tag at the beginning of the string
+    const posts = await Post.find({
+      created_by: userId,
+      category: { $regex: new RegExp(`^${category}`, 'i') }, // '^' anchors the regex to the beginning
+    });
+
+    res.json({ posts });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: 'Internal Server Error' });
+  }
+}
+
+export async function getUserLikedPosts(req, res) {
+  try {
+    const { userId } = req.params;
+
+    // Find the user's liked posts
+    const userLikedPosts = await Post.find({ liked_by: userId }).sort({ created_date: -1 });
+
+    res.json({ likedPosts: userLikedPosts });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: 'Internal Server Error' });
+  }
 }
