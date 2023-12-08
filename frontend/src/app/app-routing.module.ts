@@ -1,11 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermadeleteComponent } from './permadelete/permadelete.component';
-
-const routes: Routes = [{path: 'permadelete', component: PermadeleteComponent}];
+import { IntroComponent } from './pages/intro/intro.component';
+const routes: Routes = [
+  {
+    path: 'hubit',
+    loadChildren: () =>
+      import('./features/hubit/hubit.module').then((m) => m.HubitModule),
+  },
+  {
+    path: '',
+    redirectTo: 'intro',
+    pathMatch: 'full',
+  },
+  {
+    path: 'intro',
+    component: IntroComponent,
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

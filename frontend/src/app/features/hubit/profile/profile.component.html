@@ -1,0 +1,57 @@
+<div *ngIf="logged_in && !viewing_own_profile">
+  <a href="/" class="direct-message-button"><button mat-button>Direct Message</button></a>
+</div>
+<div class="center-flex">
+
+  <div class="top">
+    <div class="profile_picture">
+      <img *ngIf="profileImageUrl" [src]="profileImageUrl" class="profile-pic"/>
+    </div>
+    <div class="info">
+      <h1 class="username">
+          {{username}}
+      </h1>
+      <p class="bio">{{bio}}</p>
+    </div>
+  </div>
+
+  <div class="all_stats">
+    <div class="stat">
+      <h3 class="profile_number">{{ num_posts }}</h3>
+      <p class="profile_number_text">Posts</p>
+    </div>
+    <div class="stat">
+      <h3 class="profile_number">{{ num_followers }}</h3>
+      <p class="profile_number_text">Followers</p>
+    </div>
+    <div class="stat">
+      <h3 class="profile_number">{{ num_following }}</h3>
+      <p class="profile_number_text">Following</p>
+    </div>
+    <div class="stat" (click)="toFollowedCommunities()">
+      <h3 class="profile_number">{{ followed_communities.length }}</h3>
+      <p class="profile_number_text">Communities</p>
+    </div>
+  </div>
+</div>
+
+<div class="buttons">
+  <button mat-fab class="saved_button" (click)="toSavedPosts()">
+    <mat-icon class="saved_icon">bookmark</mat-icon>
+  </button>
+  
+  <button mat-fab class="settings_button" (click)="settings_action()">
+    <mat-icon class="settings_icon">settings</mat-icon>
+  </button>
+</div>
+
+
+<div class="divider"></div>
+
+
+<div class="post_list">
+<!-- Use material cards: https://material.angular.io/components/card/overview -->
+<li *ngFor="let post of posts; index as i">
+  <app-post [embedded]="true" input_post_id="{{post.id}}"></app-post>
+</li>
+</div>

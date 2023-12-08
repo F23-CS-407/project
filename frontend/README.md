@@ -23,17 +23,21 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
 ## Running with Docker
+
 ```
 docker compose up --build [-d] frontend
 ```
 
 If running the service in the background, it can be taken down with
+
 ```
 docker compose down frontend
 ```
 
 ## Proxy
+
 When running with the backend, the proxy should be used. When running through the proxy, the frontend can be found at
+
 ```
 localhost:8080
 ```
