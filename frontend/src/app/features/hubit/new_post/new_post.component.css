@@ -1,27 +1,24 @@
-* {
-  /*border: 1px solid black;*/
-}
-
 .middle_box {
-  position: absolute;
+  position: relative; /* Changed from absolute to relative */
   left: 10vw;
   width: 80vw;
   top: 15vh;
-  height: auto;
-  margin-bottom: 10px;
-
+  max-height: 70vh; /* Limit the maximum height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-bottom: 10px; /* Add padding at the bottom */
   border-radius: 50px;
   background-color: white;
   box-shadow: 0px 0px 10px gray;
 }
 
 .middle_box .post_form {
-  height: 100%;
+  height: auto;
 }
 
 .middle_box .post_form .input-80-width {
   margin-left: 10%;
   width: 80%;
+  margin-bottom: 20px; /* Add some space between form fields */
 }
 
 .middle_box .post_form .input-80-width .post-text {
@@ -29,7 +26,6 @@
   border: 2px solid rgb(30,30,30);
   border-radius: 15px;
   height: 20vh;
-
   padding: 5px;
   line-height: 1.4;
   font-size: 1.2rem;
@@ -41,7 +37,7 @@
 .middle_box .post-button-area {
   width: 100%;
   text-align: center;
-  height: 10vh;
+  margin-top: 20px; /* Add margin at the top */
 }
 
 .middle_box .post-button-area .post-button {
@@ -51,8 +47,14 @@
   background-color: rgb(210,210,210);
 }
 
-.spacer {
-  height: 5vh;
-  margin: 0 0 -5vh 0;
-  background: transparent;
+/* Responsive Design: Adjust for smaller screens if needed */
+@media (max-width: 768px) {
+  .middle_box {
+    width: 95vw;
+    left: 2.5vw;
+  }
+  .middle_box .post_form .input-80-width {
+    margin-left: 5%;
+    width: 90%;
+  }
 }
