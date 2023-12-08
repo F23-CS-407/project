@@ -1,0 +1,13 @@
+<div class="post_list">
+  <div *ngIf="posts.length > 0">
+    <!-- Display each post -->
+    <li *ngFor="let post of posts" class="post-card">
+        <app-post [embedded]="true" input_post_id="{{post._id}}"></app-post>
+    </li>
+  </div>
+</div>
+
+<!-- Show a message if there are no posts -->
+<div *ngIf="posts.length === 0">
+  <p class="no-posts-text">No posts to display. Follow some communities!</p>
+</div>

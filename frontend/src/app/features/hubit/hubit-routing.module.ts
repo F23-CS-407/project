@@ -13,6 +13,10 @@ import { ViewDirectMessagesComponent } from './view-direct-messages/view-direct-
 import { PostComponent } from './post/post.component';
 import { BoardsComponent } from './boards/boards.component';
 import { Dir } from '@angular/cdk/bidi';
+import { BugReportComponent } from './bug_report/bug_report.component';
+import { FeedComponent } from './feed/feed.component';
+import { SavedComponent } from './saved/saved.component';
+import { LikedComponent } from './liked/liked.component';
 
 const routes: Routes = [
   {
@@ -20,7 +24,7 @@ const routes: Routes = [
     component: HubitComponent,
     children: [
       {
-        path: 'home',
+        path: 'search',
         component: HomeComponent,
       },
       {
@@ -68,8 +72,24 @@ const routes: Routes = [
         component: ViewDirectMessagesComponent,
       },
       {
+        path: "feedback",
+        component: BugReportComponent,
+      },
+      {
+        path: "feed",
+        component: FeedComponent
+      },
+      {
+        path: 'saved',
+        component: SavedComponent,
+      },
+      {
+        path: 'liked',
+        component: LikedComponent,
+      },
+      {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'feed',
         pathMatch: 'full',
       },
     ],

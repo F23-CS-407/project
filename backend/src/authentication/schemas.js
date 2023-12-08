@@ -46,6 +46,12 @@ const userSchema = new Schema(
         ref: 'UploadReceipt',
       },
     ],
+    saved_posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post',
+      },
+    ],
     profile_pic: String,
   },
   {

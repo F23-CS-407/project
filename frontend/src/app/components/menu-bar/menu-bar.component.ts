@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { UserInterface } from 'src/app/interfaces/user';
+import { OnInit } from '@angular/core';
 
 import { User } from 'src/models/User';
 import { Post } from 'src/models/Post';
@@ -11,7 +12,7 @@ import { Post } from 'src/models/Post';
   templateUrl: './menu-bar.component.html',
   styleUrls: ['./menu-bar.component.css'],
 })
-export class MenuBarComponent {
+export class MenuBarComponent implements OnInit{
 
   // Logged in user info
   currentUser?: UserInterface;
@@ -40,7 +41,6 @@ export class MenuBarComponent {
       if (!loading) {
         this.userService.user.subscribe((userData: UserInterface) => {
           if (userData && userData._id) {
-            console.log(userData); //For testing
             this.currentUser = userData;
             this.username = userData.username;
             this.bio = userData.bio;

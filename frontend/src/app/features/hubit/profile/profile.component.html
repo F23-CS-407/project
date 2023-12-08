@@ -31,9 +31,13 @@
   </div>
 </div>
 
-<div class="buttons">
+<div *ngIf="logged_in && viewing_own_profile" class="buttons">
   <button mat-fab class="saved_button" (click)="toSavedPosts()">
-    <mat-icon class="saved_icon">bookmark</mat-icon>
+    <mat-icon class="saved_icon">bookmark_border</mat-icon>
+  </button>
+
+  <button mat-fab class="saved_button" (click)="toLikedPosts()">
+    <mat-icon class="saved_icon">favorite_border</mat-icon>
   </button>
   
   <button mat-fab class="settings_button" (click)="settings_action()">
@@ -49,13 +53,18 @@
   </button>
 </div>
 
-
 <div class="divider"></div>
 
-
 <div class="post_list">
-  <!-- Use material cards: https://material.angular.io/components/card/overview -->
-  <li *ngFor="let post of posts; index as i">
-    <app-post [embedded]="true" input_post_id="{{post.id}}"></app-post>
-  </li>
+  <div *ngIf="posts.length > 0" class="filter">
+    <p class="filter_label">Category:</p>
+    <select #filter matNativeControl [value]="selected_category" (change)="changeSelect(filter.value)" class="select">
+        <option default value="">All</option>
+        <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+    </select>
+  </div>
+<!-- Use material cards: https://material.angular.io/components/card/overview -->
+<div *ngFor="let post of show_posts; index as i">
+    <li><app-post [embedded]="true" input_post_id="{{post.id}}"></app-post></li>
+</div>
 </div>

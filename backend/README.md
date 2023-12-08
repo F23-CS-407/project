@@ -514,6 +514,59 @@ Error
 404
 ```
 
+### POST /user/save_post
+
+Body
+
+```
+{
+    "postId": string
+}
+```
+
+If logged in and post ID is valid, saves the post to the user's saved posts list and returns a confirmation message.
+
+Error
+
+```
+404
+400
+500
+```
+
+### POST /user/unsave_post
+
+Body
+
+```
+{
+    "postId": string
+}
+```
+
+If logged in and post ID is valid, saves the post to the user's saved posts list and returns a confirmation message.
+
+Error
+
+```
+404
+400
+500
+```
+
+### GET /user/saved_posts
+
+Returns saved posts array containing ids of saved posts
+
+Error
+
+```
+400
+401
+404
+500
+```
+
 ### POST /board/post
 
 Body
@@ -958,6 +1011,22 @@ Error
 
 ```
 
+### POST /post/usercategory/:userId
+
+Body
+
+```
+{
+"category": String
+}
+```
+
+Returns posts created by given user ID that match the given category.
+
+### GET /post/userlikes/:userId
+
+Returns posts liked by the given user ID.
+
 ### POST /upload
 
 form-data
@@ -1050,6 +1119,19 @@ Errors
 404
 ```
 
+### POST /report
+
+Saves report content to file.
+
+Body
+
+```
+{
+    "type": String ("bug" or "feature")
+    "content": String
+}
+```
+
 ### GET /messages/:userid
 
 Returns user IDs of users who have exchanged messages with the given ID (by most recent)
@@ -1070,8 +1152,7 @@ Errors
 ```
 400
 404
-```
-
+``
 ### POST /messages/newmessage
 
 Creates a new message with given content, sender, and receiver. (Timestamp created automatically)
@@ -1079,11 +1160,13 @@ Creates a new message with given content, sender, and receiver. (Timestamp creat
 Body
 
 ```
+
 {
-    "content": string,
-    "sender": (string)UserId,
-    "receiver": (string)UserId
+"content": string,
+"sender": (string)UserId,
+"receiver": (string)UserId
 }
+
 ```
 
 ## Debug Endpoints (only exposed when testing)
@@ -1091,6 +1174,8 @@ Body
 ### GET /test_auth
 
 Returns a message to test your auth status
+
+```
 
 ```
 

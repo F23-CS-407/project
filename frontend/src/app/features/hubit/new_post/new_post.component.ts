@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { FileUploadService } from '../../../services/file-upload.service';
+import { first, firstValueFrom } from 'rxjs';
+
 @Component({
   selector: 'app-new-post',
   templateUrl: './new_post.component.html',
@@ -26,6 +28,24 @@ export class NewPostComponent {
   community_id: string = "";
   community_name: string = "";
   community_desc: string = "";
+
+    // media checkboxes
+    have_media: boolean = false
+    media_type: string = "photo"
+    video = "video"
+    photo = "photo"
+  
+    // Media upload
+    mediaFile: File | null = null;
+    mediaFileName: string | null = null;
+    captionFile: File | null = null
+    captionFileName: string | null = null;
+    altText: string = "";
+  
+    // progress
+    loading: boolean = false
+  
+    @ViewChild('map', { static: false }) mapElement!: ElementRef;
 
   constructor(private router : Router, private http : HttpClient, private fileUploadService : FileUploadService) {
     this.async_constructor();
@@ -81,48 +101,124 @@ export class NewPostComponent {
       }});
   }
 
-  loading: boolean = false;
-  file: File | null = null;
-  public onChange(event : any) {
-    if (event && event.target && event.target.files && event.target.files.length >= 1){
-      this.file = event.target.files[0];
+  handleFileInput(event: any) {
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      this.mediaFile = fileList[0];
+      this.mediaFileName = this.mediaFile.name;
     }
   }
 
-  create_post(description : string, chips : string[]) {
-    // If no value selected, default to General
-    if (chips[0] == undefined){
-      chips[0] = 'General';
+  handleCaptionInput(event: any) {
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      this.captionFile = fileList[0];
+      this.captionFileName = this.captionFile.name;
+    }
+  }
+
+  addLocation() {
+    const mapElement = this.mapElement.nativeElement;
+
+    mapElement.addEventListener('click', (event: MouseEvent) => {
+      // Calculate coordinates relative to the target element
+      const [x, y] = this.getMousePositionRelativeToTarget(event, mapElement);
+
+      // Use the calculated coordinates as needed
+      console.log('Clicked coordinates:', { x, y });
+    });
+  }
+
+
+  getMousePositionRelativeToTarget(event: MouseEvent, target: HTMLElement): [number, number] {
+    // Get the bounding rectangle of the target
+    const rect = target.getBoundingClientRect();
+
+    // Mouse position relative to the target
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    return [x, y];
+  }
+
+  async processUpload() {
+    const options = { withCredentials: true };
+
+    if (this.have_media) {
+
+      if (this.media_type == "photo" && this.mediaFile) {
+
+        let fd = new FormData()
+        fd.append("file", this.mediaFile)
+
+        try {
+          let response = await firstValueFrom(this.http.post<any>(this.backend_addr + "/upload", fd, options)).catch(() => null)
+          console.log(response)
+          return response.url
+        } catch {
+          return null
+        }
+
+      } else if (this.mediaFile) {
+
+        let fd = new FormData()
+        fd.append("file", this.mediaFile)
+
+        if (this.captionFile) {
+          fd.append("captions", this.captionFile)
+        }
+
+        try {
+          let response = await firstValueFrom(this.http.post<any>(this.backend_addr + "/upload/clip", fd, options)).catch(() => null)
+          console.log(response)
+          return response.url
+        } catch {
+          return null
+        }
+      }
+    }
+  }
+
+
+  async create_post(description : string, category: string) {
+
+    this.loading = true
+
+    // upload content, if error return
+    let mediaUrl = await this.processUpload()
+    if (this.have_media && !mediaUrl) {
+      this.loading = false
+      return
     }
 
-    const body = {post: {content : description,
-                         tags : chips}, 
-                  community: this.community_id, 
-                  user: this.self_id};
-    const options = { withCredentials : true};
+    const body: any = {
+      post: {
+        content : description,
+        category : category
+      }, 
+      community: this.community_id, 
+      user: this.self_id
+    };
+
+    // if media or alt text add it to body
+    if (mediaUrl) {
+      body.post.media = mediaUrl
+    }
+    if (this.altText) {
+      body.post.alt = this.altText
+    }
+
+    const options = { withCredentials: true };
     this.http.post<any>(this.backend_addr + "/create_post", body, options).subscribe({
       next: create_post_response => {          // On success
         console.log(create_post_response);
-        this.router.navigate(['/hubit/post'], {queryParams:{post : create_post_response._id}});
-      }, 
+        this.loading = false
+        this.router.navigate(['hubit/post'], { queryParams: { 'post': create_post_response._id } });
+      },
       error: error => {         // On fail
         console.log(error);
+        this.loading = false
       }});
-  }
-  // Note: This function is never called
-  uploadFile() {
-    if (this.file !== null) {
-      this.loading = !this.loading;
-
-      //TODO: Not sure what type of upload goes here file service has several, this is for a general file
-      this.fileUploadService.uploadFile(this.file).subscribe(
-        (event: any) => {
-          if (typeof (event) === 'object') {
-            this.loading = false;
-          }
-        }
-      );
-    }
   }
 
 }

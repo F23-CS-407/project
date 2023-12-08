@@ -16,6 +16,7 @@ export class Post {
   // This is probably unnecessary. We would only need        likes: number = 0;
   liked_by: User[] = [];
   comments: Comment[] = [];
+  category: String = ''
 
   // This is useful for overloading
   //constructor(...args: any[]) {

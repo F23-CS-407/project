@@ -1,0 +1,15 @@
+<div class="page-content">
+  <div class="page-title">
+    <h1>Saved Posts</h1>
+  </div>
+  <div *ngIf="savedPosts.length > 0">
+    <div *ngFor="let id of savedPosts" class="container">
+      <app-post [embedded]="true" input_post_id="{{id}}"></app-post>
+    </div>
+  </div>
+  <div *ngIf="savedPosts.length === 0">
+      <p>It looks like you haven't saved any posts yet</p>
+  </div>
+</div>
+
+  

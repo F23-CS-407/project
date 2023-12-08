@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { FileUploadService } from '../../services/file-upload.service';
 
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
@@ -33,6 +34,12 @@ export class NewCommunityDialogComponent {
   hasNameLength: boolean = false;
   hasDescLength: boolean = false;
 
+  file: File | null = null;
+  previewUrl: string | ArrayBuffer | null = null;
+  defaultCoverUrl: string = 'assets/default-community-cover.png'; // adjust the path as necessary
+  loading: boolean = false;
+
+
   errorMessage: string = '';
 
   constructor(
@@ -40,6 +47,7 @@ export class NewCommunityDialogComponent {
     private router: Router,
     private http: HttpClient,
     private fb: FormBuilder,
+    private fileUploadService: FileUploadService,
   ) {
     this.newCommunityForm = this.fb.group({
       community_name: ['', Validators.required],
@@ -107,6 +115,7 @@ export class NewCommunityDialogComponent {
         this.logged_in = true;
         this.self_id = info_response['_id'];
         this.self_username = info_response.username;
+        this.previewUrl = this.defaultCoverUrl;
         this.selected_mods.push(
           new moderator(this.self_username, this.self_id),
         );
@@ -247,14 +256,19 @@ export class NewCommunityDialogComponent {
     }
   }
 
-  loading: boolean = false;
-  file: File | null = null;
-  public onCoverChange(event : any) {
-    if (event && event.target && event.target.files && event.target.files.length >= 1){
-      this.file = event.target.files[0];
-      console.log("this.file set");
+
+  public onCoverChange(event: any): void {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      this.file = file;
+      // File Preview
+      const reader = new FileReader();
+      reader.onload = () => this.previewUrl = reader.result;
+      reader.readAsDataURL(file);
     } else {
-      console.log("Error setting file");
+      // Reset preview to the default cover image
+      this.previewUrl = this.defaultCoverUrl;
+      this.file = null;
     }
   }
   
@@ -275,6 +289,26 @@ export class NewCommunityDialogComponent {
         next: async (create_community_response) => {
           let community_id = create_community_response._id;
 
+          if (this.file) {
+            this.fileUploadService.uploadCommunityBanner(this.file, community_id)
+              .subscribe({
+                next: (uploadResponse) => {
+                  // Handle the response after successful banner upload
+                },
+                error: (uploadError) => {
+                  // Handle any errors that occur during file upload
+                }
+              });
+          } else {
+             // Fetch the default cover as a blob from your assets
+             fetch('assets/default-community-cover.png') // adjust the path as necessary
+             .then(response => response.blob())
+             .then(blob => {
+               const defaultCoverFile = new File([blob], 'default-community-cover.png', { type: 'image/png' });
+               this.uploadCoverPhoto(defaultCoverFile, community_id);
+             });
+          }
+
           this.dialogRef.close(community_id);
         },
         error: (error) => {
@@ -290,6 +324,20 @@ export class NewCommunityDialogComponent {
 
           console.log(this.errorMessage);
         },
+      });
+  }
+
+  private uploadCoverPhoto(file: File, communityId: string) {
+    this.fileUploadService.uploadCommunityBanner(file, communityId)
+      .subscribe({
+        next: (uploadResponse) => {
+          // Handle the response after successful banner upload
+          // ...
+        },
+        error: (uploadError) => {
+          // Handle any errors that occur during file upload
+          // ...
+        }
       });
   }
 }

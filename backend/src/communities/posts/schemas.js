@@ -14,6 +14,7 @@ const postSchema = new Schema(
     },
     created_date: Date,
     tags: [String],
+    category: String,
     liked_by: [
       {
         type: mongoose.Schema.Types.ObjectId,

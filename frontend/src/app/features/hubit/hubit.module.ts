@@ -30,6 +30,10 @@ import { FollowedCommunitiesComponent } from './followed-communities/followed-co
 import { PostComponent } from './post/post.component';
 import { MatListModule } from '@angular/material/list';
 import { ViewDirectMessagesComponent } from './view-direct-messages/view-direct-messages.component';
+import { BugReportComponent } from './bug_report/bug_report.component';
+import { FeedComponent } from './feed/feed.component';
+import { SavedComponent } from './saved/saved.component';
+import { LikedComponent } from './liked/liked.component';
 @NgModule({
   declarations: [
     HubitComponent, // Declare HubitComponent
@@ -43,7 +47,11 @@ import { ViewDirectMessagesComponent } from './view-direct-messages/view-direct-
     BoardsComponent,
     DirectMessageComponent,
     FollowedCommunitiesComponent,
-    ViewDirectMessagesComponent
+    ViewDirectMessagesComponent,
+    BugReportComponent,
+    FeedComponent,
+    SavedComponent,
+    LikedComponent,
   ],
   imports: [
     CommonModule,
@@ -78,7 +86,11 @@ import { ViewDirectMessagesComponent } from './view-direct-messages/view-direct-
     CommunityHomeComponent,
     BoardsComponent,
     DirectMessageComponent,
-    FollowedCommunitiesComponent
+    FollowedCommunitiesComponent,
+    BugReportComponent,
+    FeedComponent,
+    SavedComponent,
+    LikedComponent,
   ],
 })
 export class HubitModule {}
