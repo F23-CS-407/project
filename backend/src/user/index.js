@@ -10,6 +10,7 @@ import {
   getFollowedCommunities,
   savePost,
   unsavePost,
+  getSavedPosts,
 } from './endpoints.js';
 
 export default function useUser(app) {
@@ -34,6 +35,8 @@ export default function useUser(app) {
   app.post('/user/save_post', savePost);
 
   app.post('/user/unsave_post', unsavePost);
+
+  app.get('/user/saved_posts', getSavedPosts);
 
   return app;
 }

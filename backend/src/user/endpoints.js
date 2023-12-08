@@ -342,3 +342,34 @@ export async function unsavePost(req, res) {
   }
   return;
 }
+
+export async function getSavedPosts(req, res) {
+  // User must be logged in
+  if (!req.isAuthenticated()) {
+    res.status(401).send({ error: 'Not logged in' });
+    return;
+  }
+
+  try {
+    const userId = req.user._id;
+
+    // Validate the user ID
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      res.status(400).send({ error: 'Invalid user ID' });
+      return;
+    }
+
+    // Find the user and populate the saved posts
+    const user = await User.findById(userId).populate('saved_posts');
+    if (!user) {
+      res.status(404).send({ error: 'User not found' });
+      return;
+    }
+
+    // Return the saved posts
+    res.status(200).json(user.saved_posts);
+  } catch (error) {
+    console.error('Error fetching saved posts:', error);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
