@@ -1,0 +1,38 @@
+.title-text {
+    text-align: center;
+    width: 100%;
+    margin: 10px;
+}
+
+.username-text {
+    text-align: center;
+    width: 100%;
+    margin: 10px;
+}
+
+.divider {
+    height: 1px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: rgb(33, 33, 33);
+    border-radius: 5px;
+    border: none;
+}
+
+
+.flex-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0px;
+    width: 100%;
+}
+
+.name {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 0;
+    margin-left: 10px;
+    color: black;
+  }

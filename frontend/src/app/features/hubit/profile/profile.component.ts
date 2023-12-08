@@ -23,6 +23,9 @@ export class ProfileComponent {
     window.location.search,
   );
 
+  // Loading page
+  pageLoaded: boolean = false;
+
   // Logged in user info
   currentUser?: UserInterface;
   logged_in: boolean = false;
@@ -43,6 +46,9 @@ export class ProfileComponent {
   show_posts: Array<Post> = []
 
   selected_category: String = ""
+
+  // For inbox icon
+  dm_count: number = 0;
 
   constructor(
     private userService: UserService,
@@ -155,12 +161,27 @@ export class ProfileComponent {
             console.log(error);
           },
         });
+
+      // Get message count
+      if (this.viewing_own_profile) {
+        this.http.get<any>(this.backend_addr + "/messages/"+this.self_id)
+        .subscribe({
+          next: messages_response => {
+            this.dm_count = messages_response.users.length;
+          }, error: error => {
+            console.log("Endpoint messages/:userid threw an error");
+          }
+        });
+      }
+      
     } else {
       console.log('FAIL - no id in url');
       this.router.navigate(['/']);
     }
 
     this.num_posts = this.posts.length;
+
+    this.pageLoaded = true;
   }
 
   getData() {
@@ -204,5 +225,12 @@ export class ProfileComponent {
 
   toLikedPosts() {
     this.router.navigate(['/hubit/liked']);
+  }
+
+  toAllDMs() {
+    this.router.navigate(['/hubit/all_messages']);
+  }
+  toDM() {
+    this.router.navigate(['/hubit/message'], {queryParams:{recipient_id : this.id}});
   }
 }

@@ -1,8 +1,4 @@
-<div *ngIf="logged_in && !viewing_own_profile">
-  <a href="/hubit/message" class="direct-message-button"><button mat-button>Direct Message</button></a>
-</div>
 <div class="center-flex">
-
   <div class="top">
     <div class="profile_picture">
       <img *ngIf="profileImageUrl" [src]="profileImageUrl" class="profile-pic"/>
@@ -46,6 +42,14 @@
   
   <button mat-fab class="settings_button" (click)="settings_action()">
     <mat-icon class="settings_icon">settings</mat-icon>
+  </button>
+
+  <button *ngIf="viewing_own_profile" mat-fab class="inbox_button" (click)="toAllDMs()">
+    <mat-icon matBadge="{{dm_count}}" class="inbox_icon">inbox</mat-icon>
+  </button>
+
+  <button *ngIf="!viewing_own_profile" mat-fab class="chat_button" (click)="toDM()">
+    <mat-icon class="chat_icon">chat</mat-icon>
   </button>
 </div>
 

@@ -7,10 +7,10 @@ export class Alias {
   //profile_pic: Upload = ?           // We might not need this because calling backend for user by user_id should return that data
   bio: string = '';
   user: User;
-  for_community?: Community;
+  for_community: Community;
   community_username?: string;
 
-  constructor(user: User, community?: Community) {
+  constructor(user: User, community: Community) {
     this.user = user;
     this.for_community = community;
   }

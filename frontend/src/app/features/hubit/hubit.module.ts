@@ -23,16 +23,17 @@ import { CommunityHomeComponent } from './community-home/community-home.componen
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatBadgeModule } from '@angular/material/badge';
 import { BoardsComponent } from './boards/boards.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { PostComponent } from './post/post.component';
 import { MatListModule } from '@angular/material/list';
+import { ViewDirectMessagesComponent } from './view-direct-messages/view-direct-messages.component';
 import { BugReportComponent } from './bug_report/bug_report.component';
 import { FeedComponent } from './feed/feed.component';
 import { SavedComponent } from './saved/saved.component';
 import { LikedComponent } from './liked/liked.component';
-
 @NgModule({
   declarations: [
     HubitComponent, // Declare HubitComponent
@@ -46,6 +47,7 @@ import { LikedComponent } from './liked/liked.component';
     BoardsComponent,
     DirectMessageComponent,
     FollowedCommunitiesComponent,
+    ViewDirectMessagesComponent,
     BugReportComponent,
     FeedComponent,
     SavedComponent,
@@ -67,6 +69,7 @@ import { LikedComponent } from './liked/liked.component';
     MatAutocompleteModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatBadgeModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,

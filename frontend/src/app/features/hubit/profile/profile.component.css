@@ -122,10 +122,10 @@
   right: 25px;
   gap: 35px;
 }
-.settings_button, .saved_button {
+.settings_button, .saved_button, .inbox_button, .chat_button {
   border-radius: 20px;
 }
-.settings_icon, .saved_icon {
+.settings_icon, .saved_icon, .inbox_icon .chat_icon {
   color: black;
 }
 
