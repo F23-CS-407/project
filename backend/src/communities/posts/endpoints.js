@@ -55,7 +55,7 @@ export async function post_in_community(req, res) {
     parent_ref: 'Community',
   });
 
-  console.log(post)
+  console.log(post);
 
   // if media url is given, add it
   if (post.media) {
