@@ -958,6 +958,22 @@ Error
 
 ```
 
+### POST /post/usercategory/:userId
+
+Body
+
+```
+{
+"category": String
+}
+```
+
+Returns posts created by given user ID that match the given category.
+
+### GET /post/userlikes/:userId
+
+Returns posts liked by the given user ID.
+
 ### POST /upload
 
 form-data
