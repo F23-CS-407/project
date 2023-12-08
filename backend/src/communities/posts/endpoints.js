@@ -55,9 +55,19 @@ export async function post_in_community(req, res) {
     parent_ref: 'Community',
   });
 
+  console.log(post);
+
   // if media url is given, add it
   if (post.media) {
     new_post.media = post.media;
+  }
+
+  if (post.lat) {
+    new_post.lat = post.lat;
+  }
+
+  if (post.long) {
+    new_post.long = post.long;
   }
 
   //Creates new post in database

@@ -31,6 +31,10 @@
     </ng-template>
     <button mat-button class="new-post-button" (click)="navigateToNewPost()">New Post</button>
   </div>
+
+  <button mat-button (click)="mapsCall()" class="map-button">
+    Maps
+  </button>
   
   <div class="post_list">
     <li *ngFor="let post of community_posts; index as i">

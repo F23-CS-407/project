@@ -78,13 +78,22 @@ a {
   align-items: center;
 }
 
-.follow-toggle, .new-post-button, .boards-button {
+.follow-toggle, .new-post-button, .boards-button, .map-button {
   width: 100px;
   background-color: #ffffff;
   border-radius: 5px;
   font-family: 'Source Sans 3', sans-serif;
   font-size: 16px;
   font-weight: 700;
+}
+
+.map-button {
+  background-color: #F1580C;
+  border: 2px solid black;
+}
+
+.mat-mdc-button:not(:disabled).map-button {
+  color: white !important;
 }
 
 .post_list {

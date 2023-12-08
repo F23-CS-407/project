@@ -11,7 +11,12 @@
         </mat-form-field>
 
       <mat-form-field class="input-80-width">
-        <button mat-button (click)="addLocation()">Add Location</button>
+        <h1 class="heading">Latitude:</h1>
+        <input type="number" #post_lat [value]="lat" (change)="changeLat(post_lat.value)" placeholder="Latitude">
+      </mat-form-field>
+      <mat-form-field class="input-80-width">
+        <h1 class="heading">Longitude:</h1>
+        <input type="number" matInput #post_long [value]="long" (change)="changeLong(post_long.value)" placeholder="Longitude">
       </mat-form-field>
 
       <mat-form-field class="input-80-width">

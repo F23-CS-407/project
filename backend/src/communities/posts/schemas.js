@@ -35,6 +35,8 @@ const postSchema = new Schema(
       refPath: 'parent_ref',
     },
     media: String,
+    lat: Number,
+    long: Number,
   },
   {
     methods: {

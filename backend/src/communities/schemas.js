@@ -37,6 +37,7 @@ const communitySchema = new Schema(
       },
     ],
     banner: String,
+    map: String,
   },
   {
     methods: {

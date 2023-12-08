@@ -17,6 +17,8 @@ export class Post {
   liked_by: User[] = [];
   comments: Comment[] = [];
   category: String = ''
+  lat: Number = 0
+  long: Number = 0
 
   // This is useful for overloading
   //constructor(...args: any[]) {

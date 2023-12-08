@@ -16,6 +16,7 @@ import { Dir } from '@angular/cdk/bidi';
 import { BugReportComponent } from './bug_report/bug_report.component';
 import { FeedComponent } from './feed/feed.component';
 import { SavedComponent } from './saved/saved.component';
+import { MapComponent } from 'src/app/components/map/map.component';
 import { LikedComponent } from './liked/liked.component';
 
 const routes: Routes = [
@@ -82,6 +83,10 @@ const routes: Routes = [
       {
         path: 'saved',
         component: SavedComponent,
+      },
+      {
+        path: 'map',
+        component: MapComponent,
       },
       {
         path: 'liked',

@@ -38,8 +38,9 @@
   </div>
   <div class="divider"></div>
   <h3 class="title">Communities:</h3>
+
   <div class="community-panel">
-    <div *ngIf="communitySearchResults && communitySearchResults.length > 0">
+    <div class="community-panel" *ngIf="communitySearchResults && communitySearchResults.length > 0">
       <div class="community-box" *ngFor="let community of communitySearchResults">
         <div class="cover">
           <!-- Placeholder image, update as needed -->
@@ -61,4 +62,5 @@
       </div>
     </div>
   </div>
+  
 </div>
