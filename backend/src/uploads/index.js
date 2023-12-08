@@ -11,7 +11,7 @@ export default function useUploads(app) {
 
   app.post('/upload/clip', uploadClip);
 
-  app.post('/upload/map', setCommunityMap)
+  app.post('/upload/map', setCommunityMap);
 
   return app;
 }

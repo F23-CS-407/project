@@ -63,11 +63,11 @@ export async function post_in_community(req, res) {
   }
 
   if (post.lat) {
-    new_post.lat = post.lat
+    new_post.lat = post.lat;
   }
 
   if (post.long) {
-    new_post.long = post.long
+    new_post.long = post.long;
   }
 
   //Creates new post in database
