@@ -48,7 +48,7 @@ export async function post_in_community(req, res) {
     created_by: post_user,
     created_date: created_date,
     tags: post.tags,
-    category: post.category ? post.category : 'default',
+    category: post.category ? post.category : '',
     liked_by: [],
     comments: [],
     parent: post_comm,
