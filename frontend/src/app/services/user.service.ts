@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { UserInterface } from '../interfaces/user';
 import { Router } from '@angular/router';
 
@@ -9,11 +9,13 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UserService {
-  private userSubject = new BehaviorSubject<UserInterface>({} as UserInterface);
+  public userSubject = new BehaviorSubject<UserInterface>({} as UserInterface);
   public user = this.userSubject.asObservable();
   private backend_addr: string = '/api';
   private loadingSubject = new BehaviorSubject<boolean>(true);
   public loading = this.loadingSubject.asObservable();
+  private savedPostsSubject = new BehaviorSubject<string[]>([]);
+  public savedPosts = this.savedPostsSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -127,6 +129,37 @@ export class UserService {
         },
         error: (error) => console.error('Delete account failed:', error),
       });
+  }
+
+  savePost(postId: string): Observable<any> {
+    const body = { postId: postId };
+    const options = { withCredentials: true };
+    return this.http.post(`${this.backend_addr}/user/save_post`, body, options)
+      .pipe(
+        catchError(this.handleError),
+        tap(() => {
+          // Update the saved posts after successful API call
+          this.updateSavedPosts([...this.savedPostsSubject.getValue(), postId]);
+        })
+      );
+  }
+
+  unsavePost(postId: string): Observable<any> {
+    const body = { postId: postId };
+    const options = { withCredentials: true };
+    return this.http.post(`${this.backend_addr}/user/unsave_post`, body, options)
+      .pipe(
+        catchError(this.handleError),
+        tap(() => {
+          // Update the saved posts after successful API call
+          const updatedSavedPosts = this.savedPostsSubject.getValue().filter(id => id !== postId);
+          this.updateSavedPosts(updatedSavedPosts);
+        })
+      );
+  }
+
+  updateSavedPosts(savedPosts: string[]): void {
+    this.savedPostsSubject.next(savedPosts);
   }
 
   private handleError(error: HttpErrorResponse) {

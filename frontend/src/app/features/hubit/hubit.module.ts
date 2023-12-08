@@ -30,6 +30,8 @@ import { PostComponent } from './post/post.component';
 import { MatListModule } from '@angular/material/list';
 import { BugReportComponent } from './bug_report/bug_report.component';
 import { FeedComponent } from './feed/feed.component';
+import { SavedComponent } from './saved/saved.component';
+
 @NgModule({
   declarations: [
     HubitComponent, // Declare HubitComponent
@@ -44,7 +46,8 @@ import { FeedComponent } from './feed/feed.component';
     DirectMessageComponent,
     FollowedCommunitiesComponent,
     BugReportComponent,
-    FeedComponent
+    FeedComponent,
+    SavedComponent
   ],
   imports: [
     CommonModule,
@@ -80,7 +83,8 @@ import { FeedComponent } from './feed/feed.component';
     DirectMessageComponent,
     FollowedCommunitiesComponent,
     BugReportComponent,
-    FeedComponent
+    FeedComponent,
+    SavedComponent
   ],
 })
 export class HubitModule {}

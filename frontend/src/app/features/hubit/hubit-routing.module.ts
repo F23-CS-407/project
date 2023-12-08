@@ -13,6 +13,7 @@ import { PostComponent } from './post/post.component';
 import { BoardsComponent } from './boards/boards.component';
 import { BugReportComponent } from './bug_report/bug_report.component';
 import { FeedComponent } from './feed/feed.component';
+import { SavedComponent } from './saved/saved.component';
 
 const routes: Routes = [
   {
@@ -70,6 +71,10 @@ const routes: Routes = [
       {
         path: "feed",
         component: FeedComponent
+      },
+      {
+        path: 'saved',
+        component: SavedComponent,
       },
       {
         path: '',

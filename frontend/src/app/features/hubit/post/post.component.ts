@@ -6,6 +6,9 @@ import { User } from '../../../../models/User';
 import { Comment } from '../../../../models/Comment';
 import Hls from "hls.js"
 import { CommentComponent } from '../../../components/comment/comment.component';
+import { UserService } from 'src/app/services/user.service';
+import { Subscription } from 'rxjs';
+import { OnDestroy, OnInit } from '@angular/core';
 
 declare global {
   interface Window {
@@ -18,7 +21,7 @@ declare global {
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css'],
 })
-export class PostComponent {
+export class PostComponent implements OnInit, OnDestroy {
   private urlParams: URLSearchParams = new URLSearchParams(
     window.location.search,
   );
@@ -33,6 +36,10 @@ export class PostComponent {
   logged_in: boolean = false;
   self_id: string = 'not logged in';
   self_username: string = 'no username';
+  profileImageUrl: string | null = null;
+  private userSubscription!: Subscription;
+
+
 
   // Post Info
   post_id: string = 'post_id_not_set';
@@ -46,10 +53,12 @@ export class PostComponent {
 
   like_count: number = 0;
   has_liked: boolean = false;
+  isSaved: boolean = false;
 
   comments: Comment[] = [];
+  savedPosts: string[] = [];
 
-  constructor(public http: HttpClient, private router: Router) {}
+  constructor(public http: HttpClient, private router: Router, private userService: UserService) {}
 
 
   ngOnInit() {
@@ -59,13 +68,19 @@ export class PostComponent {
       this.post_id = this.urlParams.get('post') as string;
     }
     this.getData();
-    this.get_post_data();
+    this.get_post_data(this.savedPosts);
     this.get_comment_data();
+    this.userSubscription = this.userService.user.subscribe(user => {
+      this.isSaved = user.saved_posts?.includes(this.post_id) ?? false;
+    });
   }
 
   ngOnDestroy() {
     window.hls = null
     this.video = null
+    if(this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   toPostPage() {
@@ -95,8 +110,9 @@ export class PostComponent {
         this.logged_in = true;
         this.self_id = info_response._id;
         this.self_username = info_response.username;
+        this.savedPosts = info_response.saved_posts || [];
         console.log(info_response);
-        this.get_post_data();
+        this.get_post_data(info_response.saved_posts || []);
       },
       error: (error) => {
         console.log('No session: ');
@@ -105,7 +121,7 @@ export class PostComponent {
     });
   }
 
-  get_post_data() {
+  get_post_data(savedPosts: string[]) {
     // Query backend for data on post id
     const options = { withCredentials: true };
     this.http.get<any>('api/post?id=' + this.post_id, options).subscribe({
@@ -116,6 +132,7 @@ export class PostComponent {
         this.like_count = get_post_response.liked_by.length;
         this.post_media = get_post_response.media ? get_post_response.media : ""
         this.post_alt = get_post_response.alt ? get_post_response.alt : ""
+        this.isSaved = savedPosts.includes(this.post_id);
 
         if (this.post_media && this.post_media.includes(".m3u8")) {
           this.setupPlayer()
@@ -127,6 +144,7 @@ export class PostComponent {
           .subscribe({
             next: (get_user_response) => {
               this.post_username = get_user_response.username;
+              this.profileImageUrl = get_user_response.profile_pic;
             },
           });
 
@@ -228,6 +246,27 @@ export class PostComponent {
     }
     // Debugging statement
     console.log('has_liked:', this.has_liked);
+  }
+
+  save_button_click() {
+    if (this.isSaved) {
+      this.userService.unsavePost(this.post_id).subscribe(() => {
+        this.updateUserSavedPosts(false);
+      });
+    } else {
+      this.userService.savePost(this.post_id).subscribe(() => {
+        this.updateUserSavedPosts(true);
+      });
+    }
+  }
+  private updateUserSavedPosts(isSaved: boolean) {
+    const currentUser = this.userService.userSubject.getValue();
+    if (isSaved) {
+      currentUser.saved_posts = [...currentUser.saved_posts, this.post_id];
+    } else {
+      currentUser.saved_posts = currentUser.saved_posts.filter(id => id !== this.post_id);
+    }
+    this.userService.userSubject.next(currentUser);
   }
 
   create_comment(content: string) {
