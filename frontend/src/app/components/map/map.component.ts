@@ -1,4 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { ActivatedRoute } from '@angular/router';
@@ -25,15 +27,22 @@ import { ActivatedRoute } from '@angular/router';
 export class MapComponent implements OnInit {
   private map: any;
   private currentOverlay: any;
+  private posts: any[] = [];
+  private communityId!: string;
+  private self_id!: string;
   selectedFile: File | null = null;
-  communityId: string | null = null;
 
-  constructor(private fileUploadService: FileUploadService, private route: ActivatedRoute) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private fileUploadService: FileUploadService) {}
 
   ngOnInit(): void {
-    this.initMap();
-    this.addClickEventListeners();
-    this.getCommunityIdFromUrl();
+    this.route.queryParams.subscribe(params => {
+      this.communityId = params['community'];
+      console.log(this.communityId);
+      this.getData();
+      this.fetchPosts();
+      this.initMap();
+      this.addClickEventListeners();
+    });
   }
 
   private initMap(): void {
@@ -62,6 +71,41 @@ export class MapComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  private fetchPosts(): void {
+    this.http.get<any>(`/api/community/posts?community=${this.communityId}`).subscribe({
+      next: (data) => {
+        this.posts = data;
+        this.createMarkers();
+      },
+      error: (error) => {
+        console.log('Issue pulling from database');
+        console.log(error);
+      }
+    }
+    )
+  }
+
+  private createMarkers(): void {
+    this.posts.forEach((post) => {
+      const { lat, long, content, tag, _id } = post;
+  
+      // Check if latitude and longitude are not null
+      if (lat !== null && long !== null) {
+        const postLink = `/hubit/post?post=${_id}`;
+  
+        // Create a popup content with HTML
+        const popupContent = `
+          <strong>Post Content:</strong> ${content}<br>
+          <a href="${postLink}" target="_blank">Read Full Post</a>
+        `;
+  
+        // Create a marker and bind the popup content
+        const marker = L.marker([lat, long]).addTo(this.map);
+        marker.bindPopup(popupContent).openPopup();
+      }
+    });
   }
 
   uploadMap(): void {
@@ -142,8 +186,22 @@ export class MapComponent implements OnInit {
 
   private addClickEventListeners(): void {
     this.map.on('click', (event: L.LeafletMouseEvent) => {
-      const latLng = event.latlng;
-      this.showPostFormPopup(latLng);
+      this.handleMapClick(event);
+    });
+  }
+
+  private handleMapClick(event: L.LeafletMouseEvent): void {
+    const clickedLatLng = event.latlng;
+    const lat = clickedLatLng.lat;
+    const lng = clickedLatLng.lng;
+
+    // Redirect to the new post page with community, lat, and long in the URL
+    this.router.navigate(['/hubit/new_post'], {
+      queryParams: {
+        community: this.communityId,
+        lat: lat,
+        long: lng
+      }
     });
   }
 
@@ -172,6 +230,22 @@ export class MapComponent implements OnInit {
     `).openPopup();
   
     popup.remove();
+  }
+
+  private getData() {
+    const options = { withCredentials: true };
+    this.http.get<any>('/api/user_info', options).subscribe({
+      next: (info_response) => {
+        // On success
+        this.self_id = info_response._id;
+        console.log(info_response);
+      },
+      error: (error) => {
+        // On fail
+        console.log('No session: ');
+        console.log(error);
+      },
+    });
   }
   
 }
