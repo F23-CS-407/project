@@ -18,6 +18,8 @@ export class Post {
   liked_by: User[] = [];
   comments: Comment[] = [];
   category: String = ''
+  lat: Number = 0
+  long: Number = 0
 
   constructor(alias: Alias);
   public constructor(username: string);

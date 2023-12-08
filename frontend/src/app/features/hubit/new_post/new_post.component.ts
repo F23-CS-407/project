@@ -44,9 +44,11 @@ export class NewPostComponent {
   
     // progress
     loading: boolean = false
-  
-    @ViewChild('map', { static: false }) mapElement!: ElementRef;
 
+    // location
+    lat: number = 0
+    long: number = 0
+  
   constructor(private router : Router, private http : HttpClient, private fileUploadService : FileUploadService) {
     this.async_constructor();
   }
@@ -77,6 +79,14 @@ export class NewPostComponent {
       }});
   }
 
+  changeLat(value: string) {
+    this.lat = parseInt(value)
+  }
+
+  changeLong(value: string) {
+    this.long = parseInt(value)
+  }
+
   get_community() {
     // Get community id from query parameters
     this.community_id = this.urlParams.get('community') as string;
@@ -84,6 +94,9 @@ export class NewPostComponent {
       console.log("HERE 1");
       this.router.navigate(["/"]);
     }
+
+    this.lat = parseInt(this.urlParams.get('lat') as string)
+    this.long = parseInt(this.urlParams.get('long') as string)
 
     // Get community data
     const options = { withCredentials : true };
@@ -115,30 +128,6 @@ export class NewPostComponent {
       this.captionFile = fileList[0];
       this.captionFileName = this.captionFile.name;
     }
-  }
-
-  addLocation() {
-    const mapElement = this.mapElement.nativeElement;
-
-    mapElement.addEventListener('click', (event: MouseEvent) => {
-      // Calculate coordinates relative to the target element
-      const [x, y] = this.getMousePositionRelativeToTarget(event, mapElement);
-
-      // Use the calculated coordinates as needed
-      console.log('Clicked coordinates:', { x, y });
-    });
-  }
-
-
-  getMousePositionRelativeToTarget(event: MouseEvent, target: HTMLElement): [number, number] {
-    // Get the bounding rectangle of the target
-    const rect = target.getBoundingClientRect();
-
-    // Mouse position relative to the target
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    return [x, y];
   }
 
   async processUpload() {
@@ -191,6 +180,8 @@ export class NewPostComponent {
       return
     }
 
+    console.log("LOCATION", this.lat, this.long)
+
     const body: any = {
       post: {
         content : description,
@@ -208,6 +199,14 @@ export class NewPostComponent {
       body.post.alt = this.altText
     }
 
+    console.log(this.lat, this.long)
+    if (this.lat && this.long) {
+      body.post.lat = this.lat
+      body.post.long = this.long
+    }
+
+    console.log("BODY", body)
+ 
     const options = { withCredentials: true };
     this.http.post<any>(this.backend_addr + "/create_post", body, options).subscribe({
       next: create_post_response => {          // On success
