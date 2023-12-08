@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommunityInterface } from '../../../interfaces/community';
 
 import { User } from '../../../../models/User';
 import { Alias } from '../../../../models/Alias';
 import { Post } from '../../../../models/Post';
 import { Community } from '../../../../models/Community';
+import { CommunityService } from '../../../services/community.service';
 
 const options = { withCredentials: true };
 
@@ -14,7 +16,7 @@ const options = { withCredentials: true };
   templateUrl: './community.component.html',
   styleUrls: ['./community.component.css'],
 })
-export class CommunityComponent {
+export class CommunityComponent implements OnInit {
   private backend_addr: string = '/api';
   private urlParams: URLSearchParams = new URLSearchParams(
     window.location.search,
@@ -25,61 +27,17 @@ export class CommunityComponent {
   community_desc: string = 'N/A';
   community_post_ids: string[] = [];
   community_posts: Post[] = [];
+  community?: CommunityInterface;
+  loading: boolean = true;
 
   user_following: boolean = false;
   show_follow_button: boolean = false;
 
-  followCommunityCall = () => {
-    this.show_follow_button = false;
-    this.http
-      .post(
-        this.backend_addr + '/user/follow_community',
-        { id: this.community_id },
-        options,
-      )
-      .subscribe({
-        next: (response) => {
-          this.user_following = true;
-          this.show_follow_button = true;
-        },
-        error: (error) => {
-          console.log(error);
-          if (error.status == 409) {
-            this.user_following = true;
-          }
-          this.user_following = false;
-          this.show_follow_button = true;
-        },
-      });
-  };
-
-  unfollowCommunityCall = () => {
-    this.show_follow_button = false;
-    this.http
-      .post(
-        this.backend_addr + '/user/unfollow_community',
-        { id: this.community_id },
-        options,
-      )
-      .subscribe({
-        next: (response) => {
-          this.user_following = false;
-          this.show_follow_button = true;
-        },
-        error: (error) => {
-          console.log(error);
-          if (error.status == 409) {
-            this.user_following = false;
-          }
-          this.user_following = true;
-          this.show_follow_button = true;
-        },
-      });
-  };
-
   constructor(
+    private communityService: CommunityService,
     private http: HttpClient,
     private router: Router,
+    private route: ActivatedRoute,
   ) {
     // Get community query
     this.community_id = this.urlParams.get('community') as string;
@@ -180,6 +138,78 @@ export class CommunityComponent {
         },
       });
   }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.community_id = params['community'];
+      if (this.community_id) {
+        this.communityService.fetchCommunity(this.community_id);
+
+        this.communityService.community.subscribe(communityData => {
+          this.community = communityData;
+        });
+        this.communityService.loading.subscribe(isLoading => {
+          if (!isLoading && (!this.community || Object.keys(this.community).length === 0)) {
+            // If loading is complete and community data is empty, redirect
+            this.router.navigate(['/']);
+          }
+        });
+      } else {
+        // If no communityId found in queryParams, navigate back to a safe route
+        console.log('Error: No community id found')
+        this.router.navigate(['/']);
+      }
+    });
+  }
+  
+
+  followCommunityCall = () => {
+    this.show_follow_button = false;
+    this.http
+      .post(
+        this.backend_addr + '/user/follow_community',
+        { id: this.community_id },
+        options,
+      )
+      .subscribe({
+        next: (response) => {
+          this.user_following = true;
+          this.show_follow_button = true;
+        },
+        error: (error) => {
+          console.log(error);
+          if (error.status == 409) {
+            this.user_following = true;
+          }
+          this.user_following = false;
+          this.show_follow_button = true;
+        },
+      });
+  };
+
+  unfollowCommunityCall = () => {
+    this.show_follow_button = false;
+    this.http
+      .post(
+        this.backend_addr + '/user/unfollow_community',
+        { id: this.community_id },
+        options,
+      )
+      .subscribe({
+        next: (response) => {
+          this.user_following = false;
+          this.show_follow_button = true;
+        },
+        error: (error) => {
+          console.log(error);
+          if (error.status == 409) {
+            this.user_following = false;
+          }
+          this.user_following = true;
+          this.show_follow_button = true;
+        },
+      });
+  };
 
   navigateToNewPost() {
     if (this.community_id) {

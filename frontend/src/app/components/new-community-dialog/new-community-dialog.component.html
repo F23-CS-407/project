@@ -117,11 +117,11 @@
 
       <div class="image-box">
         <h3 class="title">Add Cover Photo:</h3>
-        <div class="image-upload">
-          <input matInput hidden="true">
-            <h1>Add Background Photo:</h1>
-            <!--<input matInput #Image type="file" (change)="onChange($event.target.files)">-->
-            <input #Image type="file" (change)="onCoverChange($event)">
+        <div class="image-box">
+          <div class="image-upload">
+            <img *ngIf="previewUrl" [src]="previewUrl" class="profile-pic-preview"/>
+            <input #Image type="file" (change)="onCoverChange($event)" accept=".png,.jpg,.jpeg">
+          </div>
         </div>
       </div>
     </div>
