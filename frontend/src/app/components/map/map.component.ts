@@ -24,6 +24,7 @@ import * as L from 'leaflet';
 
 export class MapComponent implements OnInit {
   private map: any;
+  private mapurl: any;
   private currentOverlay: any;
   private posts: any[] = [];
   private communityId!: string;
@@ -35,6 +36,7 @@ export class MapComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.communityId = params['community'];
       console.log(this.communityId);
+      this.getCommunity();
       this.getData();
       this.fetchPosts();
       this.initMap();
@@ -48,7 +50,18 @@ export class MapComponent implements OnInit {
       minZoom: -5,
     });
 
-    // Add any additional layers or configurations here
+    this.loadMap();
+  }
+
+  private loadMap(){
+    const reader = new FileReader();
+    if(this.mapurl){
+      reader.onload = (e) => {
+        const imageSrc = e.target?.result as string;
+        this.loadImageOverlay(imageSrc);
+      };
+    }
+    reader.readAsDataURL(this.mapurl);
   }
 
   onFileChange(event: any): void {
@@ -61,6 +74,18 @@ export class MapComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  private getCommunity(): void {
+    this.http.get<any>(`/api/community/id?${this.communityId}`).subscribe({
+      next: (data) => {
+          this.mapurl = data.map;
+      },
+      error: (error) => {
+        console.log('Issue getting community map data');
+        console.log(error);
+      }
+    })
   }
 
   private fetchPosts(): void {
