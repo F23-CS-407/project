@@ -1,1 +1,17 @@
-<p>view-direct-messages works!</p>
+<div>
+    <h1 class="title-text">Inbox</h1>
+    <h2 class="username-text">{{ self_username }}</h2>
+    <div *ngFor="let user of userIds; index as i; first as isFirst">
+      <div *ngIf="isFirst">
+        <hr class="divider" />
+      </div>
+      <a style="text-decoration:none; width:100%;" href="/hubit/message?recipient_id={{user}}">
+        <div class="flex-box">
+            <p class="name">
+                {{ userNames[i] }}
+            </p>
+        </div>
+        </a>
+      <hr class="divider" />
+    </div>
+  </div>

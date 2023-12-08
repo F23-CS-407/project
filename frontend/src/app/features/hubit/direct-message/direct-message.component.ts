@@ -32,8 +32,6 @@ export class DirectMessageComponent {
     // Get other user
     if (this.urlParams.get('recipient_id')) {
       this.recipient_id = this.urlParams.get('recipient_id') as string;
-      console.log("Param="+this.urlParams.get('recipient_id') as string);
-      console.log("Recip_id="+this.recipient_id);
     } else {
       this.router.navigate(["/"]);
     }
@@ -50,38 +48,36 @@ export class DirectMessageComponent {
       next: user_response => {
         this.recipient_name = user_response.username;
       }, error: error => {
-        console.log("User ("+ this.recipient_id + ") could not be found");
+        
       }
     });
 
-    console.log("id="+this.recipient_id);
-    console.log("name="+this.recipient_name);
-
     // Get messages between user 'self_id' and 'recipient_id'
-    console.log("Calling endpoint: ("+this.backend_addr + "/messages/" + this.self_id + "/" + this.recipient_id+")");
     this.http.get<any>(this.backend_addr + "/messages/" + this.self_id + "/" + this.recipient_id).subscribe({
       next: dm_message_response => {
         // Get messages
         let i = 0;
         for (i = 0; i < dm_message_response.messages.length; i++) {
           let current = dm_message_response.messages[i];
-          // This fixes an issue
-          let dateString = current.timestamp as string;
-          dateString = dateString.substring(0, dateString.length-5);
-          console.log("dateString=("+dateString+")");
-          this.messages.push(new Message(current.content, new Date(dateString).getTime(), current.sender));
+          this.messages.push(new Message(current.content, new Date(current.timestamp), current.sender));
+          console.log("message:("+current.content+") has time stamp ("+current.timestamp+")");
         }
       }, error: error => {
         console.log("Getting messages threw an error");
       }
     });
 
-    /* Sort by date if necessary
+    // Sort by date if necessary
+    /*
     if (this.messages.length > 1) {
       this.messages.sort((a: Message, b: Message) => {
         return a.sent.getTime() - b.sent.getTime();
       });
-    }*/
+    }
+
+    // Reverse List (to be ascending)
+    this.messages.reverse();
+    */
   }
 
   getData() {
@@ -90,7 +86,6 @@ export class DirectMessageComponent {
       next: info_response => {
         this.logged_in = true;
         this.self_id = info_response._id;
-        console.log("getData returned:");
         console.log(info_response)
       }, 
       error: error => {
@@ -111,24 +106,25 @@ export class DirectMessageComponent {
     this.http.post<any>(this.backend_addr + "/messages/newMessage", body)
     .subscribe({
       next: new_message_response => {
-        // Refresh the page
-        this.router.navigate(['/hubit/message'], {queryParams:{recipient_id : this.recipient_id}});
+        // Do nothing
       }, error: error => {
         console.log("Could not create new message...");
       }
     });
+
+    // Refresh the page
+    window.location.reload();
   }
 }
 
 class Message {
   content: string = "";
-  sent: Date = new Date(2023, 11, 15, 1, 0, 1, 0);
+  sent: Date = new Date(2023, 1, 2, 3, 4, 5, 0);
   sender_id: string = "";
 
-  // Delete this
-  constructor(c: string, minute: number, id: string) {
+  constructor(c: string, date: Date, id: string) {
     this.content = c;
-    this.sent = new Date(2023, 11, 15, 1, minute, 0, 0);
+    this.sent = date;
     this.sender_id = id;
   }
 }

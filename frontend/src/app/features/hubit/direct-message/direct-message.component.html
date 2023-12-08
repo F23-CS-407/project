@@ -4,7 +4,7 @@
 </div>
 <div class="message-box">
     <div class="prior-message-box prior-message-scroll">
-        <li *ngFor="let message of messages" style="list-style-type: none">
+        <li *ngFor="let message of messages; index as i" style="list-style-type: none">
             <div *ngIf="message.sender_id == self_id" class="message user-message">
                 <div style="padding-bottom: 10px">{{message.content}}</div>
             </div>
