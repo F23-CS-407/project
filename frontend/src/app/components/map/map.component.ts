@@ -87,10 +87,10 @@ export class MapComponent implements OnInit {
   }
 
   private getCommunity(): void {
-    this.http.get<any>(`/api/community/id?${this.communityId}`).subscribe({
+    this.http.get<any>(`/api/community?id=${this.communityId}`).subscribe({
       next: (data) => {
           this.mapurl = data.map;
-          this.initMap();
+          this.loadMap();
       },
       error: (error) => {
         console.log('Issue getting community map data');
