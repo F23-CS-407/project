@@ -56,6 +56,7 @@ export class MapComponent implements OnInit {
   }
 
   private loadMap(){
+    console.log(this.mapurl);
     const reader = new FileReader();
     if(this.mapurl){
       reader.onload = (e) => {
@@ -89,6 +90,7 @@ export class MapComponent implements OnInit {
     this.http.get<any>(`/api/community/id?${this.communityId}`).subscribe({
       next: (data) => {
           this.mapurl = data.map;
+          this.initMap();
       },
       error: (error) => {
         console.log('Issue getting community map data');
@@ -138,6 +140,7 @@ export class MapComponent implements OnInit {
         .subscribe({
           next: (response) => {
             this.mapurl = response.map;
+            console.log(response);
           },
           error: (error) => {
             console.log('Issue uploading map');
