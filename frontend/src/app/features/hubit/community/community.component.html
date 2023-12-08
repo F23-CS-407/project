@@ -26,27 +26,7 @@
   </div>
   <div class="post_list">
     <li *ngFor="let post of community_posts; index as i">
-      <a href="/hubit/post?post={{ post.id }}">
-        <mat-card class="post_card">
-          <mat-card-header>
-            <mat-card-title>
-              <a href="/hubit/profile?id={{ post.created_by?.user?.get_id() }}">{{ post.created_by?.user?.get_username() }}</a>
-            </mat-card-title>
-            <mat-card-subtitle>
-              {{ community_name }}
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <p>
-              {{ post.content }}
-            </p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button>LIKE</button>
-            <button mat-button>SHARE</button>
-          </mat-card-actions>
-        </mat-card>
-      </a>
+      <app-post [embedded]="true" input_post_id="{{post.id}}"></app-post>
     </li>
   </div>
 </div>
