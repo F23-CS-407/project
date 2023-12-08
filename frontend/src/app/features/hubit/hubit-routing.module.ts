@@ -20,7 +20,7 @@ const routes: Routes = [
     component: HubitComponent,
     children: [
       {
-        path: 'home',
+        path: 'search',
         component: HomeComponent,
       },
       {

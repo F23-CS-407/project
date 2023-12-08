@@ -18,6 +18,11 @@
     line-height: 24px;
   }
 
+  .no-posts-text {
+    width: 100vw;
+    text-align: center;
+  }
+
   /* Additional styles for the feed component */
   .feed-title {
     font-size: 20px;
