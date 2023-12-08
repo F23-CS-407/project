@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 
 @Component({
   selector: 'app-map',
@@ -29,8 +30,9 @@ export class MapComponent implements OnInit {
   private posts: any[] = [];
   private communityId!: string;
   private self_id!: string;
+  selectedFile: File | null = null;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private fileUploadService: FileUploadService) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -64,9 +66,16 @@ export class MapComponent implements OnInit {
     reader.readAsDataURL(this.mapurl);
   }
 
+  private getCommunityIdFromUrl(): void {
+    this.route.queryParams.subscribe(params => {
+      this.communityId = params['community'];
+    });
+  }
+
   onFileChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      this.selectedFile = file;
       const reader = new FileReader();
       reader.onload = (e) => {
         const imageSrc = e.target?.result as string;
@@ -121,6 +130,22 @@ export class MapComponent implements OnInit {
         marker.bindPopup(popupContent).openPopup();
       }
     });
+  }
+
+  uploadMap(): void {
+    if (this.selectedFile && this.communityId) {
+      this.fileUploadService.uploadCommunityMap(this.selectedFile, this.communityId)
+        .subscribe({
+          next: (response) => {
+            // Handle successful upload
+          },
+          error: (error) => {
+            // Handle error
+          }
+        });
+    } else {
+      // Handle case when no file is selected or community ID is not available
+    }
   }
 
   private loadImageOverlay(imageUrl: string): void {

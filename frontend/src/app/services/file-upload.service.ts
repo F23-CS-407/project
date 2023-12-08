@@ -38,6 +38,10 @@ export class FileUploadService {
     return this.upload(file, `/upload/community_banner?id=${communityId}`);
   }
 
+  uploadCommunityMap(file: File, communityId: string): Observable<any> {
+    return this.upload(file, `/upload/map?id=${communityId}`);
+  }
+
   private upload(file: File, endpoint: string, captions?: File): Observable<any> {
     this.loadingSubject.next(true);
     const formData = new FormData();

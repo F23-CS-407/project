@@ -8,4 +8,5 @@ export interface CommunityInterface {
     followers: any[];
     __v: number;
     banner: string;
+    map: string;
 }
