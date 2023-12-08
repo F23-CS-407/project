@@ -40,7 +40,6 @@ export class MenuBarComponent {
       if (!loading) {
         this.userService.user.subscribe((userData: UserInterface) => {
           if (userData && userData._id) {
-            console.log(userData); //For testing
             this.currentUser = userData;
             this.username = userData.username;
             this.bio = userData.bio;

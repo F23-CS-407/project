@@ -8,5 +8,6 @@ export interface UserInterface {
   posts: any[];
   liked_posts: any[];
   followed_communities: any[];
+  saved_posts: any[];
   __v: number;
 }

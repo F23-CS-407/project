@@ -7,6 +7,8 @@ import { Comment } from '../../../../models/Comment';
 import Hls from "hls.js"
 import { CommentComponent } from '../../../components/comment/comment.component';
 import { UserService } from 'src/app/services/user.service';
+import { Subscription } from 'rxjs';
+import { OnDestroy, OnInit } from '@angular/core';
 
 declare global {
   interface Window {
@@ -19,7 +21,7 @@ declare global {
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css'],
 })
-export class PostComponent {
+export class PostComponent implements OnInit, OnDestroy {
   private urlParams: URLSearchParams = new URLSearchParams(
     window.location.search,
   );
@@ -35,6 +37,8 @@ export class PostComponent {
   self_id: string = 'not logged in';
   self_username: string = 'no username';
   profileImageUrl: string | null = null;
+  private userSubscription!: Subscription;
+
 
 
   // Post Info
@@ -66,11 +70,17 @@ export class PostComponent {
     this.getData();
     this.get_post_data(this.savedPosts);
     this.get_comment_data();
+    this.userSubscription = this.userService.user.subscribe(user => {
+      this.isSaved = user.saved_posts?.includes(this.post_id) ?? false;
+    });
   }
 
   ngOnDestroy() {
     window.hls = null
     this.video = null
+    if(this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   toPostPage() {
@@ -240,22 +250,23 @@ export class PostComponent {
 
   save_button_click() {
     if (this.isSaved) {
-      this.userService.unsavePost(this.post_id).subscribe({
-        next: () => {
-          this.isSaved = false;
-          console.log('Post unsaved successfully');
-        },
-        error: (error) => console.error('Error unsaving post', error)
+      this.userService.unsavePost(this.post_id).subscribe(() => {
+        this.updateUserSavedPosts(false);
       });
     } else {
-      this.userService.savePost(this.post_id).subscribe({
-        next: () => {
-          this.isSaved = true;
-          console.log('Post saved successfully');
-        },
-        error: (error) => console.error('Error saving post', error)
+      this.userService.savePost(this.post_id).subscribe(() => {
+        this.updateUserSavedPosts(true);
       });
     }
+  }
+  private updateUserSavedPosts(isSaved: boolean) {
+    const currentUser = this.userService.userSubject.getValue();
+    if (isSaved) {
+      currentUser.saved_posts = [...currentUser.saved_posts, this.post_id];
+    } else {
+      currentUser.saved_posts = currentUser.saved_posts.filter(id => id !== this.post_id);
+    }
+    this.userService.userSubject.next(currentUser);
   }
 
   create_comment(content: string) {
