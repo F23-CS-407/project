@@ -1,8 +1,10 @@
 <div class="post-box">
     <div class="save-button-container">
-        <button mat-mini-fab class="save-button" (click)="save_button_click()">
-            <mat-icon>bookmark_border</mat-icon> <!-- Change this icon as needed for saved state -->
-        </button>
+        <div class="save-button-container">
+            <button mat-mini-fab class="save-button" (click)="save_button_click()">
+                <mat-icon>{{ isSaved ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+            </button>
+        </div>
     </div>
 
     <div class="top">

@@ -129,6 +129,20 @@ export class UserService {
       });
   }
 
+  savePost(postId: string): Observable<any> {
+    const body = { postId: postId };
+    const options = { withCredentials: true };
+    return this.http.post(`${this.backend_addr}/user/save_post`, body, options)
+      .pipe(catchError(this.handleError));
+  }
+
+  unsavePost(postId: string): Observable<any> {
+    const body = { postId: postId };
+    const options = { withCredentials: true };
+    return this.http.post(`${this.backend_addr}/user/unsave_post`, body, options)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

@@ -6,6 +6,7 @@ import { User } from '../../../../models/User';
 import { Comment } from '../../../../models/Comment';
 import Hls from "hls.js"
 import { CommentComponent } from '../../../components/comment/comment.component';
+import { UserService } from 'src/app/services/user.service';
 
 declare global {
   interface Window {
@@ -48,10 +49,12 @@ export class PostComponent {
 
   like_count: number = 0;
   has_liked: boolean = false;
+  isSaved: boolean = false;
 
   comments: Comment[] = [];
+  savedPosts: string[] = [];
 
-  constructor(public http: HttpClient, private router: Router) {}
+  constructor(public http: HttpClient, private router: Router, private userService: UserService) {}
 
 
   ngOnInit() {
@@ -61,7 +64,7 @@ export class PostComponent {
       this.post_id = this.urlParams.get('post') as string;
     }
     this.getData();
-    this.get_post_data();
+    this.get_post_data(this.savedPosts);
     this.get_comment_data();
   }
 
@@ -97,8 +100,9 @@ export class PostComponent {
         this.logged_in = true;
         this.self_id = info_response._id;
         this.self_username = info_response.username;
+        this.savedPosts = info_response.saved_posts || [];
         console.log(info_response);
-        this.get_post_data();
+        this.get_post_data(info_response.saved_posts || []);
       },
       error: (error) => {
         console.log('No session: ');
@@ -107,7 +111,7 @@ export class PostComponent {
     });
   }
 
-  get_post_data() {
+  get_post_data(savedPosts: string[]) {
     // Query backend for data on post id
     const options = { withCredentials: true };
     this.http.get<any>('api/post?id=' + this.post_id, options).subscribe({
@@ -118,6 +122,7 @@ export class PostComponent {
         this.like_count = get_post_response.liked_by.length;
         this.post_media = get_post_response.media ? get_post_response.media : ""
         this.post_alt = get_post_response.alt ? get_post_response.alt : ""
+        this.isSaved = savedPosts.includes(this.post_id);
 
         if (this.post_media && this.post_media.includes(".m3u8")) {
           this.setupPlayer()
@@ -234,8 +239,23 @@ export class PostComponent {
   }
 
   save_button_click() {
-    // Implementation for saving a post
-    // You'll need to manage the saved state of the post
+    if (this.isSaved) {
+      this.userService.unsavePost(this.post_id).subscribe({
+        next: () => {
+          this.isSaved = false;
+          console.log('Post unsaved successfully');
+        },
+        error: (error) => console.error('Error unsaving post', error)
+      });
+    } else {
+      this.userService.savePost(this.post_id).subscribe({
+        next: () => {
+          this.isSaved = true;
+          console.log('Post saved successfully');
+        },
+        error: (error) => console.error('Error saving post', error)
+      });
+    }
   }
 
   create_comment(content: string) {
