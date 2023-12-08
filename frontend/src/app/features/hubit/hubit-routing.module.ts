@@ -11,6 +11,8 @@ import { FollowedCommunitiesComponent } from './followed-communities/followed-co
 import { DirectMessageComponent } from './direct-message/direct-message.component';
 import { PostComponent } from './post/post.component';
 import { BoardsComponent } from './boards/boards.component';
+import { BugReportComponent } from './bug_report/bug_report.component';
+import { FeedComponent } from './feed/feed.component';
 import { SavedComponent } from './saved/saved.component';
 
 const routes: Routes = [
@@ -19,7 +21,7 @@ const routes: Routes = [
     component: HubitComponent,
     children: [
       {
-        path: 'home',
+        path: 'search',
         component: HomeComponent,
       },
       {
@@ -63,12 +65,20 @@ const routes: Routes = [
         component: DirectMessageComponent,
       },
       {
+        path: "feedback",
+        component: BugReportComponent
+      },
+      {
+        path: "feed",
+        component: FeedComponent
+      },
+      {
         path: 'saved',
         component: SavedComponent,
       },
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'feed',
         pathMatch: 'full',
       },
     ],

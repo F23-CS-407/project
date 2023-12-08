@@ -1,0 +1,79 @@
+.middle_box {
+    position: absolute;
+    left: 10vw;
+    width: 80vw;
+    top: 15vh;
+    height: auto;
+    margin-bottom: 10px;
+    text-align: center; 
+    border-radius: 50px;
+    background-color: white;
+    box-shadow: 0px 0px 10px gray;
+  }
+
+  .page-heading {
+    font-size: 2rem;
+    margin: 20px 0; 
+  }
+
+  .account-form mat-form-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  /* Styling for editing state */
+  .account-form.mat-form-field.editing input {
+    border: 2px solid blue; 
+  }
+
+  .account-form.mat-form-field.editing button {
+    background-color: blue; 
+    color: white;
+  }
+
+
+  .account-button-area {
+    width: 100%;
+    text-align: center;
+    height: 10vh;
+  }
+
+  .account-button {
+    width: 15%;
+    height: 60%;
+    font-size: 2em;
+    background-color: rgb(210, 210, 210);
+  }
+
+  .spacer {
+    height: 5vh;
+    margin: 0 0 -5vh 0;
+    background: transparent;
+  }
+
+  .column-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .row-box {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .sign-out {
+    margin-right: 30px;
+    margin-bottom: 20px;
+  }
+
+  .delete-account {
+    margin-left: 30px;
+    margin-bottom: 20px;
+  }
+
+  .input-box {
+    padding-left: 20px;
+    padding-right: 20px;
+  }

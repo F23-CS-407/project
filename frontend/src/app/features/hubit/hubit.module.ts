@@ -28,7 +28,10 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
 import { FollowedCommunitiesComponent } from './followed-communities/followed-communities.component';
 import { PostComponent } from './post/post.component';
 import { MatListModule } from '@angular/material/list';
+import { BugReportComponent } from './bug_report/bug_report.component';
+import { FeedComponent } from './feed/feed.component';
 import { SavedComponent } from './saved/saved.component';
+
 @NgModule({
   declarations: [
     HubitComponent, // Declare HubitComponent
@@ -42,6 +45,8 @@ import { SavedComponent } from './saved/saved.component';
     BoardsComponent,
     DirectMessageComponent,
     FollowedCommunitiesComponent,
+    BugReportComponent,
+    FeedComponent,
     SavedComponent
   ],
   imports: [
@@ -76,7 +81,10 @@ import { SavedComponent } from './saved/saved.component';
     CommunityHomeComponent,
     BoardsComponent,
     DirectMessageComponent,
-    FollowedCommunitiesComponent
+    FollowedCommunitiesComponent,
+    BugReportComponent,
+    FeedComponent,
+    SavedComponent
   ],
 })
 export class HubitModule {}

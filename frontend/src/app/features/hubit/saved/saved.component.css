@@ -7,6 +7,10 @@
     gap: 20px;
 }
 
+.container {
+    margin-bottom: 15px;
+}
+
 h1 {
     font-size: 40px;
     font-weight: 700;
