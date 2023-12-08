@@ -7,4 +7,5 @@ export interface CommunityInterface {
     boards: any[];
     followers: any[];
     __v: number;
+    banner: string;
 }
