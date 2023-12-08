@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { FileUploadService } from 'src/app/services/file-upload.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-map',
