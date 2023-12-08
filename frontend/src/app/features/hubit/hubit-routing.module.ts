@@ -12,6 +12,7 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
 import { PostComponent } from './post/post.component';
 import { BoardsComponent } from './boards/boards.component';
 import { SavedComponent } from './saved/saved.component';
+import { MapComponent } from 'src/app/components/map/map.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,10 @@ const routes: Routes = [
       {
         path: 'saved',
         component: SavedComponent,
+      },
+      {
+        path: 'map',
+        component: MapComponent,
       },
       {
         path: '',

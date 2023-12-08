@@ -16,6 +16,7 @@ import { CommentComponent } from './comment/comment.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { NewBoardComponent } from './new-board/new-board.component';
+import { MapComponent } from './map/map.component';
 @NgModule({
   declarations: [
     MenuBarComponent,
@@ -24,6 +25,7 @@ import { NewBoardComponent } from './new-board/new-board.component';
     NewCommunityDialogComponent,
     CommentComponent,
     NewBoardComponent,
+    MapComponent,
   ],
   imports: [
     CommonModule,
