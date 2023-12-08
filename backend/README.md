@@ -959,11 +959,13 @@ Error
 
 ### POST /post/usercategory/:userId
 
-Body:
+Body
 
+```
 {
 "category": String
 }
+```
 
 Returns posts created by given user ID that match the given category.
 
