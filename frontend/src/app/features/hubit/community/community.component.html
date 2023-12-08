@@ -30,7 +30,7 @@
         <mat-card class="post_card">
           <mat-card-header>
             <mat-card-title>
-              <a href="/hubit/profile?id={{ post.created_by?.user?.get_id() }}">{{ post.created_by?.user?.get_username() }}</a>
+              <a href="/hubit/profile?id={{ post.created_by.user.get_id() }}">{{ post.created_by.user.get_username() }}</a>
             </mat-card-title>
             <mat-card-subtitle>
               {{ community_name }}

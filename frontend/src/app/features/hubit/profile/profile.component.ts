@@ -23,6 +23,9 @@ export class ProfileComponent {
     window.location.search,
   );
 
+  // Loading page
+  pageLoaded: boolean = false;
+
   // Logged in user info
   currentUser?: UserInterface;
   logged_in: boolean = false;
@@ -38,6 +41,9 @@ export class ProfileComponent {
   num_following: number = 0;
   followed_communities: Array<string> = [];
   posts: Array<Post> = [];
+
+  // TODO: For inbox icon
+  dm_count: number = 0;
 
   constructor(
     private userService: UserService,
@@ -137,6 +143,8 @@ export class ProfileComponent {
     }
 
     this.num_posts = this.posts.length;
+
+    this.pageLoaded = true;
   }
 
   getData() {
@@ -177,5 +185,12 @@ export class ProfileComponent {
   toSavedPosts() {
     // Redirect to the saved posts page/component
     //this.router.navigate(['/path-to-saved-posts']);
+  }
+
+  toAllDMs() {
+    this.router.navigate(['/hubit/all_dms']);
+  }
+  toDM() {
+    this.router.navigate(['/direct_message'], {queryParams:{recipient_id : this.id}});
   }
 }

@@ -8,7 +8,7 @@ import { Alias } from "../../models/Alias";
 import { Post } from "../../models/Post";
 import { Community } from "../../models/Community";
 
-import { PostComponent } from '../post/post.component';
+//import { PostComponent } from '../post/post.component';
 
 @Component({
   selector: 'app-profile',

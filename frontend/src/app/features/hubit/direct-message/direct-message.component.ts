@@ -23,8 +23,16 @@ export class DirectMessageComponent {
   messages: Message[] = [];
 
   constructor(private http: HttpClient, private router: Router) {
-    // TODO: Get logged in user data
-    //this.getData();
+    // Get other user
+    if (this.urlParams.get('recipient_id')) {
+      this.recipient_id = this.urlParams.get('id') as string;
+    } else {
+      //FIXME
+      //this.router.navigate(["/"]);
+    }
+
+    // Get logged in user data
+    this.getData();
 
     // This is for testing - creates messages
     let longer_message: string = " This is a message to you that should fill the box and wrap around the div, asdklfjhsa lkdfash dfklashdklf sfs d nfasndf asndfn asndf ans dfnas dnf asdnf asndf asnd fnas dfnas dfnasfdn";
@@ -51,8 +59,7 @@ export class DirectMessageComponent {
         console.log(info_response);
       }, 
       error: error => {
-        // TODO: Uncomment this later
-        //this.router.navigate(["/"]);
+        this.router.navigate(["/"]);
       }});
   }
 

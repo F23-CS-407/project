@@ -239,8 +239,7 @@ export class NewCommunityDialogComponent {
     if (this.newCommunityForm.valid) {
       const communityName = this.newCommunityForm.get('community_name')?.value;
       const communityDesc = this.newCommunityForm.get('community_desc')?.value;
-      const mods = this.selected_mods.map((mod) => mod.id);
-      this.create_community(communityName, communityDesc, mods);
+      this.create_community(communityName, communityDesc);
 
     } else {
       // Handle form validation errors or show a message to the user
@@ -258,11 +257,10 @@ export class NewCommunityDialogComponent {
       console.log("Error setting file");
     }
   }
-
+  
   public create_community(
     community_name: string,
-    community_desc: string,
-    mods: string[],
+    community_desc: string
   ) {
     // Call backend /create_community
     const options = { withCredentials: true };

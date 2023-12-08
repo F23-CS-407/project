@@ -1,8 +1,4 @@
-<div *ngIf="logged_in && !viewing_own_profile">
-  <a href="/" class="direct-message-button"><button mat-button>Direct Message</button></a>
-</div>
 <div class="center-flex">
-
   <div class="top">
     <div class="profile_picture">
       <img *ngIf="profileImageUrl" [src]="profileImageUrl" class="profile-pic"/>
@@ -42,6 +38,14 @@
   
   <button mat-fab class="settings_button" (click)="settings_action()">
     <mat-icon class="settings_icon">settings</mat-icon>
+  </button>
+
+  <button mat-fab class="dms_button" (click)="toAllDMs()">
+    <mat-icon class="dms_icon">inbox</mat-icon>
+  </button>
+
+  <button mat-fab class="dm_button" (click)="toDM()">
+    <mat-icon class="dm_icon">chat</mat-icon>
   </button>
 </div>
 
