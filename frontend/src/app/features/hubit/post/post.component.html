@@ -1,5 +1,5 @@
 <div class="top-level">
-<div class="post-box" (click)="toPostPage()">
+<div class="post-box">
     <div class="top">
         <div class="user-field">
             <div class="profile_picture">
@@ -18,7 +18,7 @@
     </div>
 
     <div class="divider"></div>
-    <div class="content">
+    <div class="content" (click)="toPostPage()">
         <div class="post-field">
             <p class="post-content">{{post_content}}</p>
         </div>
