@@ -16,18 +16,13 @@ export async function storeContent(req, res) {
 
     // Create a filename based on the type
     const filename = `${type}.txt`;
-    const filePath = join(__dirname, 'storage', filename);
+    const filePath = join(__dirname, '../../', 'storage', filename);
 
     // Check if the file exists
     const fileExists = await fs
       .access(filePath)
       .then(() => true)
       .catch(() => false);
-
-    // If the file doesn't exist, create it
-    if (!fileExists) {
-      await fs.writeFile(filePath, ''); // Creating an empty file
-    }
 
     // Append content to the file with a divider
     await fs.appendFile(filePath, `${fileExists ? '\n\n' : ''}----- New Entry -----\n${content}`);

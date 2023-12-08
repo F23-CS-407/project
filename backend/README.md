@@ -1079,7 +1079,6 @@ Body
 }
 ```
 
-
 ### GET /messages/:userid
 
 Returns user IDs of users who have exchanged messages with the given ID (by most recent)
@@ -1108,11 +1107,13 @@ Creates a new message with given content, sender, and receiver. (Timestamp creat
 Body
 
 ```
+
 {
-    "content": string,
-    "sender": (string)UserId,
-    "receiver": (string)UserId
+"content": string,
+"sender": (string)UserId,
+"receiver": (string)UserId
 }
+
 ```
 
 ## Debug Endpoints (only exposed when testing)
@@ -1120,6 +1121,8 @@ Body
 ### GET /test_auth
 
 Returns a message to test your auth status
+
+```
 
 ```
 

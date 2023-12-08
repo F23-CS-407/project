@@ -2,6 +2,3 @@
 
 ----- New Entry -----
 This is some example content to be stored in the file.
-
------ New Entry -----
-This is some example content to be stored in the file.

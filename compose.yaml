@@ -25,7 +25,7 @@ services:
       - ./backend/tests:/usr/backend/tests
       - ./backend/coverage:/usr/backend/coverage
       - ./database/uploads:/usr/backend/uploads
-      - ./backend/src/reports/storage:/usr/backend/reports/storage
+      - ./backend//storage:/usr/backend/storage
 
   database:
     container_name: hubit_mongo
@@ -34,7 +34,6 @@ services:
     - 27017:27017
     volumes:
     - ./database/data:/data/db
-    - ./database/storage:/data/storage
 
   proxy:
     container_name: hubit_apache

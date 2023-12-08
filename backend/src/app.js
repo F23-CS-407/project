@@ -32,9 +32,9 @@ export default async function createApp(options) {
 
   //use reporting
   app = useReporting(app);
-  
+
   // use messages
   app = useMessages(app);
-  
+
   return app;
 }
