@@ -233,11 +233,6 @@ export class PostComponent {
     console.log('has_liked:', this.has_liked);
   }
 
-  comment_button_click() {
-    // Implementation for commenting on a post
-    // You can direct the user to the comment section or open a comment dialog
-  }
-
   save_button_click() {
     // Implementation for saving a post
     // You'll need to manage the saved state of the post
