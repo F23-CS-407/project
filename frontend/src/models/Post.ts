@@ -17,6 +17,7 @@ export class Post {
   // This is probably unnecessary. We would only need        likes: number = 0;
   liked_by: User[] = [];
   comments: Comment[] = [];
+  category: String = ''
 
   constructor(alias: Alias);
   public constructor(username: string);
