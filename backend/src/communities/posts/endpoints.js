@@ -60,6 +60,14 @@ export async function post_in_community(req, res) {
     new_post.media = post.media;
   }
 
+  if (post.lat) {
+    new_post.lat = post.lat
+  }
+
+  if (post.long) {
+    new_post.long = post.long
+  }
+
   //Creates new post in database
   let posted = await new_post.save();
 
