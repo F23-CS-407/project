@@ -12,6 +12,7 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
 import { PostComponent } from './post/post.component';
 import { BoardsComponent } from './boards/boards.component';
 import { BugReportComponent } from './bug_report/bug_report.component';
+import { FeedComponent } from './feed/feed.component';
 
 const routes: Routes = [
   {
@@ -67,8 +68,12 @@ const routes: Routes = [
         component: BugReportComponent
       },
       {
+        path: "feed",
+        component: FeedComponent
+      },
+      {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'feed',
         pathMatch: 'full',
       },
     ],
