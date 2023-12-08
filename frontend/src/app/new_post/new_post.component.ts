@@ -88,7 +88,7 @@ export class NewPostComponent {
     }
   }
 
-  create_post(description : string, chips : string[]) {
+  create_post(description : string, chips : string[], altText: string) {
     // If no value selected, default to General
     if (chips[0] == undefined){
       chips[0] = 'General';
