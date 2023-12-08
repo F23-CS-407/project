@@ -65,7 +65,7 @@ const routes: Routes = [
         component: DirectMessageComponent,
       },
       {
-        path: "bug_report",
+        path: "feedback",
         component: BugReportComponent
       },
       {

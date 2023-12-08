@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-//import { FormControl, Validators } from '@angular/forms';
-//import {ErrorStateMatcher} from '@angular/material/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -11,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./bug_report.component.css'],
 })
 export class BugReportComponent {
-  private backend_addr : string = "/api";
+  private backend_addr: string = "/api";
 
   selectedFeedbackType: string = 'bug';
   feedbackText: string = '';
@@ -24,16 +22,17 @@ export class BugReportComponent {
 
     const feedbackData = {
       type: this.selectedFeedbackType,
-      details: this.feedbackText,
+      content: this.feedbackText,
     };
 
     const options = { withCredentials: true };
 
-    this.http.post<any>(`${this.backend_addr}/submit_feedback`, feedbackData, options).subscribe({
+    this.http.post<any>(`${this.backend_addr}/report`, feedbackData, options).subscribe({
       next: (response) => {
         console.log('Feedback submitted successfully:', response);
         // Update the feedbackSubmitted variable to show the confirmation message
         this.feedbackSubmitted = true;
+        this.feedbackText = '';
       },
       error: (error) => {
         console.error('Error submitting feedback:', error);
@@ -42,4 +41,3 @@ export class BugReportComponent {
     });
   }
 }
-
