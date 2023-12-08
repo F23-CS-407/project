@@ -1049,6 +1049,19 @@ Errors
 404
 ```
 
+### POST /report
+
+Saves report content to file.
+
+Body
+
+```
+{
+    "type": String ("bug" or "feature")
+    "content": String
+}
+```
+
 ## Debug Endpoints (only exposed when testing)
 
 ### GET /test_auth
