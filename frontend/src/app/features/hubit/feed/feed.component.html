@@ -1,11 +1,9 @@
-<div class="post-box">
+<div class="post_list">
   <div *ngIf="posts.length > 0">
     <!-- Display each post -->
-    <div *ngFor="let post of posts">
-      <div class="post-card">
+    <li *ngFor="let post of posts" class="post-card">
         <app-post [embedded]="true" input_post_id="{{post._id}}"></app-post>
-      </div>
-    </div>
+    </li>
   </div>
 </div>
 
