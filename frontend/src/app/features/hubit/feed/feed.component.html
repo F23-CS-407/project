@@ -1,4 +1,5 @@
-<div *ngIf="posts.length > 0">
+<div class="post-box">
+  <div *ngIf="posts.length > 0">
     <!-- Display each post -->
     <div *ngFor="let post of posts">
         <app-post [embedded]="true" input_post_id="{{post._id}}"></app-post>
@@ -9,3 +10,4 @@
   <div *ngIf="posts.length === 0">
     <p class="no-posts-text">No posts to display. Follow some communities!</p>
   </div>
+</div>

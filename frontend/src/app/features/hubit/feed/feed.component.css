@@ -3,6 +3,16 @@
     margin: 20px;
   }
 
+  .post-box {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    width: 80vw;
+    margin-left: 50px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
   .post-card {
     width: 50vw;
     align-self: center;
