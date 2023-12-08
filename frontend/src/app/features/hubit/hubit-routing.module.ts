@@ -11,6 +11,7 @@ import { FollowedCommunitiesComponent } from './followed-communities/followed-co
 import { DirectMessageComponent } from './direct-message/direct-message.component';
 import { PostComponent } from './post/post.component';
 import { BoardsComponent } from './boards/boards.component';
+import { BugReportComponent } from './bug_report/bug_report.component';
 
 const routes: Routes = [
   {
@@ -60,6 +61,10 @@ const routes: Routes = [
       {
         path: 'message',
         component: DirectMessageComponent,
+      },
+      {
+        path: "bug_report",
+        component: BugReportComponent
       },
       {
         path: '',
